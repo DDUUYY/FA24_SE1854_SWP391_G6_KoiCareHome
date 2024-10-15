@@ -8,6 +8,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
+/**
+ * @author Ha Huy Nghia Hiep
+ */
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {

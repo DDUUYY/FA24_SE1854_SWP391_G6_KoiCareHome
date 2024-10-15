@@ -5,6 +5,10 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+/**
+ * @author Ha Huy Nghia Hiep
+ */
+
 @Entity
 @Data
 @Getter
