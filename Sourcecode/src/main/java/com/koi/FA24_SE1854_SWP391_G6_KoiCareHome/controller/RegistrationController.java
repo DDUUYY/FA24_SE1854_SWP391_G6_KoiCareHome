@@ -33,7 +33,6 @@ public class RegistrationController {
 
         if (foundMember.isPresent()) {
             Member loggedInMember = foundMember.get();
-
             if (loggedInMember.getIsActive()) {
                 return ResponseEntity.ok(loggedInMember.getMemberID()); // Return the MemberID if login is successful and account is active
             } else {

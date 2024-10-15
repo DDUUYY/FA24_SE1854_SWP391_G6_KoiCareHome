@@ -44,4 +44,15 @@ public class Member {
 
     private String UpdateBy;
 
+    @PrePersist
+    public void onPrePersist() {
+        this.CreateDate = LocalDateTime.now();
+        this.UpdateDate = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        this.UpdateDate = LocalDateTime.now();
+    }
 }
+

@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 @Table(name = "Role")
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Integer RoleID;
 
 
@@ -27,15 +25,15 @@ public class Role {
 
     private Boolean isActive;
 
-    @Column(nullable = true)
+
     private LocalDateTime CreateDate;
 
-    @Column(nullable = true)
+
     private String CreateBy;
 
-    @Column(nullable = true)
+
     private LocalDateTime UpdateDate;
 
-    @Column(nullable = true)
+
     private String UpdateBy;
 }
