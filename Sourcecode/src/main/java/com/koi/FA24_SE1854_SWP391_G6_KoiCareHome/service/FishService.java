@@ -3,11 +3,11 @@ package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.service;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.exception.AlreadyExistedException;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.exception.NotFoundException;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model.Fish;
-import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model.FishType;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.FishRepository;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.FishTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,12 +16,11 @@ import java.util.Optional;
 public class FishService {
 
     private static final String FISH_NOT_FOUND_MESSAGE = "Fish not found.";
-    private static final String FISH_TYPE_NOT_FOUND_MESSAGE = "Fish type not found.";
-    private static final String FISH_ALREADY_EXISTED_MESSAGE = "Fish already existed.";
-    private static final String FISH_TYPE_ALREADY_EXISTED_MESSAGE = "Fish type already existed.";
+    private static final String FISH_NAME_ALREADY_EXISTED_MESSAGE = "Fish name already existed.";
 
     private final FishRepository fishRepository;
     private final FishTypeRepository fishTypeRepository;
+
 
     @Autowired
     public FishService(FishRepository fishRepository, FishTypeRepository fishTypeRepository) {
@@ -36,16 +35,13 @@ public class FishService {
      * @return the persisted entity
      */
     public Fish saveFish(Fish fish) {
-        Optional<FishType> fishType = fishTypeRepository.findById(fish.getFishTypeID());
-        if(fishType.isEmpty())
-        {
-            throw new NotFoundException(FISH_TYPE_NOT_FOUND_MESSAGE);
-        } else if (fishRepository.existsById(fish.getFishID())) {
-            throw new AlreadyExistedException(FISH_ALREADY_EXISTED_MESSAGE);
-        }
-        fish.setCreateBy("user");
-        fish.setUpdateBy("user");
-        return fishRepository.save(fish);
+         if (fishRepository.existsByNameAndPondIdExceptId(fish.getName(),fish.getFishID(), fish.getPondID())) {
+            throw new AlreadyExistedException(FISH_NAME_ALREADY_EXISTED_MESSAGE);
+         }
+         fish.setFishTypeID(fishTypeRepository.findByName("KoiFish").get().getFishTypeID());
+         fish.setCreateBy("user");
+         fish.setUpdateBy("user");
+         return fishRepository.save(fish);
     }
 
     /**
@@ -55,6 +51,15 @@ public class FishService {
      */
     public List<Fish> getAllFishes() {
         return fishRepository.findAllFish();
+    }
+
+    /**
+     * Get all the Fishes in a specific pond.
+     *
+     * @return the list of entities
+     */
+    public List<Fish> getAllFishesWithPondId(int pondId) {
+        return fishRepository.findAllFishWithPondId(pondId);
     }
 
     /**
@@ -68,6 +73,17 @@ public class FishService {
     }
 
     /**
+     * Get one Fish by Name.
+     *
+     * @param fishName the name of the Fish entity
+     * @param pondId the id of the Fish's pond
+     * @return the entity
+     */
+    public Optional<Fish> getFishByNameWithPondId(String fishName, int pondId) {
+        return fishRepository.findFishByNameWithPondID(fishName, pondId);
+    }
+
+    /**
      * Update a Fish.
      *
      * @param id the ID of the entity
@@ -75,11 +91,14 @@ public class FishService {
      * @return the updated entity
      */
     public Fish updateFish(int id, Fish updatedFish) {
-        Optional<Fish> existingFish = fishRepository.findById(id);
+        Optional<Fish> existingFish = fishRepository.findFishById(id);
         if (existingFish.isEmpty()) {
-           throw new RuntimeException(FISH_NOT_FOUND_MESSAGE);
+           throw new NotFoundException(FISH_NOT_FOUND_MESSAGE);
         }
         Fish fish = existingFish.get();
+        if (fishRepository.existsByNameAndPondIdExceptId(updatedFish.getName(),id, updatedFish.getPondID())) {
+            throw new AlreadyExistedException(FISH_NAME_ALREADY_EXISTED_MESSAGE);
+        }
         fish.setName(updatedFish.getName());
         fish.setSize(updatedFish.getSize());
         fish.setWeight(updatedFish.getWeight());
@@ -88,19 +107,23 @@ public class FishService {
         fish.setBreed(updatedFish.getBreed());
         fish.setOrigin(updatedFish.getOrigin());
         fish.setPrice(updatedFish.getPrice());
-        if(!fishTypeRepository.existsById(updatedFish.getFishTypeID())){
-            throw new NotFoundException(FISH_TYPE_NOT_FOUND_MESSAGE);
-        }
-        fish.setFishTypeID(updatedFish.getFishTypeID());
+        fish.setUpdateBy("user");
         return fishRepository.save(fish);
     }
 
     /**
-     * Delete the Fish by ID.
+     * Delete a Fish by ID.
      *
      * @param id the ID of the entity
      */
-    public void deleteFish(int id) {
-        fishRepository.deleteById(id);
+    @Transactional
+    public void deleteByID(int id) {
+        if(fishRepository.existsById(id)){
+            updateFish(id, fishRepository.findById(id).get());
+            fishRepository.deleteByID(id);
+        } else{
+            throw new NotFoundException(FISH_NOT_FOUND_MESSAGE);
+        }
+
     }
 }

@@ -56,8 +56,6 @@ public class Food {
     protected void onCreate() {
         createDate = LocalDateTime.now();
         updateDate = LocalDateTime.now();
-        createBy = "user";
-        updateBy = "user";
         isActive = true;
     }
 

@@ -37,7 +37,7 @@ public class FishController {
     /**
      * Get all Fishes.
      *
-     * @return the ResponseEntity with status 200 (OK) and with body of the list of Fishs
+     * @return the ResponseEntity with status 200 (OK) and with body of the list of Fishes
      */
     @GetMapping
     public List<Fish> getAllFishes() {
@@ -45,10 +45,21 @@ public class FishController {
     }
 
     /**
+     * Get all Fishes in a pond.
+     *
+     * @return the ResponseEntity with status 200 (OK) and with body of the list of Fishes
+     */
+    @GetMapping("/all-fish-in-pond/{pondId}")
+    public List<Fish> getAllFishesWithPondId(@PathVariable int pondId) {
+        return fishService.getAllFishesWithPondId(pondId);
+    }
+
+    /**
      * Get a Fish by ID.
      *
      * @param id the ID of the Fish to get
-     * @return the ResponseEntity with status 200 (OK) and with body of the Fish, or with status 404 (Not Found) if the Fish does not exist
+     * @return the ResponseEntity with status 200 (OK) and with body of the Fish,
+     * or with status 404 (Not Found) if the Fish does not exist
      */
     @GetMapping("/{id}")
     public ResponseEntity<Fish> getFishById(@PathVariable int id) {
@@ -57,11 +68,26 @@ public class FishController {
     }
 
     /**
-     * Update a Fish by Id.
+     * Get a Fish by Name in a specific pond.
      *
-     * @param id the Id of the Fish to update
+     * @param pondId the ID of the Fish's pond
+     * @param name the name of the Fish
+     * @return the ResponseEntity with status 200 (OK) and with body of the Fish,
+     * or with status 404 (Not Found) if the Fish does not exist
+     */
+    @GetMapping("/pond/{pondId}")
+    public ResponseEntity<Fish> getFishByNameWithPondId(@PathVariable int pondId, @RequestBody String name) {
+        Optional<Fish> fish = fishService.getFishByNameWithPondId(name, pondId);
+        return fish.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    /**
+     * Update a Fish by ID.
+     *
+     * @param id the ID of the Fish to update
      * @param fish the updated Fish
-     * @return the ResponseEntity with status 200 (OK) and with body of the updated Fish, or with status 404 (Not Found) if the Fish does not exist
+     * @return the ResponseEntity with status 200 (OK) and with body of the updated Fish,
+     * or with status 404 (Not Found) if the Fish does not exist
      */
     @PutMapping("/{id}")
     public ResponseEntity<Fish> updateFish(@PathVariable int id, @RequestBody Fish fish) {
@@ -77,7 +103,7 @@ public class FishController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteFish(@PathVariable int id) {
-        fishService.deleteFish(id);
+        fishService.deleteByID(id);
         return ResponseEntity.ok("Fish deleted successfully");
     }
 }

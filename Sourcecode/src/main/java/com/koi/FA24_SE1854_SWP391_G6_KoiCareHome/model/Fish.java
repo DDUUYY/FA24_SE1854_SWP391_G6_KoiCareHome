@@ -40,7 +40,7 @@ public class Fish {
     private float weight;
 
     @Column(name = "Age")
-    private String age;
+    private int age;
 
     @Column(name = "Gender")
     private String gender;
@@ -73,8 +73,6 @@ public class Fish {
     protected void onCreate() {
         createDate = LocalDateTime.now();
         updateDate = LocalDateTime.now();
-        createBy = "user";
-        updateBy = "user";
         isActive = true;
     }
 
