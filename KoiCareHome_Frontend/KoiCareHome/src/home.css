@@ -1,0 +1,34 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.navbar {
+    background-color: orange;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+}
+
+.user-icon a {
+    text-decoration: none; 
+    color: white;          
+}
+
+.user-icon a:hover,
+.user-icon a:active,
+.user-icon a:visited {
+    color: white;         
+}
+
+.user-icon {
+    font-size: 1.5rem;
+}
