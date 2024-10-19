@@ -12,7 +12,6 @@ import UserProfile from "../assets/User_Profile.jpg";
 const MemberProfile = () => {
   const navigate = useNavigate();
   const [member, setMember] = useState({
-    memberName: "",
     firstName: "",
     lastName: "",
     email: "",
@@ -103,11 +102,6 @@ const MemberProfile = () => {
         </div>
 
         <div className="profile-details">
-          <div className="detail-row">
-            <span className="label">Member Name:</span>
-            <span className="value">{member.memberName}</span>
-          </div>
-          <hr />
           <div className="detail-row">
             <span className="label">First Name:</span>
             <span className="value">{member.firstName}</span>

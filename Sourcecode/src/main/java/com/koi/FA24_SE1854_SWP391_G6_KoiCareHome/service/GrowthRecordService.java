@@ -23,6 +23,7 @@ public class GrowthRecordService {
         return growthRecordRepository.save(growthRecord);
     }
 
+
     public List<GrowthRecord> getAllGrowthRecords() {
         return growthRecordRepository.findAll();
     }

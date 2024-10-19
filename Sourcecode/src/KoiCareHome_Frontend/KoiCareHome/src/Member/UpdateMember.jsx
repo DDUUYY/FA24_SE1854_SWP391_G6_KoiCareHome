@@ -12,7 +12,6 @@ const UpdateMember = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    memberName: "",
     firstName: "",
     lastName: "",
     email: "",
@@ -61,7 +60,6 @@ const UpdateMember = () => {
 
     try {
       const updatePayload = {
-        memberName: formData.memberName,
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
@@ -102,14 +100,6 @@ const UpdateMember = () => {
       <form onSubmit={handleSubmit} className="update-member-form">
         <input
           type="text"
-          name="memberName"
-          placeholder="Member Name"
-          value={formData.memberName}
-          onChange={handleInputChange}
-          className="update-member-input"
-        />
-        <input
-          type="text"
           name="firstName"
           placeholder="First Name"
           value={formData.firstName}
@@ -144,16 +134,8 @@ const UpdateMember = () => {
         {/* Password update are optional */}
         <input
           type="password"
-          name="oldPassword"
-          placeholder="Old Password (optional)"
-          value={formData.oldPassword}
-          onChange={handleInputChange}
-          className="update-member-input"
-        />
-        <input
-          type="password"
           name="newPassword"
-          placeholder="New Password (optional)"
+          placeholder="New Password"
           value={formData.newPassword}
           onChange={handleInputChange}
           className="update-member-input"
@@ -161,7 +143,7 @@ const UpdateMember = () => {
         <input
           type="password"
           name="confirmNewPassword"
-          placeholder="Confirm New Password (optional)"
+          placeholder="Confirm New Password"
           value={formData.confirmNewPassword}
           onChange={handleInputChange}
           className="update-member-input"

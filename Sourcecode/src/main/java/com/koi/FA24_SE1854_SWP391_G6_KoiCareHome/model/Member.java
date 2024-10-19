@@ -23,8 +23,6 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer MemberID;
 
-    private String MemberName;
-
     private String Password;
 
     private Integer RoleID;

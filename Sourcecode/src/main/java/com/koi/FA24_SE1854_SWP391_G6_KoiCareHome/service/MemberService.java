@@ -25,7 +25,7 @@ public class MemberService {
         if (existingEmail.isPresent()) {
             throw new IllegalArgumentException("Email already exists");
         }
-        member.setPassword(passwordEncoder.encode(member.getPassword())); // Encrypt password
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
         member.setRoleID(1);
         member.setIsActive(true);
         return memberRepository.save(member);
@@ -54,18 +54,24 @@ public class MemberService {
       return memberRepository.findById(MemberID).orElse(null);
     }
 
-    public Member updateMember(Integer MemberID,Member member) {
+    public Member updateMember(Integer MemberID, Member updatedMember) {
         Optional<Member> optionalMember = memberRepository.findById(MemberID);
         if (optionalMember.isPresent()) {
             Member existingMember = optionalMember.get();
-            existingMember.setMemberName(member.getMemberName());
-            existingMember.setPassword(passwordEncoder.encode(member.getPassword()));
-            existingMember.setFirstName(member.getFirstName());
-            existingMember.setLastName(member.getLastName());
-            existingMember.setEmail(member.getEmail());
-            existingMember.setPhoneNumber((member.getPhoneNumber()));
+
+            existingMember.setFirstName(updatedMember.getFirstName());
+            existingMember.setLastName(updatedMember.getLastName());
+            existingMember.setEmail(updatedMember.getEmail());
+            existingMember.setPhoneNumber(updatedMember.getPhoneNumber());
+
+            // Check if the new password is provided and update it
+            if (updatedMember.getPassword() != null && !updatedMember.getPassword().isEmpty()) {
+                existingMember.setPassword(passwordEncoder.encode(updatedMember.getPassword()));
+            }
+
+
             return memberRepository.save(existingMember);
         }
-       return null;
+        return null;
     }
 }

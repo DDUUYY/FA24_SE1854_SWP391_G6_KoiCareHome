@@ -9,7 +9,6 @@ import './style.css';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    memberName: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -67,17 +66,6 @@ const Signup = () => {
       <form onSubmit={handleSubmit}>
         <h1 className="title">Sign Up</h1>
         {errorMessage && <p className="error">{errorMessage}</p>}
-        <div className="inputbox">
-          <ion-icon name="person-outline"></ion-icon>
-          <input
-            type="text"
-            name="memberName"
-            value={formData.memberName}
-            onChange={handleChange}
-            required
-          />
-          <label htmlFor="memberName">Username</label>
-        </div>
         <div className="inputbox">
           <ion-icon name="person-outline"></ion-icon>
           <input
