@@ -12,6 +12,7 @@ import java.util.Optional;
 /**
  * @author Ha Huy Nghia Hiep
  */
+
 @Service
 @RequiredArgsConstructor
 public class GrowthRecordService {
@@ -21,6 +22,7 @@ public class GrowthRecordService {
         growthRecord.setIsActive(true);
         return growthRecordRepository.save(growthRecord);
     }
+
 
     public List<GrowthRecord> getAllGrowthRecords() {
         return growthRecordRepository.findAll();

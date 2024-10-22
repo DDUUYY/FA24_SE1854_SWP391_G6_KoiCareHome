@@ -1,5 +1,6 @@
 package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 /**
  * @author Ha Huy Nghia Hiep
  */
+
 @Entity
 @Data
 @Getter
@@ -20,8 +22,6 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer MemberID;
-
-    private String MemberName;
 
     private String Password;
 
@@ -46,8 +46,15 @@ public class Member {
 
     private String UpdateBy;
 
-    private Integer FishID;
+    @PrePersist
+    public void onPrePersist() {
+        this.CreateDate = LocalDateTime.now();
+        this.UpdateDate = LocalDateTime.now();
+    }
 
-    private Integer  PondID;
+    @PreUpdate
+    public void onPreUpdate() {
+        this.UpdateDate = LocalDateTime.now();
+    }
 }
 

@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:5173")
 public class GrowthRecordController {
     private final GrowthRecordService growthRecordService;
 
@@ -46,6 +46,7 @@ public class GrowthRecordController {
         if (growthRecord == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(growthRecord);
     }
+
     @PatchMapping("/GrowthRecord/{RecordID}")
     public ResponseEntity<?> updateGrowthRecord(@PathVariable Integer RecordID,@RequestBody GrowthRecord growthRecord) {
         GrowthRecord updatedRecord = growthRecordService.updateGrowthRecord(RecordID, growthRecord);

@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+
 /**
  * @author Ha Huy Nghia Hiep
  */
@@ -28,7 +29,7 @@ public class GrowthRecord {
     private Integer FishID;
 
     @Column(nullable = false)
-    private LocalDate MeasurementDate = LocalDate.now();
+    private LocalDate MeasurementDate;
     @Column(nullable = false)
     private BigDecimal Size;
     @Column(nullable = false)
@@ -48,4 +49,16 @@ public class GrowthRecord {
 
     private String UpdateBy;
 
+    @PrePersist
+    public void onPrePersist() {
+        this.CreateDate = LocalDateTime.now();
+        this.UpdateDate = LocalDateTime.now();
+        this.MeasurementDate = LocalDate.now();
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        this.UpdateDate = LocalDateTime.now();
+    }
 }
+

@@ -51,7 +51,7 @@ public interface FishRepository extends JpaRepository<Fish, Integer> {
 
     /**
      * This method will return all fishes that still existed in a specific pond in the database
-     * @param pondId id of the fish's pond
+     * @param pondId id of the fish's pondZ
      * @return list of fishes
      */
     @Query("SELECT f FROM Fish f WHERE f.pondID = :pondId AND f.isActive = true")

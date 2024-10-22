@@ -1,0 +1,99 @@
+/*
+ * Author: Ha Huy Nghia Hiep
+ * Date: October 19, 2024
+ */
+
+ .profile-section {
+  background-color: #f8f9fa;
+  padding: 40px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; 
+  min-width: 240vh;
+}
+
+/* Container taking up more space */
+.profile-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px; 
+  gap: 40px; /* Increased gap between profile card and details */
+  margin: auto;
+}
+
+
+.profile-card {
+  flex: 1;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  text-align: center;
+}
+
+
+.profile-avatar {
+  width: 180px; 
+  height: 180px;
+  border-radius: 50%;
+  margin-bottom: 20px; /* Increased margin below avatar */
+}
+
+
+.profile-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Increased space between buttons */
+}
+
+.profile-button {
+  padding: 12px 20px; /* Larger button size */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px; /* Larger font */
+  cursor: pointer;
+}
+
+.delete-button {
+  background-color: #dc3545;
+}
+
+.profile-button:hover, .delete-button:hover {
+  opacity: 0.5;
+}
+
+
+.profile-details {
+  flex: 2;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  padding: 30px; 
+}
+
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px; /* Increased spacing between details */
+  font-size: 18px; 
+}
+
+.label {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.value {
+  color: #6c757d;
+  font-size: 18px;
+}
+
+hr {
+  border-color: #ddd;
+  margin: 15px 0;
+}

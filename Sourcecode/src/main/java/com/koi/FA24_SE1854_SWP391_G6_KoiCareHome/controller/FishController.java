@@ -14,6 +14,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api/fish")
+@CrossOrigin(origins = "http://localhost:5173")
 public class FishController {
     private final FishService fishService;
 
