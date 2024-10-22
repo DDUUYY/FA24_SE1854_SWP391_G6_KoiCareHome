@@ -7,7 +7,7 @@ import MemberProfile from './Member/MemberProfile';
 import UpdateMember from './Member/UpdateMember';
 import ManageFish from './Fish/ManageFish';
 import GrowthRecord from './GrowthRecord/GrowthRecord';
-
+import AddRecord from './GrowthRecord/AddRecord';
 const App = () => {
   return (
     <Router>
@@ -20,6 +20,7 @@ const App = () => {
         <Route path='/UpdateMember/:id' element={<UpdateMember />} />
         <Route path="/manage-fish" element={<ManageFish />} />
         <Route path="/growthRecord" element={<GrowthRecord/>} />
+        <Route path="/addRecord" element={<AddRecord/>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

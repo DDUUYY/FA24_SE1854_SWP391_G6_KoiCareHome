@@ -6,7 +6,7 @@ import './GrCard.css';
 
 /*
  * Author: Ha Huy Nghia Hiep
- * Date: October 19, 2024
+ * Date: October 22, 2024
  */
 const GrCard = () => {
     return (

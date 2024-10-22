@@ -13,7 +13,7 @@
   min-width: 240vh;
 }
 
-/* Container taking up more space */
+
 .profile-container {
   display: flex;
   justify-content: space-between;
