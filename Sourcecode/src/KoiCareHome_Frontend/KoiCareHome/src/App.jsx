@@ -6,7 +6,6 @@ import NotFound from './404';
 import MemberProfile from './Member/MemberProfile';
 import UpdateMember from './Member/UpdateMember';
 import ManageFish from './Fish/ManageFish';
-import CreateAFish from './Fish/CreateAFish';
 
 const App = () => {
   return (
@@ -19,7 +18,6 @@ const App = () => {
         <Route path="/profile" element={<MemberProfile />} />
         <Route path='/UpdateMember/:id' element={<UpdateMember />} />
         <Route path="/manage-fish" element={<ManageFish />} />
-        <Route path="/add-fish" element={<CreateAFish />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

@@ -1,12 +1,10 @@
 package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.service;
 
-import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.exception.AlreadyExistedException;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.exception.NotFoundException;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model.ConsumeFoodHistory;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.ConsumeFoodHistoryRepository;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.FishRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -63,5 +61,7 @@ public class ConsumeFoodHistoryService {
         }
         return existingConsumeFoodHistory;
     }
+
+
 
 }

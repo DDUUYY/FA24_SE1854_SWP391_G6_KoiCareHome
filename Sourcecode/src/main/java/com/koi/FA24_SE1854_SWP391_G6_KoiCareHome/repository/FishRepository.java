@@ -30,6 +30,10 @@ public interface FishRepository extends JpaRepository<Fish, Integer> {
                                           @Param("ID") int ID,
                                           @Param("pondID") int pondID);
 
+    @Query("SELECT CASE WHEN COUNT(f) > 0 THEN true ELSE false END FROM Member f WHERE f.MemberID = :memberId AND f.isActive = true")
+    boolean existsMemberId(@Param("memberId") int memberId);
+
+
     /**
      * This method is to find a Fish by its id
      * @param id id of Fish
@@ -71,5 +75,12 @@ public interface FishRepository extends JpaRepository<Fish, Integer> {
     @Modifying
     @Query("UPDATE Fish f SET f.isActive = false WHERE f.fishID = :id")
     void deleteByID(@Param("id") int id);
+
+    /**
+     * This method will return all fishes under Member id that still existed in database
+     * @return list of fishes of Member with "id"
+     */
+    @Query("SELECT f FROM Fish f WHERE f.memberID = :memberID AND f.isActive = true")
+    List<Fish> findAllFishWithMemberId(@Param("memberID") int memberID);
 
 }

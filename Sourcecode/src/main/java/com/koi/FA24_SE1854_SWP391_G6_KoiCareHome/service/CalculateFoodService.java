@@ -10,6 +10,8 @@ import java.util.List;
 @Service
 public class CalculateFoodService {
 
+    private BigDecimal percentage = new BigDecimal("0.02");
+
     private final FishRepository fishrepository;
 
     public CalculateFoodService(FishRepository fishrepository) {
@@ -21,12 +23,12 @@ public class CalculateFoodService {
      *
      * @return the calculated amount
      */
-    public float calculateFoodBaseOnWeights(int pondId) {
+    public BigDecimal calculateFoodBaseOnWeights(int pondId) {
         List<Fish> fishes = fishrepository.findAllFishWithPondId(pondId);
-        float baseOnWeights = 0;
+        BigDecimal baseOnWeights = BigDecimal.valueOf(0.00);
         for (Fish fish : fishes) {
-            baseOnWeights += fish.getWeight();
+            baseOnWeights = baseOnWeights.add(fish.getWeight());
         }
-        return baseOnWeights*0.02f;
+        return baseOnWeights.multiply(percentage);
     }
 }

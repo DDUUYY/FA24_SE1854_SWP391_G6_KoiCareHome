@@ -3,6 +3,7 @@ package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.service;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.exception.AlreadyExistedException;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.exception.NotFoundException;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model.Fish;
+import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model.FishType;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.FishRepository;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.FishTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.Optional;
 @Service
 public class FishService {
 
+    private static final String MEMBER_NOT_FOUND_MESSAGE = "Member not found";
     private static final String FISH_NOT_FOUND_MESSAGE = "Fish not found.";
     private static final String FISH_NAME_ALREADY_EXISTED_MESSAGE = "Fish name already existed.";
 
@@ -35,13 +37,20 @@ public class FishService {
      * @return the persisted entity
      */
     public Fish saveFish(Fish fish) {
-         if (fishRepository.existsByNameAndPondIdExceptId(fish.getName(),fish.getFishID(), fish.getPondID())) {
-            throw new AlreadyExistedException(FISH_NAME_ALREADY_EXISTED_MESSAGE);
-         }
-         fish.setFishTypeID(fishTypeRepository.findByName("KoiFish").get().getFishTypeID());
-         fish.setCreateBy("user");
-         fish.setUpdateBy("user");
-         return fishRepository.save(fish);
+        if (fishRepository.existsByNameAndPondIdExceptId(fish.getName(), fish.getFishID(), fish.getPondID())) {
+            throw new AlreadyExistedException("Fish name already existed for Pond ID: " + fish.getPondID());
+        } else if (!fishRepository.existsMemberId(fish.getMemberID())) {
+            throw new NotFoundException(MEMBER_NOT_FOUND_MESSAGE);
+        }
+
+        FishType fishType = fishTypeRepository.findByName("KoiFish")
+                .orElseThrow(() -> new NotFoundException("Fish type not found"));
+
+        fish.setFishTypeID(fishType.getFishTypeID());
+        fish.setCreateBy("user");
+        fish.setUpdateBy("user");
+
+        return fishRepository.save(fish);
     }
 
     /**
@@ -60,6 +69,15 @@ public class FishService {
      */
     public List<Fish> getAllFishesWithPondId(int pondId) {
         return fishRepository.findAllFishWithPondId(pondId);
+    }
+
+    /**
+     * Get all the Fishes under Member id.
+     *
+     * @return the list of entities
+     */
+    public List<Fish> getAllFishWithMemberId(int memberId) {
+        return fishRepository.findAllFishWithMemberId(memberId);
     }
 
     /**

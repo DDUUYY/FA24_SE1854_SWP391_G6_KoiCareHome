@@ -3,6 +3,7 @@ package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -27,17 +28,17 @@ public class Fish {
     @Column(name = "PondID", nullable = false)
     private int pondID;
 
+    @Column(name = "MemberID", nullable = false)
+    private int memberID;
+
     @Column(name = "Name", nullable = false)
     private String name;
 
-    @Column(name = "ImageURL")
-    private String imageURL;
-
     @Column(name = "Size")
-    private float size;
+    private BigDecimal size;
 
     @Column(name = "Weight")
-    private float weight;
+    private BigDecimal weight;
 
     @Column(name = "Age")
     private int age;
@@ -52,7 +53,7 @@ public class Fish {
     private String origin;
 
     @Column(name = "Price")
-    private float price;
+    private BigDecimal price;
 
     @Column(name = "isActive", nullable = false)
     private boolean isActive;
