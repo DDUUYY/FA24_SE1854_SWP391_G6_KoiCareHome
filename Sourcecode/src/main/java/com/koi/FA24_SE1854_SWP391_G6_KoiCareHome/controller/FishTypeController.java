@@ -14,6 +14,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api/fishType")
+@CrossOrigin(origins = "http://localhost:5173")
 public class FishTypeController {
     private final FishTypeService fishTypeService;
 
@@ -80,8 +81,8 @@ public class FishTypeController {
      * @return the ResponseEntity with status 200 (OK) and with body of the updated FishType,
      * or with status 404 (Not Found) if the FishType does not exist
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<FishType> updateFishType(@PathVariable int id, @RequestBody FishType fishType) {
+    @PutMapping
+    public ResponseEntity<FishType> updateFishType(@RequestParam(name = "fishTypeId") int id, @RequestBody FishType fishType) {
         FishType updatedFishType = fishTypeService.updateFishType(id, fishType);
         return ResponseEntity.ok(updatedFishType);
     }
@@ -92,8 +93,8 @@ public class FishTypeController {
      * @param id the ID of the FishType to delete
      * @return the ResponseEntity with status 200 (OK) and with body of the message "FishType deleted successfully"
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteByID(@PathVariable int id) {
+    @DeleteMapping
+    public ResponseEntity<String> deleteByID(@RequestParam(name = "fishTypeId") int id) {
         fishTypeService.deleteByID(id);
         return ResponseEntity.ok("FishType deleted successfully");
     }

@@ -6,6 +6,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,7 +44,7 @@ throw new EntityNotFoundException("Record with the ID: " + RecordID + " not foun
        Optional<GrowthRecord> OptionalGrowthRecord = growthRecordRepository.findById(RecordID);
        if (OptionalGrowthRecord.isPresent()) {
            GrowthRecord existingGrowthRecord = OptionalGrowthRecord.get();
-           existingGrowthRecord.setMeasurementDate(growthRecord.getMeasurementDate());
+          // existingGrowthRecord.setMeasurementDate(LocalDate.now());
            existingGrowthRecord.setSize(growthRecord.getSize());
            existingGrowthRecord.setWeight(growthRecord.getWeight());
            existingGrowthRecord.setDescription(growthRecord.getDescription());

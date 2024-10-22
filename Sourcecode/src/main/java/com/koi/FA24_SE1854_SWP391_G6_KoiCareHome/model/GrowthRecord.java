@@ -36,7 +36,6 @@ private BigDecimal Size;
 private BigDecimal Weight;
 private String Description;
 
-
 @Column(nullable = false)
 private Boolean isActive;
 
