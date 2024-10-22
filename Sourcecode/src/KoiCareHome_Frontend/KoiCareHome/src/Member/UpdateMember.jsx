@@ -131,7 +131,7 @@ const UpdateMember = () => {
           className="update-member-input"
         />
         
-        {/* Password update are optional */}
+ 
         <input
           type="password"
           name="newPassword"

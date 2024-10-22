@@ -25,7 +25,7 @@ const Login = () => {
     })
       .then((response) => {
         if (response.ok) {
-          return response.json(); // Expecting the user ID in response
+          return response.json(); 
         } else {
           return response.text().then((text) => {
             throw new Error(text);

@@ -5,7 +5,8 @@ import Home from './Home';
 import NotFound from './404';
 import MemberProfile from './Member/MemberProfile';
 import UpdateMember from './Member/UpdateMember';
-
+import ManageFish from './Fish/ManageFish';
+import GrowthRecord from './GrowthRecord/GrowthRecord';
 
 const App = () => {
   return (
@@ -17,6 +18,8 @@ const App = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/profile" element={<MemberProfile />} />
         <Route path='/UpdateMember/:id' element={<UpdateMember />} />
+        <Route path="/manage-fish" element={<ManageFish />} />
+        <Route path="/growthRecord" element={<GrowthRecord/>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
