@@ -1,34 +1,108 @@
-.fish-form-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.fish-component {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  color: #333;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.fish-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.fish-item {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fish-item button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.fish-item button:hover {
+  background-color: #45a049;
+}
+
+.fish-form {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.fish-form input[type="text"],
+.fish-form input[type="number"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.fish-form input[type="radio"] {
+  margin-right: 5px;
+}
+
+.fish-form button {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.fish-form button:hover {
+  background-color: #45a049;
+}
+
+.edit-fish {
+  background-color: #f0f0f0;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 4px;
+}
+
+.back-button {
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.back-button:hover {
+  color: #4CAF50;
+}
+
+@media (max-width: 600px) {
+  .fish-component {
+      padding: 10px;
+      background-color: #ff7b00;
   }
-  
-  .fish-form {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 300px;
+
+  .fish-item {
+      flex-direction: column;
+      align-items: flex-start;
   }
-  
-  .fish-form input {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 5px;
+
+  .fish-item button {
+      margin-top: 10px;
+      margin-left: 0;
+      color: #f0f0f0;
   }
-  
-  .fish-form button {
-    margin-right: 10px;
-  }
-  .add-fish-button{
-    background-color: #11e0e7;
-    color: white;
-    border: none;
-    border-radius: 10px;
-  }
+}

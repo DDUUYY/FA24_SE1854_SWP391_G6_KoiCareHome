@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './ManageFish.css';
+import { FaArrowLeft } from 'react-icons/fa';
 // import { FaPlus } from 'react-icons/fa';
 
 /*
@@ -57,18 +58,18 @@ const ManageFish = () => {
             // Show a user-friendly error to the user, if needed
         }
     };
-    
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         try {
             const response = await fetch(`${API_BASE_URL}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(newFish, memberID ),
+                body: JSON.stringify(newFish, memberID),
             });
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -80,7 +81,7 @@ const ManageFish = () => {
             // Show an error message to the user, if desired
         }
     };
-    
+
 
     const handleDelete = async (id) => {
         const confirmDelete = window.confirm("Are you sure you want to delete this fish?");
@@ -318,8 +319,10 @@ const ManageFish = () => {
                     </form>
                 </div>
             )}
-
-            <button onClick={() => navigate('/home')} className="back-button">Back to Home</button>
+            <div>
+                <button onClick={() => navigate('/home')} className="back-button">Back to Home</button>
+                {/* <FaArrowLeft onClick={() => navigate('/home')} className="back-button"/> */}
+            </div>
         </div>
     );
 }

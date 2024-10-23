@@ -28,28 +28,28 @@ public class Food {
     @Column(name = "Name", nullable = false)
     private String name;
 
-    @Column(name = "Weight", nullable = true)
+    @Column(name = "Weight")
     private BigDecimal Weight;
 
-    @Column(name = "Description", nullable = true)
+    @Column(name = "Description")
     private String description;
 
-    @Column(name = "Vendor", nullable = true)
+    @Column(name = "Vendor")
     private String Vendor;
 
-    @Column(name = "isActive", nullable = true)
+    @Column(name = "isActive")
     private boolean isActive;
 
-    @Column(name = "CreateDate", nullable = true)
+    @Column(name = "CreateDate")
     private LocalDateTime createDate;
 
     @Column(name = "CreateBy", nullable = false)
     private String createBy;
 
-    @Column(name = "UpdateDate", nullable = true)
+    @Column(name = "UpdateDate")
     private LocalDateTime updateDate;
 
-    @Column(name = "UpdateBy", nullable = true)
+    @Column(name = "UpdateBy")
     private String updateBy;
 
     @PrePersist

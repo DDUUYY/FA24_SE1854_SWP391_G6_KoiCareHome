@@ -22,12 +22,14 @@ public class FishService {
 
     private final FishRepository fishRepository;
     private final FishTypeRepository fishTypeRepository;
+    private final FishTypeService fishTypeService;
 
 
     @Autowired
-    public FishService(FishRepository fishRepository, FishTypeRepository fishTypeRepository) {
+    public FishService(FishRepository fishRepository, FishTypeRepository fishTypeRepository, FishTypeService fishTypeService) {
         this.fishRepository = fishRepository;
         this.fishTypeRepository = fishTypeRepository;
+        this.fishTypeService = fishTypeService;
     }
 
     /**
@@ -43,10 +45,14 @@ public class FishService {
             throw new NotFoundException(MEMBER_NOT_FOUND_MESSAGE);
         }
 
-        FishType fishType = fishTypeRepository.findByName("KoiFish")
-                .orElseThrow(() -> new NotFoundException("Fish type not found"));
+        Optional<FishType> fishType = fishTypeRepository.findByName("KoiFish");
+        if (fishType.isEmpty()){
+            fishTypeService.saveFishTypeByName("KoiFish");
+            fishType = fishTypeRepository.findByName("KoiFish");
+        }
 
-        fish.setFishTypeID(fishType.getFishTypeID());
+        FishType newFishType = fishType.get();
+        fish.setFishTypeID(newFishType.getFishTypeID());
         fish.setCreateBy("user");
         fish.setUpdateBy("user");
 
