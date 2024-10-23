@@ -25,7 +25,7 @@ const MemberProfile = () => {
   const loadMember = async () => {
     const id = localStorage.getItem('userID'); // Get the ID from localStorage
     if (!id) {
-      navigate('/login'); // Redirect to login if no ID found
+      navigate('/login'); 
       return;
     }
 

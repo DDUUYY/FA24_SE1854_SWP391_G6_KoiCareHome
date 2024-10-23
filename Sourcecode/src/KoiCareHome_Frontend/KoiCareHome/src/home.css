@@ -1,7 +1,138 @@
+.sticky-navbar {
+    position: sticky;
+    top: 0;
+    background-color: orange;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 3rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.logo-image {
+    max-width: 50px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.logo-text {
+    font-family: 'Poppins', sans-serif; 
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+.nav-links {
+    display: flex;
+    list-style-type: none;
+}
+
+.nav-links li {
+    margin-left: 2rem;
+    cursor: pointer;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.nav-links li:hover {
+    text-decoration: underline;
+}
+
+
+.welcome-home {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 3rem;
+    background-color: #f9f9f9;
+}
+
+.welcome-text {
+    max-width: 50%;
+    margin-left: 5%;
+}
+
+.welcome-text h1 {
+    font-size: 2.5rem;
+    font-family: 'Poppins', sans-serif;
+    color: #ff6b00;
+    margin-bottom: 1rem;
+    
+}
+
+.subheading {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.description {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.highlight {
+    color: #ff6b00; 
+}
+
+.welcome-image {
+    flex: 1; 
+    display: flex;
+    justify-content: flex-start; 
+}
+
+.welcome-image img {
+    max-width: 400px;
+    height: auto;
+    margin-left: 28%; 
+}
+
+
 .home-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
+}
+
+.user-icon {
+    font-size: 1.5rem;
+    color: white;
+    cursor: pointer;
+}
+
+.user-icon:hover {
+    color: white; 
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 60px; 
+    right: 20px; 
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+    color: black;
+    text-align: left;
+    font-size: medium;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
 }
 
 .navbar {
@@ -9,11 +140,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 1rem 3rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
-    font-size: 2rem;
+    font-family: 'Poppins', sans-serif; 
+    font-size: 2.5rem;
     font-weight: bold;
     color: white;
 }
@@ -29,6 +162,15 @@
     color: white;         
 }
 
-.user-icon {
-    font-size: 1.5rem;
+.Feature-container{
+    background-color: #f9f9f9;
+}
+
+.Feature-container h1 {
+        display: flex;
+        margin-left: 45%;
+        font-size: 2.5rem;
+        font-family: 'Poppins', sans-serif;
+        color: #ff6b00;
+        margin-bottom: 1rem;
 }

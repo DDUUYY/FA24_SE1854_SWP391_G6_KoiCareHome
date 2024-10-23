@@ -88,7 +88,7 @@ const AddRecord = () => {
 				<input
 					type="number"
 					name="weight"  
-					placeholder="Weight (in grams)"
+					placeholder="Weight (in kilograms)"
 					value={formData.weight}
 					onChange={handleInputChange}
 					className="add-record-input"

@@ -66,6 +66,7 @@ const GrowthRecord = () => {
 						<th>Description</th>
 						<th colSpan="3">Actions</th>
 					</tr>
+					
 				</thead>
 				<tbody>
 					{growthRecords.map((record, index) => {
@@ -98,10 +99,19 @@ const GrowthRecord = () => {
 										<FaTrashAlt />
 									</button>
 								</td>
+								
 							</tr>
+							
 						);
 					})}
 				</tbody>
+				<button
+              type="button"
+              className="profile-button back-button"
+              onClick={() => navigate(`/home`)}
+            >
+              Back
+            </button>
 			</table>
 		</section>
 	);

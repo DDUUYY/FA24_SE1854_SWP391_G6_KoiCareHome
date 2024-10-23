@@ -33,9 +33,8 @@ const Login = () => {
         }
       })
       .then((data) => {
-        // Save the user ID to localStorage or state if needed
+        // Save the user ID to localStorage 
         localStorage.setItem('userID', data);
-        // Redirect to home after login
         navigate('/home');
       })
       .catch((error) => {
