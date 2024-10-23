@@ -31,4 +31,13 @@ public class CalculateFoodService {
         }
         return baseOnWeights.multiply(percentage);
     }
+
+    public BigDecimal getTotalPondWeight(int pondId) {
+        List<Fish> fishes = fishrepository.findAllFishWithPondId(pondId);
+        BigDecimal baseOnWeights = BigDecimal.valueOf(0.00);
+        for (Fish fish : fishes) {
+            baseOnWeights = baseOnWeights.add(fish.getWeight());
+        }
+        return baseOnWeights;
+    }
 }

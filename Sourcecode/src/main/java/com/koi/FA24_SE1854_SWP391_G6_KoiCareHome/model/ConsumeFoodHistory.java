@@ -27,7 +27,7 @@ public class ConsumeFoodHistory {
     private int foodID;
 
     @Column(name = "Quantity", nullable = false)
-    private int quantity;
+    private float quantity;
 
     @Column(name = "Description", nullable = true)
     private String description;

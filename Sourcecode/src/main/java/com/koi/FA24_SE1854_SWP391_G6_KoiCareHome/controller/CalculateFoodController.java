@@ -21,4 +21,9 @@ public class CalculateFoodController {
     public BigDecimal calculateFoodBaseOnWeights(@PathVariable int pondId) {
         return calculateFoodService.calculateFoodBaseOnWeights(pondId);
     }
+
+    @GetMapping("/weight/{pondId}")
+    public BigDecimal getTotalPondWeight(@PathVariable int pondId) {
+        return calculateFoodService.getTotalPondWeight(pondId);
+    }
 }

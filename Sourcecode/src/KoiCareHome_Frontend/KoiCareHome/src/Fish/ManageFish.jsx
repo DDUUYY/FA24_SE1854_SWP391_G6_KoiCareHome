@@ -10,7 +10,6 @@ import './ManageFish.css';
  */
 const API_BASE_URL = 'http://localhost:8080/api/fish';
 
-
 const ManageFish = () => {
     const [fishes, setFishes] = useState([]);
     const [memberID, setMemberID] = useState();
