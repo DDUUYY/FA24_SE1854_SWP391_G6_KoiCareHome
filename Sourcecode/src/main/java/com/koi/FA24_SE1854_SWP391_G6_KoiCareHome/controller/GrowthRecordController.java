@@ -21,7 +21,10 @@ public class GrowthRecordController {
     private final GrowthRecordService growthRecordService;
 
     @PostMapping("/GrowthRecord")
-public GrowthRecord postGrowRecord(@RequestBody GrowthRecord growthRecord) {
+    public GrowthRecord postGrowRecord(@RequestBody GrowthRecord growthRecord) {
+        if (growthRecord.getFishID() == null) {
+            throw new IllegalArgumentException("Fish ID cannot be null");
+        }
         return growthRecordService.PostGrowthRecord(growthRecord);
     }
 

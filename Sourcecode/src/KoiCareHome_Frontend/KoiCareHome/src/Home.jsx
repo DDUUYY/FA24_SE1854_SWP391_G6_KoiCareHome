@@ -1,13 +1,15 @@
 
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { FaRegUserCircle } from "react-icons/fa";
 import './home.css';
 import GrCard from '../src/Card/GrCard'; 
-import Koi_Img from './assets/Koi_Img.jpg';
 import KoiGraphic from './assets/Welcome.jpg'; 
 import LogoKoiFish from './assets/logokoifish.png';
+import ManageFishCard from './Card/ManageFishCard';
+import FeedingHistoryCard from './Card/FeedingHistoryCard';
+import FoodCalculatorCard from './Card/FoodCalculatorCard';
 
 const Home = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -25,7 +27,6 @@ const Home = () => {
         navigate('/profile');
     };
 
-    // Refs for smooth scrolling
     const homeRef = useRef(null);
     const featureRef = useRef(null);
 
@@ -65,10 +66,10 @@ const Home = () => {
                 <div className="welcome-text">
                     <h1>KoiCareHome - <br></br>Your Go-To Koi Pond Buddy</h1>
                     <p className="subheading">
-                        Effortlessly manage your water parameters, koi, and ponds with our app!
+                        Effortlessly manage your water parameters, koi <br></br> and ponds with our app!
                     </p>
                     <p className="description">
-                        Say goodbye to the hassle of recording water values and koi information on paper - 
+                        Say goodbye to the hassle of recording water values <br></br> and koi information on paper - 
                         <span className="highlight"> KoiCareHome</span> streamlines it all for you.
                     </p>
                 </div>
@@ -79,15 +80,11 @@ const Home = () => {
 
             <div ref={featureRef} className="card-container">
                 <div className='Feature-container'>
-            <h1>Our Feature</h1>
+            <h1>Our Feature</h1>       
+            <ManageFishCard />
+                <FeedingHistoryCard />
+                <FoodCalculatorCard />
                 <GrCard /> 
-                <Link to="/manage-fish">
-                    <div className="card">
-                        <img className="card-image" src={Koi_Img} alt="Koi" />
-                        <h2 className="card-title">ManageKoi</h2>
-                        <p className="card-description">Users manage their own Kois</p>
-                    </div>
-                </Link>
             </div>
             </div>
         </div>

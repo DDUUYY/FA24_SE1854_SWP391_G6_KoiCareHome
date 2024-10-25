@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './style.css';
-
 /*
  * Author: Ha Huy Nghia Hiep
  * Date: October 19, 2024
@@ -52,16 +51,14 @@ const Login = () => {
             <label className="text-center redText">{errorMessage}</label>
           </div>
         )}
-        <div className="inputbox">
-          <ion-icon name="email-outline"></ion-icon>
-          <input name="email" id="email" type="email" required />
-          <label htmlFor="email">Email</label>
-        </div>
-        <div className="inputbox">
-          <ion-icon name="lock-closed-outline"></ion-icon>
-          <input name="password" type="password" id="password" required />
-          <label htmlFor="password">Password</label>
-        </div>
+       <div className="inputbox">
+            <input name="email" id="email" type="email" required />
+            <label htmlFor="email">Email</label>
+          </div>
+          <div className="inputbox">
+            <input name="password" type="password" id="password" required />
+            <label htmlFor="password">Password</label>
+          </div>
         <button type="submit">Log in</button>
         <div className="register">
           <p>

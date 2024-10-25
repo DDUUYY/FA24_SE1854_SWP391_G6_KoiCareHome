@@ -41,6 +41,24 @@ public class FishTypeService {
     }
 
     /**
+     * Save a FishType by name.
+     *
+     * @param name the name of the entity to save
+     * @return the persisted entity
+     */
+    public FishType saveFishTypeByName(String name) {
+        if(fishTypeRepository.existsByName(name))
+        {
+            throw new AlreadyExistedException(FISH_TYPE_ALREADY_EXISTED_MESSAGE);
+        }
+        FishType fishType = new FishType();
+        fishType.setName(name);
+        fishType.setCreateBy("user");
+        fishType.setUpdateBy("user");
+        return fishTypeRepository.save(fishType);
+    }
+
+    /**
      * Get all the FishTypes.
      *
      * @return the list of entities
