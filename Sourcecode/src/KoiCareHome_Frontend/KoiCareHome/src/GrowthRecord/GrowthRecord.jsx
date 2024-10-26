@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
-import { FaEye, FaTrashAlt, FaPlusCircle } from "react-icons/fa";
+import { FaEye, FaTrashAlt, FaPlusCircle ,FaChartBar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "./GrowthRecord.css";
 import ViewRecord from './ViewRecord';
@@ -14,13 +14,15 @@ const GrowthRecord = () => {
     const [growthRecords, setGrowthRecords] = useState([]);
     const [fishes, setFishes] = useState([]);
     const [selectedFish, setSelectedFish] = useState(null);
-    const [ViewOpen, setViewOpen] = useState(false); // visibility state
+    const [ViewOpen, setViewOpen] = useState(false); 
     const [selectedRecord, setSelectedRecord] = useState(null); 
     const navigate = useNavigate();
 
     useEffect(() => {
         if (selectedFish) {
             loadGrowthRecords(selectedFish);
+        } else {
+            setGrowthRecords([]); // Clear records if no fish is selected
         }
     }, [selectedFish]);
 
@@ -31,7 +33,7 @@ const GrowthRecord = () => {
 
     const loadGrowthRecords = async (fishID) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/GrowthRecord?fishId=${fishID}`);
+            const response = await fetch(`http://localhost:8080/api/GrowthRecord?fishID=${fishID}`);
             if (response.ok) {
                 const data = await response.json();
                 setGrowthRecords(data);
@@ -82,7 +84,7 @@ const GrowthRecord = () => {
 
     const handleFishSelect = (e) => {
         const fishID = e.target.value;
-        setSelectedFish(fishID);
+        setSelectedFish(fishID || null);
     };
 
     const openView = (record) => {
@@ -174,6 +176,14 @@ const GrowthRecord = () => {
                             );
                         })}
                 </tbody>
+                <button
+                type="button"
+                className="profile-button statistics-button"
+                onClick={() => navigate(`/chart?fishID=${selectedFish}`)}
+                disabled={!selectedFish}
+            >
+                <FaChartBar /> 
+            </button>
                 <button
                     type="button"
                     className="profile-button back-button"

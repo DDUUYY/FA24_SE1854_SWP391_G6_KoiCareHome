@@ -6,7 +6,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -52,5 +52,9 @@ throw new EntityNotFoundException("Record with the ID: " + RecordID + " not foun
        }
      return null;
    }
+
+    public List<GrowthRecord> getGrowthRecordsByFishId(Integer fishID) {
+        return growthRecordRepository.findByFishIDAndIsActiveTrue(fishID);
+    }
 }
 

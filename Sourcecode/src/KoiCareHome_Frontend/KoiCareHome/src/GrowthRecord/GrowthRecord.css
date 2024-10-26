@@ -122,3 +122,18 @@
 	border-color: #1e9d44;
 	box-shadow: 0 0 8px rgba(46, 199, 80, 0.3);
   }
+
+  .profile-button.statistics-button {
+    padding: 12px 24px;
+    font-size: 1.1rem; 
+    background-color: #2cc650;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.profile-button.statistics-button:hover {
+    background-color: #218838;
+}
