@@ -1,5 +1,6 @@
 package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "OrderID")
+    @JsonBackReference
     private OrderHistory orderHistory;
 
 
@@ -38,7 +40,7 @@ public class OrderItem {
 
 
     @Column(name = "isActive")
-    private Boolean isActive;
+    public Boolean isActive;
 
     @Column(name = "CreateDate")
     private OffsetDateTime createDate;

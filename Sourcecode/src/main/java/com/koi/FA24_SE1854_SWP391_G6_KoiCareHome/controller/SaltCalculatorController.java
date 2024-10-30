@@ -8,9 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-//CrossOrigin(origins = ""http:/localhost...)
-@CrossOrigin(origins = "http://localhost:3000")
-//Folder Facades để gộp service từ đó gọi facades không cần gọi service
+
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api")
 public class SaltCalculatorController {
@@ -20,6 +19,7 @@ public class SaltCalculatorController {
 
     @PostMapping("/calculate-salt")
     public ResponseEntity<SaltCalculationResponse> calculateSalt(@RequestBody SaltCalculationRequest request) {
+
         SaltCalculationResponse response = saltCalculatorService.calculateSalt(request);
         return ResponseEntity.ok(response);
     }

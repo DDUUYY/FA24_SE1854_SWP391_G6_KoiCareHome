@@ -1,5 +1,7 @@
 package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +11,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -26,16 +29,17 @@ public class OrderHistory {
     private Member member;
 
     @OneToMany(mappedBy = "orderHistory", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @Column(name = "OrderDate", nullable = false)
-    private Instant orderDate;
+    private Date orderDate;
 
     @Column(name = "SubAmount", precision = 18, scale = 2)
     private BigDecimal subAmount;
 
-    @Column(name = "VAT")
-    private Double vat;
+    @Column(name = "VAT", nullable = false, precision = 5, scale = 2)
+    private BigDecimal vat;
 
     @Column(name = "VATAmount", precision = 18, scale = 2)
     private BigDecimal vatAmount;

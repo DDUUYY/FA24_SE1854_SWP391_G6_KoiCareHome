@@ -1,52 +1,121 @@
+//package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model;
+//
+//
+//import jakarta.persistence.*;
+//import lombok.*;
+//
+//import java.time.LocalDateTime;
+//
+///**
+// * @author Ha Huy Nghia Hiep
+// */
+//
+//@Entity
+//@Data
+//@Getter
+//@Setter
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Table(name = "Member")
+//public class Member {
+//
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Integer MemberID;
+//
+//    private String Password;
+//
+//    private Integer RoleID;
+//    @Column(length = 10)
+//    private String FirstName;
+//    @Column(length = 10)
+//    private String LastName;
+//
+//
+//    private String email;
+//
+//    private String PhoneNumber;
+//
+//    private Boolean isActive;
+//
+//    private LocalDateTime CreateDate;
+//
+//    private String CreateBy;
+//
+//    private LocalDateTime UpdateDate;
+//
+//    private String UpdateBy;
+//
+//    @PrePersist
+//    public void onPrePersist() {
+//        this.CreateDate = LocalDateTime.now();
+//        this.UpdateDate = LocalDateTime.now();
+//    }
+//
+//    @PreUpdate
+//    public void onPreUpdate() {
+//        this.UpdateDate = LocalDateTime.now();
+//    }
+//}
+
+
+
 package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model;
 
+
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
+
+
+@Entity
+@Data
 @Getter
 @Setter
-@Entity
-@Table(name = "Member", schema = "dbo")
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "Member")
 public class Member {
+
     @Id
-    @Column(name = "MemberID", nullable = false)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer memberID;
 
-    @Column(name = "Password", nullable = false)
-    private String password;
+    private String Password;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "RoleID", nullable = false)
-    private com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model.Role roleID;
+    private Integer RoleID;
+    @Column(length = 10)
+    private String FirstName;
+    @Column(length = 10)
+    private String LastName;
 
-    @Column(name = "FirstName", nullable = false, length = 10)
-    private String firstName;
 
-    @Column(name = "LastName", nullable = false, length = 10)
-    private String lastName;
-
-    @Column(name = "Email", nullable = false)
     private String email;
 
-    @Column(name = "PhoneNumber", nullable = false)
-    private String phoneNumber;
+    private String PhoneNumber;
 
-    @Column(name = "isActive", nullable = false)
-    private Boolean isActive = false;
+    private Boolean isActive;
 
-    @Column(name = "CreateDate")
-    private OffsetDateTime createDate;
+    private LocalDateTime CreateDate;
 
-    @Column(name = "CreateBy", nullable = false)
-    private String createBy;
+    private String CreateBy;
 
-    @Column(name = "UpdateDate")
-    private OffsetDateTime updateDate;
+    private LocalDateTime UpdateDate;
 
-    @Column(name = "UpdateBy", nullable = false)
-    private String updateBy;
+    private String UpdateBy;
 
+    @PrePersist
+    public void onPrePersist() {
+        this.CreateDate = LocalDateTime.now();
+        this.UpdateDate = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        this.UpdateDate = LocalDateTime.now();
+    }
 }
+
+

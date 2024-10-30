@@ -1,44 +1,42 @@
 package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.Nationalized;
+import jakarta.persistence.*;
+import lombok.*;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
+
+@Entity
+@Data
 @Getter
 @Setter
-@Entity
-@Table(name = "Role", schema = "dbo")
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "Role")
 public class Role {
     @Id
-    @Column(name = "RoleID", nullable = false)
-    private Integer id;
+    private Integer RoleID;
 
-    @Column(name = "RoleName", nullable = false)
-    private String roleName;
 
-    @Nationalized
-    @Column(name = "Description", nullable = false)
-    private String description;
+    private String RoleName;
 
-    @Column(name = "isActive", nullable = false)
-    private Boolean isActive = false;
 
-    @Column(name = "CreateDate")
-    private OffsetDateTime createDate;
+    private String Description;
 
-    @Column(name = "CreateBy", nullable = false)
-    private String createBy;
 
-    @Column(name = "UpdateDate")
-    private OffsetDateTime updateDate;
+    private Boolean isActive;
 
-    @Column(name = "UpdateBy", nullable = false)
-    private String updateBy;
 
+    private LocalDateTime CreateDate;
+
+
+    private String CreateBy;
+
+
+    private LocalDateTime UpdateDate;
+
+
+    private String UpdateBy;
 }
+
+

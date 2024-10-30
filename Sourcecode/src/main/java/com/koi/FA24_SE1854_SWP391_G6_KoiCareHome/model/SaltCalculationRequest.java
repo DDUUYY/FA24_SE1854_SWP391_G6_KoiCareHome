@@ -7,10 +7,8 @@ import lombok.*;
 @Getter
 @Setter
 public class SaltCalculationRequest {
-    private double pondVolume; // Thể tích hồ (lít)
-    private double currentConcentration; // Nồng độ muối hiện tại (%)
-    private double desiredConcentration; // Nồng độ muối mong muốn (%)
-    private double waterChange; // Lượng nước thay đổi (lít)
-
-
+    private double pondVolume;            // Thể tích hồ (lít)
+    private double currentConcentration;  // Nồng độ muối hiện tại (%)
+    private double desiredConcentration;  // Nồng độ muối mong muốn (%)
+    private double waterChange;           // Lượng nước thay đổi (lít)
 }
