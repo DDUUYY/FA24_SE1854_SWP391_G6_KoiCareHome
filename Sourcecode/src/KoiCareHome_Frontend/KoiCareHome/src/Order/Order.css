@@ -1,0 +1,78 @@
+.order-item-card {
+    padding: 10px;
+    border: 1px solid #f5a623;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #fff7e6;
+}
+
+.order-item-card input {
+    width: 100%;
+    margin-top: 5px;
+}
+
+.order-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.search-bar {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 500px;
+}
+
+.search-bar input {
+    flex-grow: 1;
+    padding: 5px;
+    border-radius: 10px;
+    border: 1px solid #d6d6d6;
+}
+
+.order-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.order-card {
+    padding: 20px;
+    border: 1px solid #f1c4a3;
+    border-radius: 10px;
+    background-color: #fff4ed;
+    width: 300px;
+}
+
+.order-card h3 {
+    color: #f08a5d;
+}
+
+.order-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px;
+}
+
+.order-buttons button {
+    margin: 10px;
+    padding: 5px 10px;
+    background-color: #f08a5d;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.add-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #f08a5d;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
