@@ -174,5 +174,19 @@ public class OrderService {
                 }).collect(Collectors.toList());
     }
 
+    public OrderHistory calculateOrder(OrderHistory order) {
+        if (order.getVat() != null && order.getSubAmount() != null) {
+            BigDecimal subAmount = order.getSubAmount();
+            BigDecimal vatPercentage = order.getVatAmount();
+
+            BigDecimal vatAmount = subAmount.multiply(vatPercentage.divide(BigDecimal.valueOf(100)));
+            BigDecimal totalAmount = subAmount.add(vatAmount);
+
+            order.setTotalAmount(totalAmount);
+            order.setTotalAmount(totalAmount);
+        }
+        return order;
+    }
+
 }
 

@@ -75,4 +75,11 @@ public class OrderController {
             return ResponseEntity.status(400).body(null);
         }
     }
+
+    @PostMapping("/calculate")
+    public ResponseEntity<OrderHistory> calculateAmounts(@RequestBody OrderHistory order) {
+        OrderHistory calculatedOrder = orderService.calculateOrder(order);
+        return ResponseEntity.ok(calculatedOrder);
+    }
+
 }

@@ -28,36 +28,24 @@ function Order() {
     };
 
     const handleInputChange = (orderId, field, value) => {
-        setOrders(
-            orders.map((order) => {
-                if (order.id === orderId) {
-                    const updatedOrder = { ...order, [field]: value };
+        const updatedOrders = orders.map((order) => {
+            if (order.id === orderId) {
+                const updatedOrder = { ...order, [field]: value };
 
-                    // If the updated field is SubAmount or VAT, calculate VATAmount and TotalAmount
-                    if (field === 'subAmount' || field === 'vat') {
-                        const subAmount = parseFloat(updatedOrder.subAmount) || 0;
-                        const vatPercentage = parseFloat(updatedOrder.vat) || 0;
+                // Tính toán VATAmount và TotalAmount
+                const subAmount = parseFloat(updatedOrder.subAmount) || 0;
+                const vatPercentage = parseFloat(updatedOrder.vat) || 0;
 
-                        const vatAmount = (subAmount * (vatPercentage / 100));
-                        const totalAmount = subAmount + vatAmount;
+                updatedOrder.vatAmount = subAmount * (vatPercentage / 100);
+                updatedOrder.totalAmount = subAmount + updatedOrder.vatAmount;
 
-                        updatedOrder.vatAmount = vatAmount;
-                        updatedOrder.totalAmount = totalAmount;
-                    }
-                    return updatedOrder;
-                }
-                return order;
-            })
-        );
+                return updatedOrder;
+            }
+            return order;
+        });
+
+        setOrders(updatedOrders);
     };
-
-    // const handleInputChange = (orderId, field, value) => {
-    //     setOrders(
-    //         orders.map((order) =>
-    //             order.id === orderId ? { ...order, [field]: value } : order
-    //         )
-    //     );
-    // };
 
     const handleItemInputChange = (orderId, itemId, field, value) => {
         setOrders(
@@ -114,7 +102,6 @@ function Order() {
         }
     };
 
-    // Chuyển đổi DateTime thành yyyy-MM-dd
     const formatDate = (dateTimeString) => {
         if (!dateTimeString) return '';
         const date = new Date(dateTimeString);
@@ -124,17 +111,6 @@ function Order() {
     return (
         <div className="order-container">
             <h1>Order</h1>
-            {/* <div className="search-bar">
-                <label htmlFor="search">Search</label>
-                <input
-                    type="text"
-                    id="search"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search orders"
-                />
-            </div> */}
-
             <div className="order-list">
                 {orders.length > 0 ? (
                     orders.map((order) => (
@@ -177,7 +153,7 @@ function Order() {
                                 <input
                                     type="number"
                                     value={order.vatAmount}
-                                    readOnly // make it read-only since it's calculated
+                                    readOnly
                                 />
                             </div>
                             <div>
@@ -185,53 +161,10 @@ function Order() {
                                 <input
                                     type="number"
                                     value={order.totalAmount}
-                                    readOnly // make it read-only since it's calculated
-                                />
-                            </div>
-                            {/* <div>
-                                <label>Sub Amount:</label>
-                                <input
-                                    type="number"
-                                    value={order.subAmount}
-                                    onChange={(e) =>
-                                        handleInputChange(order.id, 'subAmount', e.target.value)
-                                    }
+                                    readOnly
                                 />
                             </div>
 
-                            <div>
-                                <label>VAT:</label>
-                                <input
-                                    type="number"
-                                    value={order.vat}
-                                    onChange={(e) =>
-                                        handleInputChange(order.id, 'vat', e.target.value)
-                                    }
-                                />
-                            </div>
-
-                            <div>
-                                <label>VAT Amount:</label>
-                                <input
-                                    type="number"
-                                    value={order.vatAmount}
-                                    onChange={(e) =>
-                                        handleInputChange(order.id, 'vatAmount', e.target.value)
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <label>Total Amount:</label>
-                                <input
-                                    type="number"
-                                    value={order.totalAmount}
-                                    onChange={(e) =>
-                                        handleInputChange(order.id, 'totalAmount', e.target.value)
-                                    }
-                                />
-                            </div> */}
-
-                            {/* Display OrderItems */}
                             <h4>ORDER ITEMS</h4>
                             {order.orderItems.length > 0 ? (
                                 order.orderItems.map((item) => (
