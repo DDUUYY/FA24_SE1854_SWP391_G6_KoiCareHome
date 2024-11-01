@@ -11,6 +11,8 @@ import AddRecord from './GrowthRecord/AddRecord';
 import FoodCalculator from './Calculator/FoodCalculator';
 import FoodHistory from './Fish/ConsumeFoodHistory';
 import Chart from './GrowthRecord/Chart';
+import Reminder from './Reminder/Reminder';
+
 const App = () => {
   return (
     <Router>
@@ -28,6 +30,7 @@ const App = () => {
         <Route path="/calulator/food" element={<FoodCalculator />} />
         <Route path="/consume-food-history" element={<FoodHistory />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/reminder" element={<Reminder />} />
       </Routes>
     </Router>
   );

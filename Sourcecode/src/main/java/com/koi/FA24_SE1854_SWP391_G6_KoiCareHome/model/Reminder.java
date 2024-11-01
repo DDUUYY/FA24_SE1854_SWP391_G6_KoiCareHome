@@ -2,7 +2,7 @@ package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model;
 
 import lombok.Data;
 import jakarta.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Reminder")
@@ -17,8 +17,8 @@ public class Reminder {
     @Column(name = "Title", nullable = false)
     private String title;
 
-    @Column(name = "DateTime")
-    private Date dateTime;
+    @Column(name = "DateTime", nullable = false)
+    private LocalDateTime dateTime;
 
     @Column(name = "frequency")
     private String frequency;
@@ -27,10 +27,10 @@ public class Reminder {
     private Boolean isActive;
 
     @Column(name = "CreateDate")
-    private Date createDate;
+    private LocalDateTime createDate;
 
     @Column(name = "UpdateDate")
-    private Date updateDate;
+    private LocalDateTime updateDate;
 
     @JoinColumn(name = "PondID")
     private Integer pondId;

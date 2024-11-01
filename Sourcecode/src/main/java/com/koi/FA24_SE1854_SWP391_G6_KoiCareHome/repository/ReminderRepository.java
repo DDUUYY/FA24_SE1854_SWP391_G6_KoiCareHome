@@ -11,5 +11,7 @@ import java.util.List;
 public interface ReminderRepository extends JpaRepository<Reminder, Long> {
 
     // Tìm tất cả các reminder của một thành viên (Member) và còn active
-    List<Reminder> findByMemberAndIsActive(Member member, Boolean isActive);
+    List<Reminder> findByMember(Member member);
+
+    List<Reminder> findByIsActive(boolean isActive);
 }

@@ -1,4 +1,3 @@
-
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useRef } from 'react';
 import {  useNavigate } from 'react-router-dom';
@@ -10,6 +9,7 @@ import LogoKoiFish from './assets/logokoifish.png';
 import ManageFishCard from './Card/ManageFishCard';
 import FeedingHistoryCard from './Card/FeedingHistoryCard';
 import FoodCalculatorCard from './Card/FoodCalculatorCard';
+import ReminderCard from './Card/ReminderCard';
 
 const Home = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -85,6 +85,7 @@ const Home = () => {
                 <FeedingHistoryCard />
                 <FoodCalculatorCard />
                 <GrCard /> 
+                <ReminderCard />
             </div>
             </div>
         </div>

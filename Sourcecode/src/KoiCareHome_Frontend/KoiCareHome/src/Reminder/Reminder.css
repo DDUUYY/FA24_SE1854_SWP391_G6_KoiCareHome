@@ -1,0 +1,137 @@
+/* Reminder.css */
+
+/* Tổng thể container */
+.reminder-container {
+    padding: 20px;
+    max-width: 95%;
+    margin: auto;
+    background-color: rgba(255, 165, 0, 0.1); /* Màu nền cam nhạt */
+    color: #333; /* Màu chữ */
+    position: relative; /* Để nội dung chồng lên hình nền */
+    z-index: 1; /* Đảm bảo nội dung nằm trên hình nền */
+}
+
+/* Hình nền mờ */
+body {
+    background-image: url('../assets/LogoReminder03.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    backdrop-filter: blur(8px);
+    z-index: -1;
+}
+
+.reminder-container h2 {
+    text-align: center;
+    color: #FF6600; 
+    margin-bottom: 20px;
+}
+
+/* Bố cục ba cột */
+.three-column-layout {
+    display: flex;
+    gap: 20px;
+}
+
+.column {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #FF6600;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.middle-column {
+    flex: 2;
+}
+
+.column h3 {
+    text-align: center;
+    color: #FF6600; /* Tiêu đề cột màu cam */
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+/* Form thêm reminder */
+.reminder-form {
+    margin-bottom: 20px;
+}
+
+.reminder-form .form-group {
+    margin-bottom: 15px;
+}
+
+.reminder-form input,
+.reminder-form button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #FF6600; /* Viền input cam */
+    border-radius: 5px;
+}
+
+.reminder-form button {
+    background-color: #FF6600; /* Nút màu cam */
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+
+.reminder-form button:hover {
+    background-color: #e07b00; /* Màu cam đậm khi hover */
+}
+
+/* Bảng thông tin */
+.reminder-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.reminder-table th,
+.reminder-table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.reminder-table th {
+    background-color: #FF6600; /* Header bảng màu cam */
+    color: white;
+    font-weight: bold;
+}
+
+.reminder-table td {
+    background-color: #fff;
+}
+
+/* Bảng lịch sử thông báo */
+.notification-history-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.notification-history-table th,
+.notification-history-table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.notification-history-table th {
+    background-color: #FF6600; /* Header bảng thông báo màu cam */
+    color: white;
+    font-weight: bold;
+}
+
+.notification-history-table td {
+    background-color: #fff;
+}
+
+/* Responsive cho màn hình nhỏ hơn */
+@media (max-width: 768px) {
+    .three-column-layout {
+        flex-direction: column;
+    }
+}
