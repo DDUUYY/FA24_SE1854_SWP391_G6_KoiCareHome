@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './ManageFish.css';
-
-const API_BASE_URL = 'http://localhost:8080/api/fish';
+import { FaCirclePlus } from "react-icons/fa6";
+import createFish from './AddFish';
+import readFishes from './ViewAllFishes';
+import updateFish from './UpdateFish';
+import deleteFish from './DeleteFish';
 
 const FishForm = ({ fish, onSubmit, onCancel, title }) => {
     const [formData, setFormData] = useState(fish);
@@ -193,53 +196,17 @@ const ManageFish = () => {
 
     const loadFishes = async (id) => {
         try {
-            const response = await fetch(`${API_BASE_URL}/member?memberId=${id}`);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            const data = await response.json();
-
-            const parsedFishes = Array.isArray(data) ? data.map(fish => ({
-                ...fish,
-                fishID: parseInt(fish.fishID, 10),
-                pondID: parseInt(fish.pondID, 10),
-                size: fish.size ? parseInt(fish.size, 10) : null,
-                weight: fish.weight ? parseInt(fish.weight, 10) : null,
-                age: fish.age ? parseInt(fish.age, 10) : null,
-                price: parseInt(fish.price, 10)
-            })) : [];
-
-            setFishes(parsedFishes);
-            console.log('Loaded fishes:', parsedFishes); // Thêm dòng này
+            const data = await readFishes(id);
+            setFishes(data);
         } catch (error) {
             showNotification('Error loading fishes', 'error');
         }
     };
 
     const handleCreate = async (fishData) => {
-        const fishToAdd = {
-            ...fishData,
-            memberID,
-            pondID: parseInt(fishData.pondID, 10),
-            size: fishData.size ? parseInt(fishData.size, 10) : null,
-            weight: fishData.weight ? parseInt(fishData.weight, 10) : null,
-            age: fishData.age ? parseInt(fishData.age, 10) : null,
-            price: parseInt(fishData.price, 10)
-        };
-
         try {
-            const response = await fetch(API_BASE_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(fishToAdd),
-            });
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-            const createdFish = await response.json();
-            console.log('Created fish:', createdFish); // Thêm dòng này
-            setFishes(prev => [...prev, {
-                ...createdFish,
-                fishID: parseInt(createdFish.fishID, 10),
-                pondID: parseInt(createdFish.pondID, 10)
-            }]);
+            const createdFish = await createFish(fishData, memberID);
+            setFishes(prev => [...prev, createdFish]);
             setShowAddForm(false);
             showNotification('Fish added successfully!');
         } catch (error) {
@@ -248,33 +215,9 @@ const ManageFish = () => {
     };
 
     const handleUpdate = async (fishData) => {
-        const fishID = parseInt(fishData.fishID, 10);
-        if (isNaN(fishID)) {
-            showNotification('Invalid fish ID', 'error');
-            return;
-        }
-
-        const updatedFish = {
-            ...fishData,
-            fishID: fishID,
-            pondID: parseInt(fishData.pondID, 10),
-            size: fishData.size ? parseInt(fishData.size, 10) : null,
-            weight: fishData.weight ? parseInt(fishData.weight, 10) : null,
-            age: fishData.age ? parseInt(fishData.age, 10) : null,
-            price: parseInt(fishData.price, 10)
-        };
-
         try {
-            const response = await fetch(`${API_BASE_URL}?fishId=${fishID}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updatedFish),
-            });
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-            setFishes(prev => prev.map(fish =>
-                fish.fishID === fishID ? updatedFish : fish
-            ));
+            const updatedFish = await updateFish(fishData);
+            setFishes(prev => prev.map(fish => fish.fishID === updatedFish.fishID ? updatedFish : fish));
             setSelectedFish(null);
             showNotification('Fish updated successfully!');
         } catch (error) {
@@ -283,19 +226,9 @@ const ManageFish = () => {
     };
 
     const handleDelete = async (id) => {
-        const fishID = parseInt(id, 10);
-        if (isNaN(fishID)) {
-            showNotification('Invalid fish ID', 'error');
-            return;
-        }
-
         try {
-            const response = await fetch(`${API_BASE_URL}?fishId=${fishID}`, {
-                method: 'DELETE',
-            });
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-            setFishes(prev => prev.filter(fish => fish.fishID !== fishID));
+            await deleteFish(id);
+            setFishes(prev => prev.filter(fish => fish.fishID !== id));
             showNotification('Fish deleted successfully!');
         } catch (error) {
             showNotification('Error deleting fish', 'error');
@@ -314,14 +247,12 @@ const ManageFish = () => {
                     {notification.message}
                 </div>
             )}
-
             <div className="header">
                 <h1>Fish Management</h1>
                 <button onClick={() => setShowAddForm(true)} className="add-btn">
                     Add New Fish
                 </button>
             </div>
-
             <div className="fish-grid">
                 {fishes.map(fish => (
                     <FishCard
@@ -332,7 +263,6 @@ const ManageFish = () => {
                     />
                 ))}
             </div>
-
             {showAddForm && (
                 <FishForm
                     fish={emptyFish}
@@ -341,8 +271,7 @@ const ManageFish = () => {
                     title="Add New Fish"
                 />
             )}
-
-            {selectedFish && selectedFish.fishID && (
+            {selectedFish && (
                 <FishForm
                     fish={selectedFish}
                     onSubmit={handleUpdate}
@@ -350,7 +279,6 @@ const ManageFish = () => {
                     title="Edit Fish"
                 />
             )}
-
             <button onClick={() => navigate('/home')} className="back-button">
                 Back to Home
             </button>

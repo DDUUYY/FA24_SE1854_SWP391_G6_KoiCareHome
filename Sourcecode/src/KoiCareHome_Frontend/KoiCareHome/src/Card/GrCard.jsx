@@ -6,7 +6,7 @@ import './GrCard.css';
 
 /*
  * Author: Ha Huy Nghia Hiep
- * Date: October 19, 2024
+ * Date: October 22, 2024
  */
 const GrCard = () => {
     return (
@@ -17,7 +17,6 @@ const GrCard = () => {
                 <p className="card-description">Users monitor the growth of fish</p>
             </div>
         </Link>
-        
     );
 }
 

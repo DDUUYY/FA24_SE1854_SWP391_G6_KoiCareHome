@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import './ConsumeFoodHistory.css';
 import { FaFish as Fish, FaSwimmer as Pool, FaBox as Package } from 'react-icons/fa'; 
-
+import { FaClock as Clock } from 'react-icons/fa';
 // import { FaPlus } from 'react-icons/fa';
 
 /*
@@ -39,7 +39,9 @@ const ConsumeFoodHistory = () => {
         if (!response.ok) throw new Error('Failed to fetch fishes');
         const data = await response.json();
         setFishes(data);
-        setSelectedFishId(null);
+        if (selectedFishId && !data.some(fish => fish.id === selectedFishId)) {
+          setSelectedFishId(null);
+        }
         setHistory([]);
       } catch (err) {
         setError(err.message);
@@ -49,7 +51,7 @@ const ConsumeFoodHistory = () => {
     };
 
     fetchFishes();
-  }, [selectedPondId]);
+  }, [selectedPondId, selectedFishId]);
 
   // Fetch foods on component mount
   useEffect(() => {

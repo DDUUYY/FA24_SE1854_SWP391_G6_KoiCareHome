@@ -95,7 +95,7 @@ const UpdateMember = () => {
 
   return (
     <div className="update-member-form-container">
-      <h1 className="update-member-title">Update your information</h1>
+      <h1 className="update-member-title">Change your information</h1>
       {error && <p className="update-member-error">{error}</p>}
       <form onSubmit={handleSubmit} className="update-member-form">
         <input
@@ -131,7 +131,7 @@ const UpdateMember = () => {
           className="update-member-input"
         />
         
-        {/* Password update are optional */}
+ 
         <input
           type="password"
           name="newPassword"
@@ -148,7 +148,7 @@ const UpdateMember = () => {
           onChange={handleInputChange}
           className="update-member-input"
         />
-        <button type="submit" className="update-member-submit-btn">Update </button>
+        <button type="submit" className="update-member-submit-btn">Confirm </button>
         <button type="button" className="back-button" onClick={handleBack}>Back</button>
       </form>
     </div>

@@ -18,7 +18,7 @@ const Signup = () => {
   });
 
   const [errorMessage, setErrorMessage] = useState('');
-  const navigate = useNavigate();  // Hook to navigate after signup
+  const navigate = useNavigate();  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,8 +47,8 @@ const Signup = () => {
     })
       .then((response) => {
         if (response.ok) {
-          alert('Signup successful!'); // Notify user of success
-          navigate('/login');  // Redirect to login page after successful signup
+          alert('Signup successful!'); 
+          navigate('/login');  
         } else {
           return response.text().then((text) => {
             throw new Error(text);
@@ -56,7 +56,7 @@ const Signup = () => {
         }
       })
       .catch((error) => {
-        setErrorMessage(error.message || 'Signup failed'); // Set error message
+        setErrorMessage(error.message || 'Signup failed');
       });
   };
 

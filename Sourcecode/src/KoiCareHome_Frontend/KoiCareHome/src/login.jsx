@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './style.css';
-
 /*
  * Author: Ha Huy Nghia Hiep
  * Date: October 19, 2024
@@ -25,7 +24,7 @@ const Login = () => {
     })
       .then((response) => {
         if (response.ok) {
-          return response.json(); // Expecting the user ID in response
+          return response.json(); 
         } else {
           return response.text().then((text) => {
             throw new Error(text);
@@ -33,9 +32,8 @@ const Login = () => {
         }
       })
       .then((data) => {
-        // Save the user ID to localStorage or state if needed
+        // Save the user ID to localStorage 
         localStorage.setItem('userID', data);
-        // Redirect to home after login
         navigate('/home');
       })
       .catch((error) => {
@@ -53,16 +51,14 @@ const Login = () => {
             <label className="text-center redText">{errorMessage}</label>
           </div>
         )}
-        <div className="inputbox">
-          <ion-icon name="email-outline"></ion-icon>
-          <input name="email" id="email" type="email" required />
-          <label htmlFor="email">Email</label>
-        </div>
-        <div className="inputbox">
-          <ion-icon name="lock-closed-outline"></ion-icon>
-          <input name="password" type="password" id="password" required />
-          <label htmlFor="password">Password</label>
-        </div>
+       <div className="inputbox">
+            <input name="email" id="email" type="email" required />
+            <label htmlFor="email">Email</label>
+          </div>
+          <div className="inputbox">
+            <input name="password" type="password" id="password" required />
+            <label htmlFor="password">Password</label>
+          </div>
         <button type="submit">Log in</button>
         <div className="register">
           <p>
