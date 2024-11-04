@@ -10,6 +10,7 @@ import ManageFishCard from './Card/ManageFishCard';
 import FeedingHistoryCard from './Card/FeedingHistoryCard';
 import FoodCalculatorCard from './Card/FoodCalculatorCard';
 import ReminderCard from './Card/ReminderCard';
+import BlogCard from './Card/BlogCard';
 
 const Home = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -86,6 +87,7 @@ const Home = () => {
                 <FoodCalculatorCard />
                 <GrCard /> 
                 <ReminderCard />
+                <BlogCard />
             </div>
             </div>
         </div>

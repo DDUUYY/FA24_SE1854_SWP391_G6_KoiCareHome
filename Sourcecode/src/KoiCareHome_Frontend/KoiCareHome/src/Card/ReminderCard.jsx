@@ -1,4 +1,4 @@
-// ReminderCard.jsx
+// eslint-disable-next-line no-unused-vars
 import React from 'react';
 import { Link } from 'react-router-dom';
 import LogoReminder01 from '../assets/LogoReminder01.jpg';

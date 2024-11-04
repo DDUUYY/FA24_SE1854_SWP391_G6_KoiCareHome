@@ -11,12 +11,10 @@ const BlogEditor = ({ existingPost, onSave }) => {
   const handleSave = () => {
     const postData = { title, content };
     if (existingPost && existingPost.id) {
-      // Cập nhật bài viết
       axios.put(`/api/blogposts/${existingPost.id}`, postData)
         .then(onSave)
         .catch(error => console.error('Error updating post:', error));
     } else {
-      // Tạo mới bài viết
       axios.post('/api/blogposts', postData)
         .then(onSave)
         .catch(error => console.error('Error creating post:', error));
@@ -24,25 +22,24 @@ const BlogEditor = ({ existingPost, onSave }) => {
   };
 
   return (
-    <div>
-      <h2>{existingPost ? 'Chỉnh sửa bài viết' : 'Tạo bài viết mới'}</h2>
+    <div className="blog-editor-container">
+      <h2>{existingPost ? 'Edit Blog' : 'Create Blog'}</h2>
       <input
         type="text"
-        placeholder="Tiêu đề"
+        placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
       <textarea
-        placeholder="Nội dung"
+        placeholder="Content"
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
-      <button onClick={handleSave}>Lưu</button>
+      <button onClick={handleSave}>Save</button>
     </div>
   );
 };
 
-// Kiểm tra kiểu dữ liệu của props bằng PropTypes
 BlogEditor.propTypes = {
   existingPost: PropTypes.shape({
     id: PropTypes.number,
