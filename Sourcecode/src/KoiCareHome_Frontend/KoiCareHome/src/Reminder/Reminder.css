@@ -11,7 +11,7 @@
     z-index: 1; /* Đảm bảo nội dung nằm trên hình nền */
 }
 
-/* Hình nền mờ */
+/* Hình nền mờ
 body {
     background-image: url('../assets/LogoReminder03.jpg');
     background-size: cover;
@@ -19,7 +19,7 @@ body {
     background-position: center;
     backdrop-filter: blur(8px);
     z-index: -1;
-}
+} */
 
 .reminder-container h2 {
     text-align: center;

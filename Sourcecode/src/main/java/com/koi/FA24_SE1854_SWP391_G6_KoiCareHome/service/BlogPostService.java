@@ -25,7 +25,7 @@ public class BlogPostService {
         return blogPostRepository.save(blogPost);
     }
 
-    public BlogPost editBlogPost(Long id, BlogPostDto blogPostDto) {
+    public BlogPost editBlogPost(Integer id, BlogPostDto blogPostDto) {
         BlogPost blogPost = blogPostRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("BlogPost not found"));
         blogPost.setTitle(blogPostDto.getTitle());
@@ -34,14 +34,14 @@ public class BlogPostService {
         return blogPostRepository.save(blogPost);
     }
 
-    public void softDeleteBlogPost(Long id) {
+    public void softDeleteBlogPost(Integer id) {
         BlogPost blogPost = blogPostRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("BlogPost not found"));
         blogPost.setIsActive(false);
         blogPostRepository.save(blogPost);
     }
 
-    public void recoverBlogPost(Long id) {
+    public void recoverBlogPost(Integer id) {
         BlogPost blogPost = blogPostRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("BlogPost not found"));
         blogPost.setIsActive(true);

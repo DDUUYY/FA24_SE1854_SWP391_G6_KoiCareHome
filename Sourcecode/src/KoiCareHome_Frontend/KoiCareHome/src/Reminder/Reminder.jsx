@@ -4,34 +4,47 @@ import axios from 'axios';
 import './Reminder.css';
 
 const Reminder = () => {
+    // State lưu trữ danh sách các reminder
     const [reminders, setReminders] = useState([]);
+
+    // State lưu lịch sử thông báo
     const [notificationHistory, setNotificationHistory] = useState(
         JSON.parse(localStorage.getItem('notificationHistory')) || []
     );
+
+    // State cho reminder mới cần thêm
     const [newReminder, setNewReminder] = useState({
         title: '',
         dateTime: '',
         frequency: ''
     });
 
+    // State để xác định có đang chỉnh sửa reminder không
+    const [isEditing, setIsEditing] = useState(false);
+
+    // Lưu ID của reminder đang chỉnh sửa
+    const [editingId, setEditingId] = useState(null);
+
     // Lấy memberID từ localStorage
     const memberID = parseInt(localStorage.getItem('userID'), 10);
 
+    // Yêu cầu quyền thông báo từ người dùng nếu chưa được cấp phép
     const requestNotificationPermission = async () => {
         if (Notification.permission === 'default') {
             await Notification.requestPermission();
         }
     };
 
+    // Hiển thị thông báo nếu quyền đã được cấp
     const showNotification = (title, message) => {
         if (Notification.permission === 'granted') {
             new Notification(title, { body: message });
         }
     };
 
+    // useEffect để kiểm tra và thông báo các reminder đã đến giờ
     useEffect(() => {
         requestNotificationPermission();
-
         const interval = setInterval(() => {
             const now = new Date();
             reminders.forEach((reminder) => {
@@ -54,6 +67,7 @@ const Reminder = () => {
         return () => clearInterval(interval);
     }, [reminders, notificationHistory]);
 
+    // useEffect để lấy danh sách reminders từ API khi component mount
     useEffect(() => {
         const fetchReminders = async () => {
             try {
@@ -67,11 +81,13 @@ const Reminder = () => {
         fetchReminders();
     }, [memberID]);
 
+    // Hàm xử lý thay đổi dữ liệu trong input khi thêm reminder mới
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setNewReminder({ ...newReminder, [name]: value });
     };
 
+    // Hàm thêm reminder mới qua API và cập nhật danh sách reminders
     const addReminder = async () => {
         try {
             const reminderData = { ...newReminder, memberID }; // Thêm memberID vào payload
@@ -83,7 +99,18 @@ const Reminder = () => {
         }
     };
 
-    
+    // // Hàm cập nhật reminder
+    // const updateReminder = async (id, updatedData) => {
+    //     try {
+    //         const response = await axios.put(`/api/reminders/edit/${id}`, updatedData);
+    //         // Cập nhật danh sách reminders sau khi thành công
+    //         setReminders(reminders.map((reminder) =>
+    //             reminder.id === id ? response.data : reminder
+    //         ));
+    //     } catch (error) {
+    //         console.error('Error updating reminder:', error);
+    //     }
+    // };
 
     return (
         <div className="reminder-container">

@@ -26,19 +26,19 @@ public class BlogPostController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<BlogPost> editBlogPost(@PathVariable Long id, @RequestBody BlogPostDto blogPostDto) {
+    public ResponseEntity<BlogPost> editBlogPost(@PathVariable Integer id, @RequestBody BlogPostDto blogPostDto) {
         BlogPost blogPost = blogPostService.editBlogPost(id, blogPostDto);
         return new ResponseEntity<>(blogPost, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteBlogPost(@PathVariable Long id) {
+    public ResponseEntity<String> deleteBlogPost(@PathVariable Integer id) {
         blogPostService.softDeleteBlogPost(id);
         return new ResponseEntity<>("Blog post deleted temporarily", HttpStatus.OK);
     }
 
     @PutMapping("/recover/{id}")
-    public ResponseEntity<String> recoverBlogPost(@PathVariable Long id) {
+    public ResponseEntity<String> recoverBlogPost(@PathVariable Integer id) {
         blogPostService.recoverBlogPost(id);
         return new ResponseEntity<>("Blog post recovered", HttpStatus.OK);
     }

@@ -26,19 +26,19 @@ public class ReminderController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Reminder> editReminder(@PathVariable Long id, @RequestBody ReminderDto reminderDto) {
+    public ResponseEntity<Reminder> editReminder(@PathVariable Integer id, @RequestBody ReminderDto reminderDto) {
         Reminder reminder = reminderService.editReminder(id, reminderDto);
         return new ResponseEntity<>(reminder, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteReminder(@PathVariable Long id) {
-        reminderService.softDeleteReminder(id);
-        return new ResponseEntity<>("Reminder deleted temporarily", HttpStatus.OK);
+    public ResponseEntity<String> deleteReminder(@PathVariable Integer id) {
+        reminderService.deleteReminder(id);
+        return new ResponseEntity<>("Reminder deleted successfully", HttpStatus.OK);
     }
 
     @PutMapping("/recover/{id}")
-    public ResponseEntity<String> recoverReminder(@PathVariable Long id) {
+    public ResponseEntity<String> recoverReminder(@PathVariable Integer id) {
         reminderService.recoverReminder(id);
         return new ResponseEntity<>("Reminder recovered", HttpStatus.OK);
     }

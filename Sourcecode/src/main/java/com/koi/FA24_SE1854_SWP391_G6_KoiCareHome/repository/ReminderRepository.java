@@ -8,7 +8,7 @@ import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model.Member;
 import java.util.List;
 
 @Repository
-public interface ReminderRepository extends JpaRepository<Reminder, Long> {
+public interface ReminderRepository extends JpaRepository<Reminder, Integer> {
 
     // Tìm tất cả các reminder của một thành viên (Member) và còn active
     List<Reminder> findByMember(Member member);

@@ -39,7 +39,7 @@ public class ReminderService {
         return reminderRepository.save(reminder);
     }
 
-    public Reminder editReminder(Long id, ReminderDto reminderDto) {
+    public Reminder editReminder(Integer id, ReminderDto reminderDto) {
         Reminder reminder = reminderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Reminder not found"));
         reminder.setTitle(reminderDto.getTitle());
@@ -49,14 +49,15 @@ public class ReminderService {
         return reminderRepository.save(reminder);
     }
 
-    public void softDeleteReminder(Long id) {
+    public void deleteReminder(Integer id) {
         Reminder reminder = reminderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Reminder not found"));
-        reminder.setIsActive(false);
-        reminderRepository.save(reminder);
+
+        // Xóa reminder khỏi database
+        reminderRepository.deleteById(id);
     }
 
-    public void recoverReminder(Long id) {
+    public void recoverReminder(Integer id) {
         Reminder reminder = reminderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Reminder not found"));
         reminder.setIsActive(true);

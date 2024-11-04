@@ -12,6 +12,7 @@ import FoodCalculator from './Calculator/FoodCalculator';
 import FoodHistory from './Fish/ConsumeFoodHistory';
 import Chart from './GrowthRecord/Chart';
 import Reminder from './Reminder/Reminder';
+import Admin from './Admin/Admin';
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
         <Route path="/consume-food-history" element={<FoodHistory />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/reminder" element={<Reminder />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </Router>
   );

@@ -7,6 +7,6 @@ import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model.BlogPost;
 import java.util.List;
 
 @Repository
-public interface BlogPostRepository extends JpaRepository<BlogPost, Long> {
+public interface BlogPostRepository extends JpaRepository<BlogPost, Integer> {
     List<BlogPost> findByStatus(String status);
 }
