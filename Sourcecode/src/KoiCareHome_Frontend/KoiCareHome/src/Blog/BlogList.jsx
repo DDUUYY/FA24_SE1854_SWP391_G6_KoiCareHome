@@ -9,6 +9,7 @@ const BlogList = () => {
   const [showEditor, setShowEditor] = useState(false); 
   const [editingPost, setEditingPost] = useState(null); 
 
+  // Function to fetch posts from API
   const fetchPosts = () => {
     axios.get('/api/blogposts')
       .then(response => setPosts(response.data))
@@ -19,17 +20,20 @@ const BlogList = () => {
     fetchPosts();
   }, []);
 
+  // Function called when saving a post
   const handleSave = () => {
     setShowEditor(false);
     setEditingPost(null);
-    fetchPosts();
+    fetchPosts(); // Refresh posts list after saving
   };
 
+  // Function to open editor for creating a new post
   const handleCreate = () => {
     setEditingPost(null);
     setShowEditor(true);
   };
 
+  // Function to open editor for editing an existing post
   const handleEdit = (post) => {
     setEditingPost(post);
     setShowEditor(true);
@@ -40,14 +44,21 @@ const BlogList = () => {
       <h1>Blog Posts</h1>
       <button onClick={handleCreate}>Create New Post</button>
 
-      {showEditor && <BlogEditor existingPost={editingPost} onSave={handleSave} />}
+      {/* Render BlogEditor only if showEditor is true */}
+      {showEditor && (
+        <BlogEditor 
+          existingPost={editingPost} 
+          onSave={handleSave} 
+        />
+      )}
 
       <ul>
         {posts.map(post => (
           <li key={post.id}>
             <Link to={`/blogs/${post.id}`}>
               <h2>{post.title}</h2>
-              <p>{post.description}</p>
+              {/* Use a default value if description is undefined */}
+              <p>{post.description || "No description available."}</p>
             </Link>
             <button onClick={() => handleEdit(post)}>Edit</button>
           </li>

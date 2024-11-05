@@ -45,16 +45,20 @@ const BlogEditor = ({ existingPost, onSave }) => {
       ? axios.put(`/api/blogposts/edit/${existingPost.id}`, postData)
       : axios.post('/api/blogposts/create', postData);
 
-    request
+      request
       .then(response => {
         console.log('Server response:', response);
         setMessage('Post saved successfully!');
         setError(''); // Xóa thông báo lỗi nếu lưu thành công
-        onSave();
+        if (onSave && typeof onSave === 'function') {
+          onSave();
+        } else {
+          console.error('onSave is not a function or is undefined');
+        }
       })
       .catch(error => {
         console.error('Error saving post:', error);
-        setError('Failed to save post. Please try again.');
+        setError(`Failed to save post: ${error.response?.data?.message || 'Please try again.'}`);
         setMessage(''); // Xóa thông báo thành công nếu lưu thất bại
       });
   };
