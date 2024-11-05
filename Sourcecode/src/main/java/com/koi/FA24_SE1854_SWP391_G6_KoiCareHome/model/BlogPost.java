@@ -11,13 +11,19 @@ public class BlogPost {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PostID")
+    @Column(name = "PostID", nullable = false)
     private Integer postId;
+
+    @Column(name = "MemberID", nullable = false)
+    private Integer memberId;
 
     @Column(name = "Title", nullable = false)
     private String title;
 
-    @Column(name = "Author", nullable = false)
+    @Column(name = "BlogContent", nullable = false)
+    private String content;
+
+    @Column(name = "Author")
     private String author;
 
     @Column(name = "PublishDate")
@@ -25,6 +31,9 @@ public class BlogPost {
 
     @Column(name = "Status", nullable = false)
     private String status; // Pending, Approved, Rejected
+
+    @Column(name = "Reason")
+    private String reason;
 
     @Column(name = "isActive", nullable = false)
     private Boolean isActive;

@@ -16,8 +16,12 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5173")
 public class BlogPostController {
 
+    private final BlogPostService blogPostService;
+
     @Autowired
-    private BlogPostService blogPostService;
+    public BlogPostController(BlogPostService blogPostService) {
+        this.blogPostService = blogPostService;
+    }
 
     @PostMapping("/create")
     public ResponseEntity<BlogPost> createBlogPost(@RequestBody BlogPostDto blogPostDto) {
@@ -43,9 +47,26 @@ public class BlogPostController {
         return new ResponseEntity<>("Blog post recovered", HttpStatus.OK);
     }
 
+    // API để lấy danh sách bài viết chờ duyệt
     @GetMapping("/pending")
     public ResponseEntity<List<BlogPost>> getPendingBlogPosts() {
-        List<BlogPost> blogPosts = blogPostService.getPendingBlogPosts();
-        return new ResponseEntity<>(blogPosts, HttpStatus.OK);
+        List<BlogPost> pendingPosts = blogPostService.getPendingBlogPosts();
+        return new ResponseEntity<>(pendingPosts, HttpStatus.OK);
+    }
+
+    // API để admin duyệt hoặc từ chối bài viết
+    @PutMapping("/review/{id}")
+    public ResponseEntity<String> reviewBlogPost(
+            @PathVariable Integer id,
+            @RequestParam boolean approved,
+            @RequestParam(required = false) String reason) {
+
+        BlogPost blogPost = blogPostService.reviewBlogPost(id, approved, reason);
+
+        if ("Approved".equals(blogPost.getStatus())) {
+            return new ResponseEntity<>("Blog has been approved.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Blog not approved. Reason:" + blogPost.getReason(), HttpStatus.OK);
+        }
     }
 }

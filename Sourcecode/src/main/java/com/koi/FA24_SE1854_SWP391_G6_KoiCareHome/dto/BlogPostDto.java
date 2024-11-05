@@ -4,6 +4,9 @@ import lombok.Data;
 
 @Data
 public class BlogPostDto {
+    private Integer memberId;
     private String title;
+    private String content;
     private String author;
+
 }
