@@ -2,58 +2,54 @@ package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Nationalized;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
-/**
- * @author Quach To Anh
- */
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "Fish")
-public class Fish {
+@Table(name = "Ponds")
+public class Pond {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increment ID
-    @Column(name = "FishID", nullable = false)
-    private int fishID;
-
-    @Column(name = "FishTypeID", nullable = false)
-    private int fishTypeID;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PondID", nullable = false)
-    private int pondID;
+    private Integer pondID;
 
     @Column(name = "MemberID", nullable = false)
-    private int memberID;
+    private Integer memberID;
 
-    @Column(name = "Name", nullable = false)
-    private String name;
+    @Column(name = "ReminderID", nullable = false)
+    private Integer reminderID;
 
-    @Column(name = "Size")
+    @Column(name = "Size", nullable = false, precision = 10, scale = 2)
     private BigDecimal size;
 
-    @Column(name = "Weight")
-    private BigDecimal weight;
+    @Column(name = "Depth", nullable = false, precision = 10, scale = 2)
+    private BigDecimal depth;
 
-    @Column(name = "Age")
-    private int age;
+    @Column(name = "Volume", nullable = false, precision = 10, scale = 2)
+    private BigDecimal volume;
 
-    @Column(name = "Gender")
-    private String gender;
+    @Column(name = "DrainageCount")
+    private Integer drainageCount;
 
-    @Column(name = "Breed")
-    private String breed;
+    @Column(name = "PumpCapacity", precision = 10, scale = 2)
+    private BigDecimal pumpCapacity;
 
-    @Column(name = "Origin")
-    private String origin;
+    @Nationalized
+    @Column(name = "Equipment")
+    private String equipment;
 
-    @Column(name = "Price")
-    private BigDecimal price;
+    @Column(name = "Quantity")
+    private Integer quantity;
 
     @Column(name = "isActive", nullable = false)
     private Boolean isActive;
@@ -81,4 +77,6 @@ public class Fish {
     protected void onUpdate() {
         updateDate = LocalDateTime.now();
     }
+
+
 }

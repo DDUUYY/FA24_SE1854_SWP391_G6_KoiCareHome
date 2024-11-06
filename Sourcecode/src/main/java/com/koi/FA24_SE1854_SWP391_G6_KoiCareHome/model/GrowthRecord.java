@@ -26,7 +26,7 @@ public class GrowthRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer RecordID;
 
-    private Integer FishID;
+    private Integer fishID;
 
     @Column(nullable = false)
     private LocalDate MeasurementDate;
@@ -35,7 +35,6 @@ public class GrowthRecord {
     @Column(nullable = false)
     private BigDecimal Weight;
     private String Description;
-
 
     @Column(nullable = false)
     private Boolean isActive;

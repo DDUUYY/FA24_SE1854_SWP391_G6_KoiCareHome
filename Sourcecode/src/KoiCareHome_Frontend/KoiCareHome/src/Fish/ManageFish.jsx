@@ -1,15 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './ManageFish.css';
-import { FaCirclePlus } from "react-icons/fa6";
 import createFish from './AddFish';
 import readFishes from './ViewAllFishes';
 import updateFish from './UpdateFish';
 import deleteFish from './DeleteFish';
 
-const FishForm = ({ fish, onSubmit, onCancel, title }) => {
+const FishForm = ({ fish, onSubmit, onCancel, title, memberID }) => {
     const [formData, setFormData] = useState(fish);
-    console.log('Form data:', formData); // Thêm dòng này
+    const [ponds, setPonds] = useState([]);
+
+    useEffect(() => {
+        const fetchPonds = async () => {
+            try {
+                const response = await fetch(`http://localhost:8080/api/pond/member?memberId=${memberID}`);
+                if (!response.ok) throw new Error('Failed to fetch ponds');
+                const data = await response.json();
+                setPonds(data);
+            } catch (error) {
+                console.error('Error fetching ponds:', error);
+            }
+        };
+
+        if (memberID) {
+            fetchPonds();
+        }
+    }, [memberID]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -20,26 +36,27 @@ const FishForm = ({ fish, onSubmit, onCancel, title }) => {
         }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSubmit(formData);
-    };
-
     return (
         <div className="modal-overlay">
             <div className="modal-content">
                 <h2>{title}</h2>
-                <form onSubmit={handleSubmit} className="fish-form">
-                    <input
-                        type="number"
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    onSubmit(formData);
+                }} className="fish-form">
+                    <select
                         name="pondID"
                         value={formData.pondID}
                         onChange={handleChange}
-                        placeholder="Pond ID"
-                        min="0"
-                        step="1"
                         required
-                    />
+                    >
+                        <option value="">Select Pond</option>
+                        {ponds && ponds.map(pond => (
+                            <option key={pond.pondID} value={pond.pondID}>
+                                Pond: {pond.pondID}
+                            </option>
+                        ))}
+                    </select>
                     <input
                         type="text"
                         name="name"
@@ -53,7 +70,7 @@ const FishForm = ({ fish, onSubmit, onCancel, title }) => {
                         name="size"
                         value={formData.size}
                         onChange={handleChange}
-                        placeholder="Fish Size"
+                        placeholder="Fish Size - cm"
                         min="0"
                     />
                     <input
@@ -61,7 +78,7 @@ const FishForm = ({ fish, onSubmit, onCancel, title }) => {
                         name="weight"
                         value={formData.weight}
                         onChange={handleChange}
-                        placeholder="Fish Weight"
+                        placeholder="Fish Weight - kg"
                         min="0"
                     />
                     <input
@@ -164,6 +181,7 @@ const ManageFish = () => {
     const [showAddForm, setShowAddForm] = useState(false);
     const [selectedFish, setSelectedFish] = useState(null);
     const [notification, setNotification] = useState({ message: '', type: '' });
+    const [ponds, setPonds] = useState([]);
     const navigate = useNavigate();
 
     const emptyFish = {
@@ -179,6 +197,7 @@ const ManageFish = () => {
         price: ''
     };
 
+
     useEffect(() => {
         const id = localStorage.getItem("userID");
         if (id) {
@@ -191,8 +210,21 @@ const ManageFish = () => {
     useEffect(() => {
         if (memberID) {
             loadFishes(memberID);
+            fetchPonds();
         }
     }, [memberID]);
+
+    const fetchPonds = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/pond/member?memberId=${memberID}`);
+            if (!response.ok) throw new Error('Failed to fetch ponds');
+            const data = await response.json();
+            setPonds(data);
+        } catch (error) {
+            console.error('Error fetching ponds:', error);
+            showNotification('Error loading ponds', 'error');
+        }
+    };
 
     const loadFishes = async (id) => {
         try {
@@ -260,6 +292,7 @@ const ManageFish = () => {
                         fish={fish}
                         onEdit={setSelectedFish}
                         onDelete={handleDelete}
+                        ponds={ponds}
                     />
                 ))}
             </div>
@@ -269,6 +302,7 @@ const ManageFish = () => {
                     onSubmit={handleCreate}
                     onCancel={() => setShowAddForm(false)}
                     title="Add New Fish"
+                    memberID={memberID}
                 />
             )}
             {selectedFish && (
@@ -277,6 +311,7 @@ const ManageFish = () => {
                     onSubmit={handleUpdate}
                     onCancel={() => setSelectedFish(null)}
                     title="Edit Fish"
+                    memberID={memberID}
                 />
             )}
             <button onClick={() => navigate('/home')} className="back-button">

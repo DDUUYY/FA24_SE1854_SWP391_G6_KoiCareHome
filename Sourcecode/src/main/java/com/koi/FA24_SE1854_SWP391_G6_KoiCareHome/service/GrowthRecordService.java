@@ -6,6 +6,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -43,13 +44,17 @@ public class GrowthRecordService {
         Optional<GrowthRecord> OptionalGrowthRecord = growthRecordRepository.findById(RecordID);
         if (OptionalGrowthRecord.isPresent()) {
             GrowthRecord existingGrowthRecord = OptionalGrowthRecord.get();
-            existingGrowthRecord.setMeasurementDate(growthRecord.getMeasurementDate());
+            // existingGrowthRecord.setMeasurementDate(LocalDate.now());
             existingGrowthRecord.setSize(growthRecord.getSize());
             existingGrowthRecord.setWeight(growthRecord.getWeight());
             existingGrowthRecord.setDescription(growthRecord.getDescription());
             return growthRecordRepository.save(existingGrowthRecord);
         }
         return null;
+    }
+
+    public List<GrowthRecord> getGrowthRecordsByFishId(Integer fishID) {
+        return growthRecordRepository.findByFishIDAndIsActiveTrue(fishID);
     }
 }
 

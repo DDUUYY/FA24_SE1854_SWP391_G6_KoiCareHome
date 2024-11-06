@@ -20,13 +20,13 @@ public class FishType
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "FishTypeID", nullable = false)
-    private int fishTypeID;
+    private Integer fishTypeID;
 
     @Column(name = "Name", nullable = false)
     private String name;
 
     @Column(name = "isActive", nullable = true)
-    private boolean isActive;
+    private Boolean isActive;
 
     @Column(name = "CreateDate", nullable = true)
     private LocalDateTime createDate;

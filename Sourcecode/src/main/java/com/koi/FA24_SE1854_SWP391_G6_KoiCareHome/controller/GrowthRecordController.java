@@ -1,6 +1,7 @@
 package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.controller;
 
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model.GrowthRecord;
+import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.GrowthRecordRepository;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.service.GrowthRecordService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +21,20 @@ import java.util.List;
 public class GrowthRecordController {
     private final GrowthRecordService growthRecordService;
 
+
     @PostMapping("/GrowthRecord")
     public GrowthRecord postGrowRecord(@RequestBody GrowthRecord growthRecord) {
+        if (growthRecord.getFishID() == null) {
+            throw new IllegalArgumentException("Fish ID cannot be null");
+        }
         return growthRecordService.PostGrowthRecord(growthRecord);
     }
 
     @GetMapping("/GrowthRecord")
-    public List<GrowthRecord> getAllGrowthRecords() {
+    public List<GrowthRecord> getAllGrowthRecords(@RequestParam(required = false) Integer fishID) {
+        if (fishID != null) {
+            return growthRecordService.getGrowthRecordsByFishId(fishID);
+        }
         return growthRecordService.getAllGrowthRecords();
     }
 

@@ -20,10 +20,10 @@ public class Food {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "FoodID", nullable = false)
-    private int foodID;
+    private Integer foodID;
 
     @Column(name = "FoodTypeID", nullable = false)
-    private int foodTypeID;
+    private Integer foodTypeID;
 
     @Column(name = "Name", nullable = false)
     private String name;
@@ -38,7 +38,7 @@ public class Food {
     private String Vendor;
 
     @Column(name = "isActive")
-    private boolean isActive;
+    private Boolean isActive;
 
     @Column(name = "CreateDate")
     private LocalDateTime createDate;

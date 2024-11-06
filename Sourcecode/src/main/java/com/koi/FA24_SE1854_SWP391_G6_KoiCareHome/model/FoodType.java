@@ -18,13 +18,13 @@ import java.time.LocalDateTime;
 public class FoodType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int foodTypeId;
+    private Integer foodTypeId;
 
     @Column(name = "Name", nullable = false)
     private String name;
 
     @Column(name = "isActive", nullable = true)
-    private boolean isActive;
+    private Boolean isActive;
 
     @Column(name = "CreateDate", nullable = true)
     private LocalDateTime createDate;
