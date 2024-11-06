@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface BlogPostRepository extends JpaRepository<BlogPost, Integer> {
     List<BlogPost> findByStatus(String status);
+    List<BlogPost> findByMemberId(Integer memberId);
 }

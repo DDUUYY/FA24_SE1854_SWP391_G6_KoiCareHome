@@ -68,6 +68,15 @@ public class BlogPostService {
         blogPostRepository.save(blogPost);
     }
 
+    public List<BlogPost> getBlogPostsByMemberId(Integer memberId) {
+        return blogPostRepository.findByMemberId(memberId);
+    }
+
+    public List<BlogPost> getPublicBlogPosts() {
+        return blogPostRepository.findByStatus("Approved");
+    }
+
+
     // Lấy danh sách các bài viết chờ duyệt
     public List<BlogPost> getPendingBlogPosts() {
         return blogPostRepository.findByStatus("Pending");
@@ -93,4 +102,10 @@ public class BlogPostService {
 
         return blogPostRepository.save(blogPost); // Lưu bài viết với trạng thái cập nhật
     }
+
+    public BlogPost getBlogPostById(Integer id) {
+        return blogPostRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("BlogPost not found"));
+    }
+
 }

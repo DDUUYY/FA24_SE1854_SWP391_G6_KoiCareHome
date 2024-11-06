@@ -69,4 +69,22 @@ public class BlogPostController {
             return new ResponseEntity<>("Blog not approved. Reason:" + blogPost.getReason(), HttpStatus.OK);
         }
     }
+
+    @GetMapping("/member/{memberId}")
+    public ResponseEntity<List<BlogPost>> getBlogPostsByMemberId(@PathVariable Integer memberId) {
+        List<BlogPost> blogPosts = blogPostService.getBlogPostsByMemberId(memberId);
+        return new ResponseEntity<>(blogPosts, HttpStatus.OK);
+    }
+
+    @GetMapping("/public")
+    public ResponseEntity<List<BlogPost>> getPublicBlogPosts() {
+        List<BlogPost> publicPosts = blogPostService.getPublicBlogPosts();
+        return new ResponseEntity<>(publicPosts, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BlogPost> getBlogPostById(@PathVariable Integer id) {
+        BlogPost blogPost = blogPostService.getBlogPostById(id);
+        return new ResponseEntity<>(blogPost, HttpStatus.OK);
+    }
 }

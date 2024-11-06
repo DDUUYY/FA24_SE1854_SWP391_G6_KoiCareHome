@@ -6,7 +6,7 @@ import './GrCard.css';
 
 const BlogCard = () => {
     return (
-        <Link to="/blogEditor">
+        <Link to="/public-blogs">
             <div className="card">
                 <img className="card-image" src={LogoBlog} alt="Blog"></img>
                 <h2 className="card-title">Blog</h2>

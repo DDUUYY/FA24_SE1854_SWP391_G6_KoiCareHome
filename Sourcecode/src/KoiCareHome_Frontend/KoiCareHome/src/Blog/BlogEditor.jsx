@@ -1,72 +1,72 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './BlogEditor.css';
+import { useParams, useNavigate } from 'react-router-dom';
 
-const BlogEditor = ({ existingPost, onSave }) => {
-  const [title, setTitle] = useState(existingPost?.title || '');
-  const [content, setContent] = useState(existingPost?.content || '');
-  const [author, setAuthor] = useState(existingPost?.author || ''); // Cho phép người dùng nhập author
+const BlogEditor = () => {
+  const { id } = useParams(); // Lấy ID của bài viết từ URL
+  const navigate = useNavigate();
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [author, setAuthor] = useState('');
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
 
+  useEffect(() => {
+    // Chỉ tải dữ liệu nếu có ID
+    if (id) {
+      axios.get(`/api/blogposts/${id}`)
+        .then(response => {
+          const { title, content, author } = response.data;
+          setTitle(title);
+          setContent(content);
+          setAuthor(author || 'Unknown Author'); // Thiết lập tác giả mặc định nếu không có
+        })
+        .catch(error => {
+          console.error('Error loading post:', error);
+          setError('Failed to load post. Please try again.');
+        });
+    }
+  }, [id]);
+
   const handleSave = () => {
-    // Reset message và error trước khi bắt đầu quá trình lưu
     setMessage('');
     setError('');
 
-    // Kiểm tra điều kiện rỗng cho tiêu đề và nội dung
+    // Kiểm tra rỗng cho tiêu đề và nội dung
     if (!title.trim() || !content.trim()) {
       setError('Title and content cannot be empty.');
       return;
     }
 
-    // Lấy memberID từ localStorage và kiểm tra nếu tồn tại
-    const memberID = localStorage.getItem('userID');
-    if (!memberID) {
-      setError('User ID not found. Please log in again.');
-      return;
-    }
+    // Chuẩn bị dữ liệu để gửi lên server
+    const postData = { title, content, author: author || 'Unknown Author' };
 
-    // Kiểm tra và đặt giá trị mặc định cho author nếu trống
-    const authorToSave = author.trim() ? author : 'Unknown User';
-
-    // Tạo đối tượng postData để gửi đến backend
-    const postData = { 
-      title, 
-      content, 
-      author: authorToSave, 
-      memberId: parseInt(memberID, 10) // Đảm bảo `memberId` là số nguyên
-    };
-
-    // Gửi yêu cầu tạo hoặc chỉnh sửa bài viết
-    const request = existingPost && existingPost.id
-      ? axios.put(`/api/blogposts/edit/${existingPost.id}`, postData)
+    // Quyết định phương thức gọi API: PUT cho chỉnh sửa và POST cho tạo mới
+    const request = id
+      ? axios.put(`/api/blogposts/edit/${id}`, postData)
       : axios.post('/api/blogposts/create', postData);
 
-      request
+    request
       .then(response => {
         console.log('Server response:', response);
-        setMessage('Post saved successfully!');
-        setError(''); // Xóa thông báo lỗi nếu lưu thành công
-        if (onSave && typeof onSave === 'function') {
-          onSave();
-        } else {
-          console.error('onSave is not a function or is undefined');
-        }
+        setMessage(id ? 'Post updated successfully!' : 'Post created successfully!');
+        setError('');
+        
+        // Điều hướng về trang "View Your Blogs" sau khi lưu thành công
+        navigate('/public-blogs');
       })
       .catch(error => {
         console.error('Error saving post:', error);
-        setError(`Failed to save post: ${error.response?.data?.message || 'Please try again.'}`);
-        setMessage(''); // Xóa thông báo thành công nếu lưu thất bại
+        setError(id ? 'Failed to update post. Please try again.' : 'Failed to create post. Please try again.');
+        setMessage('');
       });
   };
 
   return (
     <div className="blog-editor-container">
-      <h2>{existingPost ? 'Edit Blog' : 'Create Blog'}</h2>
-      
+      <h2>{id ? 'Edit Blog' : 'Create Blog'}</h2>
+
       {error && <p className="error-message">{error}</p>}
       {message && <p className="success-message">{message}</p>}
 
@@ -87,19 +87,9 @@ const BlogEditor = ({ existingPost, onSave }) => {
         value={author}
         onChange={(e) => setAuthor(e.target.value)}
       />
-      <button onClick={handleSave}>Save</button>
+      <button onClick={handleSave}>{id ? 'Update' : 'Create'}</button>
     </div>
   );
-};
-
-BlogEditor.propTypes = {
-  existingPost: PropTypes.shape({
-    id: PropTypes.number,
-    title: PropTypes.string,
-    content: PropTypes.string,
-    author: PropTypes.string,
-  }),
-  onSave: PropTypes.func.isRequired,
 };
 
 export default BlogEditor;
