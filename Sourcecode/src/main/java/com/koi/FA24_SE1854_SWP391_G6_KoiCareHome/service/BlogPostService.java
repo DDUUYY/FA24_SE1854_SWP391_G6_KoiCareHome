@@ -49,6 +49,7 @@ public class BlogPostService {
         BlogPost blogPost = blogPostRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("BlogPost not found"));
         blogPost.setTitle(blogPostDto.getTitle());
+        blogPost.setContent(blogPostDto.getContent());
         blogPost.setAuthor(blogPostDto.getAuthor());
         blogPost.setUpdateDate(new Date());
         return blogPostRepository.save(blogPost);
