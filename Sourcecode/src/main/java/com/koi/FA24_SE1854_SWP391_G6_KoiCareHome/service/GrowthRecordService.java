@@ -1,5 +1,6 @@
 package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.service;
 
+import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model.Fish;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model.GrowthRecord;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.GrowthRecordRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,10 +19,19 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class GrowthRecordService {
     private final GrowthRecordRepository growthRecordRepository;
+    private final FishService fishService;
 
-    public GrowthRecord PostGrowthRecord(GrowthRecord growthRecord) {
+    public GrowthRecord postGrowthRecord(GrowthRecord growthRecord) {
         growthRecord.setIsActive(true);
-        return growthRecordRepository.save(growthRecord);
+        GrowthRecord savedRecord = growthRecordRepository.save(growthRecord);
+
+        Fish fishUpdate = new Fish();
+        fishUpdate.setSize(growthRecord.getSize());
+        fishUpdate.setWeight(growthRecord.getWeight());
+
+        fishService.updateFish(growthRecord.getFishID(), fishUpdate);
+
+        return savedRecord;
     }
 
 

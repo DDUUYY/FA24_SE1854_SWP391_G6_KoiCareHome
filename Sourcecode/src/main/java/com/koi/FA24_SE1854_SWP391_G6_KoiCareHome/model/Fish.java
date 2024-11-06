@@ -41,7 +41,7 @@ public class Fish {
     private BigDecimal weight;
 
     @Column(name = "Age")
-    private int age;
+    private Integer age;
 
     @Column(name = "Gender")
     private String gender;

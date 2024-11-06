@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import './ConsumeFoodHistory.css';
-import { FaFish as Fish, FaSwimmer as Pool, FaBox as Package } from 'react-icons/fa'; 
+import { FaFish as Fish, FaSwimmer as Pool, FaBox as Package } from 'react-icons/fa';
 import { FaClock as Clock } from 'react-icons/fa';
 // import { FaPlus } from 'react-icons/fa';
 
@@ -21,7 +21,7 @@ const ConsumeFoodHistory = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  
+
   const [newConsumption, setNewConsumption] = useState({
     fishId: null,
     foodId: null,
@@ -29,6 +29,12 @@ const ConsumeFoodHistory = () => {
     description: "",
     consumeDate: new Date().toISOString().slice(0, 16)
   });
+
+  const handleFishChange = (e) => {
+    const newFishId = Number(e.target.value);
+    setSelectedFishId(newFishId);
+    setNewConsumption(prev => ({ ...prev, fishId: newFishId }));
+  };
 
   // Fetch fishes when pond changes
   useEffect(() => {
@@ -39,7 +45,9 @@ const ConsumeFoodHistory = () => {
         if (!response.ok) throw new Error('Failed to fetch fishes');
         const data = await response.json();
         setFishes(data);
-        setSelectedFishId(null);
+        if (selectedFishId && !data.some(fish => fish.id === selectedFishId)) {
+          setSelectedFishId(null);
+        }
         setHistory([]);
       } catch (err) {
         setError(err.message);
@@ -49,7 +57,7 @@ const ConsumeFoodHistory = () => {
     };
 
     fetchFishes();
-  }, [selectedPondId]);
+  }, [selectedPondId, selectedFishId]);
 
   // Fetch foods on component mount
   useEffect(() => {
@@ -127,7 +135,7 @@ const ConsumeFoodHistory = () => {
         description: "",
         consumeDate: new Date().toISOString().slice(0, 16)
       });
-      
+
       // Show success message
       alert('Consumption record added successfully!');
     } catch (err) {
@@ -169,11 +177,7 @@ const ConsumeFoodHistory = () => {
                 </label>
                 <select
                   value={selectedFishId || ''}
-                  onChange={(e) => {
-                    const newFishId = Number(e.target.value);
-                    setSelectedFishId(newFishId);
-                    setNewConsumption((prev) => ({ ...prev, fishId: newFishId }));  // Cập nhật fishId
-                  }}
+                  onChange={handleFishChange}
                   className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                   disabled={fishes.length === 0}
                 >

@@ -43,8 +43,8 @@ const Home = () => {
                     <div className="logo-text">KoiCareHome</div>
                 </div>
                 <ul className="nav-links">
-                    <li onClick={() => scrollToSection(homeRef)}>Home</li>
-                    <li onClick={() => scrollToSection(featureRef)}>Feature</li>
+                    <li onClick={() => scrollToSection(homeRef)}><strong>Home</strong></li>
+                    <li onClick={() => scrollToSection(featureRef)}><strong>Feature</strong></li>
                 </ul>
                 <div className="user-icon" onClick={toggleDropdown}>
                     <FaRegUserCircle />

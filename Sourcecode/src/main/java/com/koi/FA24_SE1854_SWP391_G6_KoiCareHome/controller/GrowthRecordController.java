@@ -27,8 +27,9 @@ public class GrowthRecordController {
         if (growthRecord.getFishID() == null) {
             throw new IllegalArgumentException("Fish ID cannot be null");
         }
-        return growthRecordService.PostGrowthRecord(growthRecord);
+        return growthRecordService.postGrowthRecord(growthRecord);
     }
+
 
     @GetMapping("/GrowthRecord")
     public List<GrowthRecord> getAllGrowthRecords(@RequestParam(required = false) Integer fishID) {

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './MemberProfile.css';
 import UserProfile from "../assets/User_Profile.jpg";
+
 /*
  * Author: Ha Huy Nghia Hiep
  * Date: October 19, 2024
