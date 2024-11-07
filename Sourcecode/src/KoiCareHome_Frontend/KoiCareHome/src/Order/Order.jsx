@@ -27,24 +27,43 @@ function Order() {
         }
     };
 
-    const handleInputChange = (orderId, field, value) => {
+    const handleInputChange = async (orderId, field, value) => {
         const updatedOrders = orders.map((order) => {
             if (order.id === orderId) {
-                const updatedOrder = { ...order, [field]: value };
-
-                // Tính toán VATAmount và TotalAmount
-                const subAmount = parseFloat(updatedOrder.subAmount) || 0;
-                const vatPercentage = parseFloat(updatedOrder.vat) || 0;
-
-                updatedOrder.vatAmount = subAmount * (vatPercentage / 100);
-                updatedOrder.totalAmount = subAmount + updatedOrder.vatAmount;
-
-                return updatedOrder;
+                return { ...order, [field]: value };
             }
             return order;
         });
 
         setOrders(updatedOrders);
+        const orderToUpdate = updatedOrders.find((order) => order.id === orderId);
+
+        if (orderToUpdate.subAmount && orderToUpdate.vat) {
+            try {
+                const response = await fetch("http://localhost:8080/orders/calculate", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        subAmount: orderToUpdate.subAmount,
+                        vat: orderToUpdate.vat,
+                    }),
+                });
+
+                const calculatedOrder = await response.json();
+
+                if (response.ok) {
+                    setOrders((prevOrders) =>
+                        prevOrders.map((order) =>
+                            order.id === orderId
+                                ? { ...order, vatAmount: calculatedOrder.vatAmount, totalAmount: calculatedOrder.totalAmount }
+                                : order
+                        )
+                    );
+                }
+            } catch (error) {
+                console.error("Error calculating order amounts:", error);
+            }
+        }
     };
 
     const handleItemInputChange = (orderId, itemId, field, value) => {

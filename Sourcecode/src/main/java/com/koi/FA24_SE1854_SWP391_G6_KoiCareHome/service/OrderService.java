@@ -175,13 +175,21 @@ public class OrderService {
     public OrderHistory calculateOrder(OrderHistory order) {
         if (order.getVat() != null && order.getSubAmount() != null) {
             BigDecimal subAmount = order.getSubAmount();
-            BigDecimal vatPercentage = order.getVatAmount();
+            BigDecimal vatPercentage = order.getVat();
 
-            BigDecimal vatAmount = subAmount.multiply(vatPercentage.divide(BigDecimal.valueOf(100)));
-            BigDecimal totalAmount = subAmount.add(vatAmount);
+            // Kiểm tra nếu vatPercentage không phải là null
+            if (vatPercentage != null) {
+                // Tính VATAmount và TotalAmount
+                BigDecimal vatAmount = subAmount.multiply(vatPercentage.divide(BigDecimal.valueOf(100)));
+                BigDecimal totalAmount = subAmount.add(vatAmount);
 
-            order.setTotalAmount(totalAmount);
-            order.setTotalAmount(totalAmount);
+                order.setVatAmount(vatAmount);
+                order.setTotalAmount(totalAmount);
+            }
+        } else {
+            // Xử lý trường hợp vat hoặc subAmount null nếu cần thiết, ví dụ như set giá trị mặc định
+            order.setVatAmount(BigDecimal.ZERO);
+            order.setTotalAmount(order.getSubAmount() != null ? order.getSubAmount() : BigDecimal.ZERO);
         }
         return order;
     }
