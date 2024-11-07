@@ -12,10 +12,10 @@ import FoodCalculator from './Calculator/FoodCalculator';
 import FoodHistory from './Fish/ConsumeFoodHistory';
 import Chart from './GrowthRecord/Chart';
 import Reminder from './Reminder/Reminder';
-import Admin from './Admin/Admin';
 import BlogList from './Blog/BlogList';
 import BlogCreator from './Blog/BlogCreator';
 import BlogEditor from './Blog/BlogEditor';
+import AdminPage from './Admin/AdminPage';
 
 const App = () => {
   return (
@@ -35,10 +35,10 @@ const App = () => {
         <Route path="/consume-food-history" element={<FoodHistory />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/reminder" element={<Reminder />} />
-        <Route path="/admin" element={<Admin />} />
         <Route path="/public-blogs" element={<BlogList />} />
         <Route path="/create-blog" element={<BlogCreator />} />
         <Route path="/edit-blog/:id" element={<BlogEditor />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </Router>
   );

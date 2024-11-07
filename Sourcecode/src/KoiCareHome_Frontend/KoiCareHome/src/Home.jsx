@@ -11,6 +11,7 @@ import FeedingHistoryCard from './Card/FeedingHistoryCard';
 import FoodCalculatorCard from './Card/FoodCalculatorCard';
 import ReminderCard from './Card/ReminderCard';
 import BlogCard from './Card/BlogCard';
+import AdminCard from './Card/AdminCard';
 
 const Home = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -82,12 +83,13 @@ const Home = () => {
             <div ref={featureRef} className="card-container">
                 <div className='Feature-container'>
             <h1>Our Feature</h1>       
-            <ManageFishCard />
+                <ManageFishCard />
                 <FeedingHistoryCard />
                 <FoodCalculatorCard />
                 <GrCard /> 
                 <ReminderCard />
                 <BlogCard />
+                <AdminCard />
             </div>
             </div>
         </div>
