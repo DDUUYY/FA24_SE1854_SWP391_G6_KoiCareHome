@@ -10,13 +10,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * @author Quach To Anh
- */
 @Repository
-public interface
-FoodTypeRepository extends JpaRepository<FoodType, Integer> {
-
+public interface FoodTypeRepository extends JpaRepository<FoodType, Integer> {
     /**
      * This method is to delete a FoodType by changing its status, not to remove it completely from the database
      * @param id id of FoodType

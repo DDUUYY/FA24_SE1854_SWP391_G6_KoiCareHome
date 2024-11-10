@@ -3,19 +3,19 @@ import { useNavigate } from "react-router-dom";
 import './ManageFish.css';
 import createFish from './AddFish';
 import readFishes from './ViewAllFishes';
+import readPonds from './ViewAllPonds';
 import updateFish from './UpdateFish';
 import deleteFish from './DeleteFish';
+import { FaPlusCircle } from 'react-icons/fa';
 
 const FishForm = ({ fish, onSubmit, onCancel, title, memberID }) => {
     const [formData, setFormData] = useState(fish);
     const [ponds, setPonds] = useState([]);
 
     useEffect(() => {
-        const fetchPonds = async () => {
+        const fetchPonds = async (memberID) => {
             try {
-                const response = await fetch(`http://localhost:8080/api/pond/member?memberId=${memberID}`);
-                if (!response.ok) throw new Error('Failed to fetch ponds');
-                const data = await response.json();
+                const data = await readPonds(memberID);
                 setPonds(data);
             } catch (error) {
                 console.error('Error fetching ponds:', error);
@@ -23,7 +23,7 @@ const FishForm = ({ fish, onSubmit, onCancel, title, memberID }) => {
         };
 
         if (memberID) {
-            fetchPonds();
+            fetchPonds(memberID);
         }
     }, [memberID]);
 
@@ -210,18 +210,15 @@ const ManageFish = () => {
     useEffect(() => {
         if (memberID) {
             loadFishes(memberID);
-            fetchPonds();
+            fetchPonds(memberID);
         }
     }, [memberID]);
 
-    const fetchPonds = async () => {
+    const fetchPonds = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/pond/member?memberId=${memberID}`);
-            if (!response.ok) throw new Error('Failed to fetch ponds');
-            const data = await response.json();
+            const data = await readPonds(id);
             setPonds(data);
         } catch (error) {
-            console.error('Error fetching ponds:', error);
             showNotification('Error loading ponds', 'error');
         }
     };
@@ -281,9 +278,9 @@ const ManageFish = () => {
             )}
             <div className="header">
                 <h1>Fish Management</h1>
-                <button onClick={() => setShowAddForm(true)} className="add-btn">
-                    Add New Fish
-                </button>
+                <div className="add-btn-icon">
+                    <FaPlusCircle className="add-btn-plus" onClick={() => setShowAddForm(true)} />
+                </div>
             </div>
             <div className="fish-grid">
                 {fishes.map(fish => (

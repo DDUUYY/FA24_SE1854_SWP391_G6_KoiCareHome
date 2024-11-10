@@ -7,9 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
+/**
+ * @author Quach To Anh
+ */
 @RestController
-@RequestMapping("/api/fish/consumeFoodHistory")
+@RequestMapping("/api/consumeFoodHistory")
 @CrossOrigin(origins = "http://localhost:5173")
 public class ConsumeFoodHistoryController {
 
@@ -37,8 +41,21 @@ public class ConsumeFoodHistoryController {
      *
      * @return the ResponseEntity with status 200 (OK) and with body of the list of Fishes
      */
-    @GetMapping("/{id}")
-    public List<ConsumeFoodHistory> getAllConsumeFoodHistoryByFishId(@PathVariable int fishId) {
+    @GetMapping("/fish")
+    public List<ConsumeFoodHistory> getAllConsumeFoodHistoryByFishId(@RequestParam(name="fishID") int fishId) {
         return consumeFoodHistoryService.findAllByFishId(fishId);
     }
+
+    @GetMapping
+    public ResponseEntity<ConsumeFoodHistory> getConsumeFoodHistoryById(@RequestParam(name="consumeFoodHistoryID") int id) {
+        Optional<ConsumeFoodHistory> consumeFoodHistory = consumeFoodHistoryService.getConsumeFoodHistoryById(id);
+        return consumeFoodHistory.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteConsumeFoodHistory(@RequestParam(name = "consumeFoodHistoryID") int id) {
+        consumeFoodHistoryService.deleteByID(id);
+        return ResponseEntity.ok("Consume food history deleted successfully");
+    }
+
 }

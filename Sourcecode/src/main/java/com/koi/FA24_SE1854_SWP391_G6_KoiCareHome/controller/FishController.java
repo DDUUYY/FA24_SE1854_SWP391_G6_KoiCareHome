@@ -115,7 +115,6 @@ public class FishController {
      */
     @DeleteMapping
     public ResponseEntity<String> deleteFish(@RequestParam(name = "fishId") int fishId) {
-        System.out.println("Deleting fish with ID: " + fishId);
         fishService.deleteByID(fishId);
         return ResponseEntity.ok("Fish deleted successfully");
     }

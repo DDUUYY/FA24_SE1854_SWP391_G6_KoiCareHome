@@ -16,11 +16,11 @@ public class FoodTypeService {
     private static final String FOOD_TYPE_NOT_FOUND_MESSAGE = "FoodType not found.";
     private static final String FOOD_TYPE_ALREADY_EXISTED_MESSAGE = "FoodType already existed.";
 
-    private final FoodTypeRepository FoodTypeRepository;
+    private final FoodTypeRepository foodTypeRepository;
 
     @Autowired
-    public FoodTypeService(FoodTypeRepository FoodTypeRepository) {
-        this.FoodTypeRepository = FoodTypeRepository;
+    public FoodTypeService(FoodTypeRepository fishTypeRepository) {
+        this.foodTypeRepository = fishTypeRepository;
     }
 
     /**
@@ -30,13 +30,13 @@ public class FoodTypeService {
      * @return the persisted entity
      */
     public FoodType saveFoodType(FoodType foodType) {
-        if(FoodTypeRepository.existsByName(foodType.getName()))
+        if(foodTypeRepository.existsByName(foodType.getName()))
         {
             throw new AlreadyExistedException(FOOD_TYPE_ALREADY_EXISTED_MESSAGE);
         }
         foodType.setCreateBy("user");
         foodType.setUpdateBy("user");
-        return FoodTypeRepository.save(foodType);
+        return foodTypeRepository.save(foodType);
     }
 
     /**
@@ -45,7 +45,7 @@ public class FoodTypeService {
      * @return the list of entities
      */
     public List<FoodType> getAllFoodTypes() {
-        return FoodTypeRepository.findAllFoodType();
+        return foodTypeRepository.findAllFoodType();
     }
 
     /**
@@ -55,7 +55,7 @@ public class FoodTypeService {
      * @return the entity
      */
     public Optional<FoodType> getFoodTypeByID(int id) {
-        Optional<FoodType> existingFoodType = FoodTypeRepository.findById(id);
+        Optional<FoodType> existingFoodType = foodTypeRepository.findById(id);
         if (existingFoodType.isPresent()) {
             return existingFoodType;
         } else {
@@ -70,7 +70,7 @@ public class FoodTypeService {
      * @return the entity
      */
     public Optional<FoodType> getFoodTypeByName(String name) {
-        Optional<FoodType> existingFoodType = FoodTypeRepository.findByName(name);
+        Optional<FoodType> existingFoodType = foodTypeRepository.findByName(name);
         if (existingFoodType.isPresent()) {
             return existingFoodType;
         } else {
@@ -86,12 +86,12 @@ public class FoodTypeService {
      * @return the updated entity
      */
     public FoodType updateFoodType(int id, FoodType updatedFoodType) {
-        Optional<FoodType> existingFoodType = FoodTypeRepository.findById(id);
+        Optional<FoodType> existingFoodType = foodTypeRepository.findById(id);
         if (existingFoodType.isPresent()) {
-            FoodType FoodType = existingFoodType.get();
-            FoodType.setName(updatedFoodType.getName());
-            FoodType.setUpdateBy("user");
-            return FoodTypeRepository.save(FoodType);
+            FoodType fishType = existingFoodType.get();
+            fishType.setName(updatedFoodType.getName());
+            fishType.setUpdateBy("user");
+            return foodTypeRepository.save(fishType);
         } else {
             throw new NotFoundException(FOOD_TYPE_NOT_FOUND_MESSAGE);
         }
@@ -104,9 +104,8 @@ public class FoodTypeService {
      */
     @Transactional
     public void deleteByID(int id) {
-        if(FoodTypeRepository.existsById(id)){
-            updateFoodType(id, FoodTypeRepository.findById(id).get());
-            FoodTypeRepository.deleteByID(id);
+        if(foodTypeRepository.findById(id).isPresent()){
+            foodTypeRepository.deleteByID(id);
         } else{
             throw new NotFoundException(FOOD_TYPE_NOT_FOUND_MESSAGE);
         }

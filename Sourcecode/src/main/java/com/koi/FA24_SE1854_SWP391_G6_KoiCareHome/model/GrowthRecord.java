@@ -22,42 +22,42 @@ import java.time.LocalDateTime;
 
 @Table(name = "GrowthRecord")
 public class GrowthRecord {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer RecordID;
+      @Id
+      @GeneratedValue(strategy = GenerationType.IDENTITY)
+      private Integer RecordID;
 
-    private Integer fishID;
+      private Integer fishID;
 
-    @Column(nullable = false)
-    private LocalDate MeasurementDate;
-    @Column(nullable = false)
-    private BigDecimal Size;
-    @Column(nullable = false)
-    private BigDecimal Weight;
-    private String Description;
+@Column(nullable = false)
+private LocalDate MeasurementDate;
+@Column(nullable = false)
+private BigDecimal Size;
+@Column(nullable = false)
+private BigDecimal Weight;
+private String Description;
 
-    @Column(nullable = false)
-    private Boolean isActive;
+@Column(nullable = false)
+private Boolean isActive;
 
 
-    private LocalDateTime CreateDate;
+private LocalDateTime CreateDate;
 
-    private String CreateBy;
+private String CreateBy;
 
-    private LocalDateTime UpdateDate;
+private LocalDateTime UpdateDate;
 
-    private String UpdateBy;
+private String UpdateBy;
 
-    @PrePersist
-    public void onPrePersist() {
-        this.CreateDate = LocalDateTime.now();
-        this.UpdateDate = LocalDateTime.now();
-        this.MeasurementDate = LocalDate.now();
-    }
+      @PrePersist
+      public void onPrePersist() {
+            this.CreateDate = LocalDateTime.now();
+            this.UpdateDate = LocalDateTime.now();
+            this.MeasurementDate = LocalDate.now();
+      }
 
-    @PreUpdate
-    public void onPreUpdate() {
-        this.UpdateDate = LocalDateTime.now();
-    }
+      @PreUpdate
+      public void onPreUpdate() {
+            this.UpdateDate = LocalDateTime.now();
+      }
 }
 

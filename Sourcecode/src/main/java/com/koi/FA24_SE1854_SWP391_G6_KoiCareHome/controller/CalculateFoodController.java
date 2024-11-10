@@ -4,7 +4,9 @@ import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.service.CalculateFoodService;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-
+/**
+ * @author Quach To Anh
+ */
 
 @RestController
 @RequestMapping("/api/calculate/food")
@@ -20,10 +22,5 @@ public class CalculateFoodController {
     @GetMapping("/{pondId}")
     public BigDecimal calculateFoodBaseOnWeights(@PathVariable int pondId) {
         return calculateFoodService.calculateFoodBaseOnWeights(pondId);
-    }
-
-    @GetMapping("/weight/{pondId}")
-    public BigDecimal getTotalPondWeight(@PathVariable int pondId) {
-        return calculateFoodService.getTotalPondWeight(pondId);
     }
 }

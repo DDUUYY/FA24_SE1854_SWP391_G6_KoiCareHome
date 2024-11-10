@@ -11,7 +11,7 @@ const FeedingHistoryCard = () => {
             <div className="card">
                 <img className="card-image" src={Feeding_Img} alt="FeedingFish"></img>
                 <h2 className="card-title">FeedingHistory</h2>
-                <p className="card-description"></p>
+                <p className="card-description">..................</p>
             </div>
         </Link>
 

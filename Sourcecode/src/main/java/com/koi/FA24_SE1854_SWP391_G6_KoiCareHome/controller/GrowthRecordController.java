@@ -27,8 +27,9 @@ public class GrowthRecordController {
         if (growthRecord.getFishID() == null) {
             throw new IllegalArgumentException("Fish ID cannot be null");
         }
-        return growthRecordService.PostGrowthRecord(growthRecord);
+        return growthRecordService.postGrowthRecord(growthRecord);
     }
+
 
     @GetMapping("/GrowthRecord")
     public List<GrowthRecord> getAllGrowthRecords(@RequestParam(required = false) Integer fishID) {
@@ -40,25 +41,25 @@ public class GrowthRecordController {
 
     @DeleteMapping("/GrowthRecord/{RecordID}")
     public ResponseEntity<?> deleteGrowthRecord(@PathVariable Integer RecordID) {
-        try {
-            growthRecordService.deleteGrowthRecord(RecordID);
-            return new ResponseEntity<>("GrowthRecord with ID: " + RecordID + " deleted successfully", HttpStatus.OK);
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+     try {
+     growthRecordService.deleteGrowthRecord(RecordID);
+     return new ResponseEntity<>("GrowthRecord with ID: " + RecordID + " deleted successfully", HttpStatus.OK);
+     } catch (EntityNotFoundException e) {
+         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+     }
     }
 
     @GetMapping("/GrowthRecord/{RecordID}")
-    public ResponseEntity<?>getGrowthRecordById(@PathVariable Integer RecordID) {
-        GrowthRecord growthRecord = growthRecordService.getGrowthRecordById(RecordID);
-        if (growthRecord == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(growthRecord);
-    }
+  public ResponseEntity<?>getGrowthRecordById(@PathVariable Integer RecordID) {
+      GrowthRecord growthRecord = growthRecordService.getGrowthRecordById(RecordID);
+      if (growthRecord == null) return ResponseEntity.notFound().build();
+      return ResponseEntity.ok(growthRecord);
+  }
 
-    @PatchMapping("/GrowthRecord/{RecordID}")
-    public ResponseEntity<?> updateGrowthRecord(@PathVariable Integer RecordID,@RequestBody GrowthRecord growthRecord) {
+  @PatchMapping("/GrowthRecord/{RecordID}")
+  public ResponseEntity<?> updateGrowthRecord(@PathVariable Integer RecordID,@RequestBody GrowthRecord growthRecord) {
         GrowthRecord updatedRecord = growthRecordService.updateGrowthRecord(RecordID, growthRecord);
         if (updatedRecord == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         return ResponseEntity.ok(updatedRecord);
-    }
+}
 }

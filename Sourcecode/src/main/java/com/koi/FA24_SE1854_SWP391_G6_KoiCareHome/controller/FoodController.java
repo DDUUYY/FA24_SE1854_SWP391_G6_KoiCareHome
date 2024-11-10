@@ -51,14 +51,14 @@ public class FoodController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Food> getFoodById(@PathVariable int id) {
-        Optional<Food> food = foodService.getFoodByID(id);
-        return food.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        Optional<Food> fish = foodService.getFoodByID(id);
+        return fish.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
-     * Update a kind of Food by ID.
+     * Update a Food by ID.
      *
-     * @param id the ID of the Food to update
+     * @param id       the ID of the Food to update
      * @param food the updated Food
      * @return the ResponseEntity with status 200 (OK) and with body of the updated Food,
      * or with status 404 (Not Found) if the Food does not exist

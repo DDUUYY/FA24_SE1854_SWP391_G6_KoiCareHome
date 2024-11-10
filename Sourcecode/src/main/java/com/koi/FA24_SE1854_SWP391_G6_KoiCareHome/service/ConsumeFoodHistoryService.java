@@ -5,7 +5,9 @@ import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model.ConsumeFoodHistory;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.ConsumeFoodHistoryRepository;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.FishRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +38,7 @@ public class ConsumeFoodHistoryService {
         }
         consumeFoodHistory.setCreateBy("user");
         consumeFoodHistory.setUpdateBy("user");
+        consumeFoodHistory.setConsumeDate(LocalDateTime.now());
         return consumeFoodHistoryRepository.save(consumeFoodHistory);
     }
 
@@ -62,6 +65,19 @@ public class ConsumeFoodHistoryService {
         return existingConsumeFoodHistory;
     }
 
+    /**
+     * Delete a consume food history.
+     *
+     * @param id the ID of the entity
+     */
+    @Transactional
+    public void deleteByID(int id) {
+        if(consumeFoodHistoryRepository.findConsumeFoodHistoryByID(id).isPresent()){
+            fishRepository.deleteByID(id);
+        } else{
+            throw new NotFoundException(CONSUME_FOOD_HISTORY_NOT_FOUND_MESSAGE);
+        }
 
+    }
 
 }

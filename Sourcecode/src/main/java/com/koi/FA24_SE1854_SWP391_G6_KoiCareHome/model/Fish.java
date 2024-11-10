@@ -41,7 +41,7 @@ public class Fish {
     private BigDecimal weight;
 
     @Column(name = "Age")
-    private int age;
+    private Integer age;
 
     @Column(name = "Gender")
     private String gender;
@@ -56,7 +56,7 @@ public class Fish {
     private BigDecimal price;
 
     @Column(name = "isActive", nullable = false)
-    private Boolean isActive;
+    private boolean isActive;
 
     @Column(name = "CreateDate")
     private LocalDateTime createDate;

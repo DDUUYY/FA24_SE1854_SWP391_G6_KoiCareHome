@@ -115,23 +115,39 @@ public class FishService {
      * @return the updated entity
      */
     public Fish updateFish(int id, Fish updatedFish) {
-        Optional<Fish> existingFish = fishRepository.findFishById(id);
-        if (existingFish.isEmpty()) {
-           throw new NotFoundException(FISH_NOT_FOUND_MESSAGE);
+        Optional<Fish> existingFishOpt = fishRepository.findFishById(id);
+        if (existingFishOpt.isEmpty()) {
+            throw new NotFoundException(FISH_NOT_FOUND_MESSAGE);
         }
-        Fish fish = existingFish.get();
-        if (fishRepository.existsByNameAndPondIdExceptId(updatedFish.getName(),id, updatedFish.getPondID())) {
-            throw new AlreadyExistedException(FISH_NAME_ALREADY_EXISTED_MESSAGE);
+        Fish fish = existingFishOpt.get();
+
+
+        if (updatedFish.getSize() != null) {
+            fish.setSize(updatedFish.getSize());
         }
-        fish.setName(updatedFish.getName());
-        fish.setSize(updatedFish.getSize());
-        fish.setWeight(updatedFish.getWeight());
-        fish.setAge(updatedFish.getAge());
-        fish.setGender(updatedFish.getGender());
-        fish.setBreed(updatedFish.getBreed());
-        fish.setOrigin(updatedFish.getOrigin());
-        fish.setPrice(updatedFish.getPrice());
-        fish.setUpdateBy("user");
+        if (updatedFish.getWeight() != null) {
+            fish.setWeight(updatedFish.getWeight());
+        }
+
+        if (updatedFish.getName() != null) {
+            fish.setName(updatedFish.getName());
+        }
+        if (updatedFish.getAge() != null) {
+            fish.setAge(updatedFish.getAge());
+        }
+        if (updatedFish.getGender() != null) {
+            fish.setGender(updatedFish.getGender());
+        }
+        if (updatedFish.getOrigin() != null) {
+            fish.setOrigin(updatedFish.getOrigin());
+        }
+        if (updatedFish.getBreed() != null) {
+            fish.setBreed(updatedFish.getBreed());
+        }
+        if (updatedFish.getPrice() != null) {
+            fish.setPrice(updatedFish.getPrice());
+        }
+
         return fishRepository.save(fish);
     }
 
@@ -142,12 +158,10 @@ public class FishService {
      */
     @Transactional
     public void deleteByID(int id) {
-        if(fishRepository.existsById(id)){
-            updateFish(id, fishRepository.findById(id).get());
+        if(fishRepository.findFishById(id).isPresent()){
             fishRepository.deleteByID(id);
         } else{
             throw new NotFoundException(FISH_NOT_FOUND_MESSAGE);
         }
-
     }
 }

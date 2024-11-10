@@ -51,36 +51,21 @@ public class FoodTypeController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<FoodType> getFoodTypeById(@PathVariable int id) {
-        Optional<FoodType> FoodType = foodTypeService.getFoodTypeByID(id);
-        return FoodType.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    /**
-     * Get a FoodType by Name
-     *
-     * @param name the Name of the FoodType to get
-     * @return the ResponseEntity with status 200 (OK) and with body of the FoodType,
-     * or with the status 404 (NotFound) if the FoodType does not exist
-     */
-    @GetMapping("/name/{name}")
-    public ResponseEntity<FoodType> getFoodTypeByName(@PathVariable String name) {
-        if (name == null || name.trim().isEmpty())
-            return ResponseEntity.badRequest().build();
-        Optional<FoodType> foodType = foodTypeService.getFoodTypeByName(name);
-        return foodType.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        Optional<FoodType> fishType = foodTypeService.getFoodTypeByID(id);
+        return fishType.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
      * Update a FoodType by ID.
      *
      * @param id the ID of the FoodType to update
-     * @param FoodType the updated FoodType
+     * @param foodType the updated FoodType
      * @return the ResponseEntity with status 200 (OK) and with body of the updated FoodType,
      * or with status 404 (Not Found) if the FoodType does not exist
      */
     @PutMapping
-    public ResponseEntity<FoodType> updateFoodType(@RequestParam(name = "FoodTypeId") int id, @RequestBody FoodType FoodType) {
-        FoodType updatedFoodType = foodTypeService.updateFoodType(id, FoodType);
+    public ResponseEntity<FoodType> updateFoodType(@RequestParam(name = "foodTypeId") int id, @RequestBody FoodType foodType) {
+        FoodType updatedFoodType = foodTypeService.updateFoodType(id, foodType);
         return ResponseEntity.ok(updatedFoodType);
     }
 
@@ -91,7 +76,7 @@ public class FoodTypeController {
      * @return the ResponseEntity with status 200 (OK) and with body of the message "FoodType deleted successfully"
      */
     @DeleteMapping
-    public ResponseEntity<String> deleteByID(@RequestParam(name = "FoodTypeId") int id) {
+    public ResponseEntity<String> deleteByID(@RequestParam(name = "foodTypeId") int id) {
         foodTypeService.deleteByID(id);
         return ResponseEntity.ok("FoodType deleted successfully");
     }

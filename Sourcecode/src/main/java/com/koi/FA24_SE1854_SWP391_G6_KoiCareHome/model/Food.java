@@ -20,42 +20,44 @@ public class Food {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "FoodID", nullable = false)
-    private Integer foodID;
+    private int foodID;
 
     @Column(name = "FoodTypeID", nullable = false)
-    private Integer foodTypeID;
+    private int foodTypeID;
 
     @Column(name = "Name", nullable = false)
     private String name;
 
-    @Column(name = "Weight")
+    @Column(name = "Weight", nullable = true)
     private BigDecimal Weight;
 
-    @Column(name = "Description")
+    @Column(name = "Description", nullable = true)
     private String description;
 
-    @Column(name = "Vendor")
+    @Column(name = "Vendor", nullable = true)
     private String Vendor;
 
-    @Column(name = "isActive")
-    private Boolean isActive;
+    @Column(name = "isActive", nullable = true)
+    private boolean isActive;
 
-    @Column(name = "CreateDate")
+    @Column(name = "CreateDate", nullable = true)
     private LocalDateTime createDate;
 
     @Column(name = "CreateBy", nullable = false)
     private String createBy;
 
-    @Column(name = "UpdateDate")
+    @Column(name = "UpdateDate", nullable = true)
     private LocalDateTime updateDate;
 
-    @Column(name = "UpdateBy")
+    @Column(name = "UpdateBy", nullable = true)
     private String updateBy;
 
     @PrePersist
     protected void onCreate() {
         createDate = LocalDateTime.now();
         updateDate = LocalDateTime.now();
+        createBy = "user";
+        updateBy = "user";
         isActive = true;
     }
 
