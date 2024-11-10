@@ -1,10 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './style.css';
-/*
- * Author: Ha Huy Nghia Hiep
- * Date: October 19, 2024
- */
 
 const Login = () => {
   const [errorMessage, setErrorMessage] = useState('');
@@ -32,9 +28,12 @@ const Login = () => {
         }
       })
       .then((data) => {
-        // Save the user ID to localStorage 
-        localStorage.setItem('userID', data);
-        navigate('/home');
+        // Lưu userID và roleID vào localStorage
+        localStorage.setItem('userID', data.userId);
+        localStorage.setItem('userRoleID', data.roleID); // Lưu roleID trực tiếp, 2 là Admin
+        localStorage.setItem('userToken', data.token);
+        
+        navigate('/home'); // Điều hướng tới trang home hoặc trang phù hợp
       })
       .catch((error) => {
         setErrorMessage(error.message || 'Login failed');
@@ -43,22 +42,22 @@ const Login = () => {
 
   return (
     <body className="login-signup-bg">
-    <section >
+    <section>
       <form onSubmit={handleSubmit}>
-        <h1 className="title" >Login</h1>
+        <h1 className="title">Login</h1>
         {errorMessage && (
           <div className="dialog-row">
             <label className="text-center redText">{errorMessage}</label>
           </div>
         )}
-       <div className="inputbox">
-            <input name="email" id="email" type="email" required />
-            <label htmlFor="email">Email</label>
-          </div>
-          <div className="inputbox">
-            <input name="password" type="password" id="password" required />
-            <label htmlFor="password">Password</label>
-          </div>
+        <div className="inputbox">
+          <input name="email" id="email" type="email" required />
+          <label htmlFor="email">Email</label>
+        </div>
+        <div className="inputbox">
+          <input name="password" type="password" id="password" required />
+          <label htmlFor="password">Password</label>
+        </div>
         <button type="submit">Log in</button>
         <div className="register">
           <p>

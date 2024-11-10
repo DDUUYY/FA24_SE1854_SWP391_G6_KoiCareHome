@@ -51,7 +51,7 @@ public class MemberService {
     }
 
     public Member getMemberById(Integer MemberID) {
-      return memberRepository.findById(MemberID).orElse(null);
+        return memberRepository.findById(MemberID).orElse(null);
     }
 
     public Member updateMember(Integer MemberID, Member updatedMember) {

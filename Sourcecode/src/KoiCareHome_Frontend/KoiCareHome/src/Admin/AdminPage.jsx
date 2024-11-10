@@ -1,11 +1,23 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './AdminPage.css';
 
 const AdminPage = () => {
   const [members, setMembers] = useState([]);
   const [pendingPosts, setPendingPosts] = useState([]);
+  const navigate = useNavigate();
 
+  // Kiểm tra quyền truy cập khi component mount
+  useEffect(() => {
+    const userRoleID = localStorage.getItem('userRoleID');
+    if (userRoleID !== "2") { // Kiểm tra nếu không phải Admin (roleID = 2)
+      navigate('/login'); // Nếu không phải Admin, điều hướng về trang login
+    }
+  }, [navigate]);
+
+  // Tải danh sách thành viên
   useEffect(() => {
     fetchMembers();
     fetchPendingPosts();
@@ -20,6 +32,7 @@ const AdminPage = () => {
     }
   };
 
+  // Tải danh sách bài viết chờ duyệt
   const fetchPendingPosts = async () => {
     try {
       const response = await axios.get('/api/blogposts/pending');
@@ -29,6 +42,7 @@ const AdminPage = () => {
     }
   };
 
+  // Thay đổi trạng thái thành viên
   const toggleMemberStatus = async (memberId) => {
     try {
       await axios.post(`/api/admin/members/block/${memberId}`);
@@ -38,6 +52,7 @@ const AdminPage = () => {
     }
   };
 
+  // Duyệt bài viết
   const reviewPost = async (postId, approved, reason = '') => {
     try {
       await axios.put(`/api/blogposts/review/${postId}`, null, {
@@ -50,16 +65,16 @@ const AdminPage = () => {
   };
 
   return (
-    <div>
-      <h2>Quản lý Members</h2>
-      <table>
+    <div className="admin-container">
+      <h2>Manage Members</h2>
+      <table className="admin-table">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Tên</th>
+            <th>Name</th>
             <th>Email</th>
-            <th>Trạng thái</th>
-            <th>Thao tác</th>
+            <th>Status</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -70,8 +85,11 @@ const AdminPage = () => {
               <td>{member.email}</td>
               <td>{member.isActive ? 'Active' : 'Inactive'}</td>
               <td>
-                <button onClick={() => toggleMemberStatus(member.MemberID)}>
-                  {member.isActive ? 'Khóa' : 'Mở khóa'}
+                <button 
+                  className={`status-btn ${member.isActive ? 'block' : 'unblock'}`}
+                  onClick={() => toggleMemberStatus(member.MemberID)}
+                >
+                  {member.isActive ? 'Block' : 'Unblock'}
                 </button>
               </td>
             </tr>
@@ -79,14 +97,14 @@ const AdminPage = () => {
         </tbody>
       </table>
 
-      <h2>Duyệt BlogPost</h2>
-      <table>
+      <h2>Review Blog Posts</h2>
+      <table className="admin-table">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Tiêu đề</th>
-            <th>Tác giả</th>
-            <th>Thao tác</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -96,9 +114,17 @@ const AdminPage = () => {
               <td>{post.title}</td>
               <td>{post.author}</td>
               <td>
-                <button onClick={() => reviewPost(post.postId, true)}>Duyệt</button>
-                <button onClick={() => reviewPost(post.postId, false, 'Lý do từ chối')}>
-                  Từ chối
+                <button 
+                  className="approve-btn"
+                  onClick={() => reviewPost(post.postId, true)}
+                >
+                  Approve
+                </button>
+                <button 
+                  className="reject-btn"
+                  onClick={() => reviewPost(post.postId, false, 'Reason for rejection')}
+                >
+                  Reject
                 </button>
               </td>
             </tr>

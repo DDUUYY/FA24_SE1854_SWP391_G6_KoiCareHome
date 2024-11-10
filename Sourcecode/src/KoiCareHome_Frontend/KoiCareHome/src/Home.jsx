@@ -22,8 +22,25 @@ const Home = () => {
     };
 
     const handleLogout = () => {
-        navigate('/login');
-    };
+        localStorage.removeItem('userID'); // Xóa thông tin người dùng lưu trong localStorage
+        fetch('http://localhost:8080/auth/logout', {
+            method: 'POST',
+            credentials: 'include', // Đảm bảo gửi cookie nếu dùng session
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => {
+            if (response.ok) {
+                navigate('/login'); // Điều hướng tới trang đăng nhập
+            } else {
+                console.error('Logout failed');
+            }
+        })
+        .catch((error) => {
+            console.error('Logout error:', error);
+        });
+    };    
 
     const handleProfile = () => {
         navigate('/profile');
