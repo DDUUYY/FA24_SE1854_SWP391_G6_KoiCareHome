@@ -63,6 +63,7 @@ section {
     color: #fff;
   }
   
+  
   .inputbox ion-icon {
     position: absolute;
     right: 8px;
@@ -126,4 +127,12 @@ button:hover {
 .register p a:hover {
   text-decoration: underline;
   color: #a8a8a8;
+}
+
+.error {
+  color: rgb(247, 34, 34);
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

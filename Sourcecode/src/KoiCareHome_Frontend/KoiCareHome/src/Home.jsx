@@ -20,7 +20,8 @@ const Home = () => {
     };
 
     const handleLogout = () => {
-        navigate('/login');
+        localStorage.removeItem('userID');  // Optionally clear user data
+        navigate('/login', { replace: true });  // This replaces the current page in the history stack
     };
 
     const handleProfile = () => {

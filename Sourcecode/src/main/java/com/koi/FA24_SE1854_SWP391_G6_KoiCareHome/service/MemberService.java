@@ -69,7 +69,6 @@ public class MemberService {
                 existingMember.setPassword(passwordEncoder.encode(updatedMember.getPassword()));
             }
 
-
             return memberRepository.save(existingMember);
         }
         return null;

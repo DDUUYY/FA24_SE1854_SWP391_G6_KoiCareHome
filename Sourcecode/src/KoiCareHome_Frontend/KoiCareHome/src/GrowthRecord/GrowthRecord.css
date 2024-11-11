@@ -3,14 +3,26 @@
  * Date: October 22, 2024 
  */
 
-.record-section{
-	position: relative;
-	max-width: 75%;
+ .record-section {
+    position: relative;
+    max-width: 75%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+	margin-left: 10%;
+}
+
+.fish-select-container {
+    position: sticky;
+    top: 0; /* Adjust based on layout */
+    width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
-	
+    background-color: #fff; /* Background to prevent overlap */
+    padding: 10px;
+    z-index: 1;
 }
+
 
 .records-table {
 	width: 100%;

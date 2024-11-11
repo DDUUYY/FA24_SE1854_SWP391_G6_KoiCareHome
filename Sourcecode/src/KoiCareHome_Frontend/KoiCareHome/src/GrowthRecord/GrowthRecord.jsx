@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
 import { FaEye, FaTrashAlt, FaPlusCircle ,FaChartBar } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import "./GrowthRecord.css";
 import ViewRecord from './ViewRecord';
 
@@ -17,16 +17,24 @@ const GrowthRecord = () => {
     const [ViewOpen, setViewOpen] = useState(false); 
     const [selectedRecord, setSelectedRecord] = useState(null); 
     const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const fishID = queryParams.get("fishID");
+        if (fishID) {
+            setSelectedFish(fishID);
+        }
+    }, [location]);
 
     useEffect(() => {
         if (selectedFish) {
             loadGrowthRecords(selectedFish);
         } else {
-            setGrowthRecords([]); // Clear records if no fish is selected
+            setGrowthRecords([]);
         }
     }, [selectedFish]);
 
-    // Fetch available fishes on component load
     useEffect(() => {
         loadFishes();
     }, []);
@@ -99,20 +107,21 @@ const GrowthRecord = () => {
 
     return (
         <section className="record-section">
+            <div className="fish-select-container">
             <div className="fish-select">
                 <label htmlFor="fish">Select Fish:</label>
                 <select
-                   id="fish"
-                   value={selectedFish || ''}
-                   onChange={handleFishSelect}
-                   disabled={fishes.length === 0}
+                    id="fish"
+                    value={selectedFish || ''}
+                    onChange={handleFishSelect}
+                    disabled={fishes.length === 0}
                 >
-                <option value="" disabled>Select a fish</option>
-                {fishes.map((fish) => (
-                    <option key={fish.fishID} value={fish.fishID}>
-                        {fish.name}
-                    </option>
-                ))}
+                    <option value="" disabled>Select a fish</option>
+                    {fishes.map((fish) => (
+                        <option key={fish.fishID} value={fish.fishID}>
+                            {fish.name}
+                        </option>
+                    ))}
                 </select>
             </div>
 
@@ -123,11 +132,11 @@ const GrowthRecord = () => {
                     style={{ cursor: selectedFish ? 'pointer' : 'not-allowed', color: selectedFish ? '#2cc650' : 'gray' }}
                 />
             </div>
-
+         </div>
             <table className="records-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>No.</th>
                         <th>Measurement Date</th>
                         <th>Size</th>
                         <th>Weight</th>

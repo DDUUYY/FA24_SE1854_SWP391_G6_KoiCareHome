@@ -128,7 +128,6 @@ public class FishService {
         if (updatedFish.getWeight() != null) {
             fish.setWeight(updatedFish.getWeight());
         }
-
         if (updatedFish.getName() != null) {
             fish.setName(updatedFish.getName());
         }
