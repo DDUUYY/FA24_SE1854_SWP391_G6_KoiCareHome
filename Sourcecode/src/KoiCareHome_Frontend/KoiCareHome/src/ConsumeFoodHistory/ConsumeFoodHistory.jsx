@@ -7,6 +7,7 @@ import readFood from '../Calculator/ViewAllFood';
 import readHistory from './ViewAllHistories';
 import deleteHistory from './DeleteConsumeFoodHistory';
 import { FaFish, FaBox, FaClock, FaPlusCircle } from 'react-icons/fa';
+import { FaCircleArrowLeft } from "react-icons/fa6";
 
 const ConsumptionForm = ({ onSubmit, onCancel, title, foodOptions, fishes }) => {
   const [formData, setFormData] = useState({
@@ -268,16 +269,25 @@ const ManageConsumeFoodHistory = () => {
       </div>
 
       <div className="consumption-grid">
-        {consumeFoodHistories.map(history => (
-          <ConsumptionCard
-            key={history.consumeFoodHistoryID}
-            consumeFoodHistory={history}
-            onDelete={handleDelete}
-            fishes={fishes}
-            food={food}
-          />
-        ))}
+        {consumeFoodHistories.length === 0 ? (
+          <div className="no-history-container">
+            <div className="no-history-message">
+              No consumption history available for this fish.
+            </div>
+          </div>
+        ) : (
+          consumeFoodHistories.map(history => (
+            <ConsumptionCard
+              key={history.consumeFoodHistoryID}
+              consumeFoodHistory={history}
+              onDelete={handleDelete}
+              fishes={fishes}
+              food={food}
+            />
+          ))
+        )}
       </div>
+
 
       {showAddForm && (
         <ConsumptionForm
@@ -289,9 +299,9 @@ const ManageConsumeFoodHistory = () => {
         />
       )}
 
-      <button onClick={() => navigate('/home')} className="back-button">
-        Back to Home
-      </button>
+      <div className="back-btn-icon">
+        <FaCircleArrowLeft onClick={() => navigate('/home')} className="back-btn-plus" />
+      </div>
     </div>
   );
 };

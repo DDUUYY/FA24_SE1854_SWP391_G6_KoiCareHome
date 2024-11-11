@@ -98,13 +98,36 @@
 }
 
 .add-btn-plus {
-  font-size: 60px; 
-  color: #2cc650; 
+  font-size: 48px; 
+  color: orange; 
   transition: color 0.3s; 
 }
 
 .add-btn-plus:hover {
-  color: #218838; 
+  color: rgba(255, 166, 0, 0.404); 
+}
+
+/* Tooltip styles */
+.add-btn-icon::after {
+  content: "Click here to add new consume food history!"; 
+  visibility: hidden; /* Hidden by default */
+  background-color: black; 
+  color: #fff; 
+  text-align: center; 
+  border-radius: 5px; 
+  padding: 5px; 
+  position: absolute; /* Positioning */
+  z-index: 1; /* On top */
+  bottom: 125%; 
+  left: 50%;
+  transform: translateX(-50%); /* Center it horizontally */
+  opacity: 0; /* Invisible by default */
+  transition: opacity 0.3s; 
+}
+
+.add-btn-icon:hover::after {
+  visibility: visible; 
+  opacity: 1; /* Fade in */
 }
 
 .delete-btn {
@@ -152,13 +175,39 @@
   background: #ef4444;
 }
 
+/* Message when there no sumption history for the chosen Koi */
+.no-history-container {
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+}
+
+.no-history-message {
+  color: #6b7280; 
+  font-size: 50px; 
+  text-align: center; 
+}
+
 /* Back button */
-.back-button {
-  margin-top: 2rem;
-  padding: 0.5rem 1rem;
-  background: #6b7280;
-  color: white;
-  border-radius: 0.375rem;
+.back-btn-icon {
+  position: fixed;
+  top: 8%;
+  left: 3%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 40px;
+}
+
+.back-btn-plus {
+  font-size: 48px;
+  color: orange;
+  transition: color 0.3s;
+}
+
+.back-btn-plus:hover {
+  color: rgba(255, 166, 0, 0.404);
 }
 
 .fish-select {

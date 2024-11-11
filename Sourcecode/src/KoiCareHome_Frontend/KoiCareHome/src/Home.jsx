@@ -1,11 +1,11 @@
 
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useRef } from 'react';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FaRegUserCircle } from "react-icons/fa";
 import './home.css';
-import GrCard from '../src/Card/GrCard'; 
-import KoiGraphic from './assets/Welcome.jpg'; 
+import GrCard from '../src/Card/GrCard';
+import KoiGraphic from './assets/Welcome.jpg';
 import LogoKoiFish from './assets/logokoifish.png';
 import ManageFishCard from './Card/ManageFishCard';
 import FeedingHistoryCard from './Card/FeedingHistoryCard';
@@ -20,7 +20,7 @@ const Home = () => {
     };
 
     const handleLogout = () => {
-        navigate('/login');
+        navigate('/login'); // Điều hướng tới trang đăng nhập
     };
 
     const handleProfile = () => {
@@ -38,7 +38,7 @@ const Home = () => {
         <div className="home-container">
 
             <nav className="navbar sticky-navbar">
-            <div className="logo-container" onClick={() => scrollToSection(homeRef)}>
+                <div className="logo-container" onClick={() => scrollToSection(homeRef)}>
                     <img src={LogoKoiFish} alt="Logo Koi Fish" className="logo-image" />
                     <div className="logo-text">KoiCareHome</div>
                 </div>
@@ -61,7 +61,7 @@ const Home = () => {
                 </div>
             </nav>
 
-          
+
             <div ref={homeRef} className="welcome-home">
                 <div className="welcome-text">
                     <h1>KoiCareHome - <br></br>Your Go-To Koi Pond Buddy</h1>
@@ -69,7 +69,7 @@ const Home = () => {
                         Effortlessly manage your water parameters, koi <br></br> and ponds with our app!
                     </p>
                     <p className="description">
-                        Say goodbye to the hassle of recording water values <br></br> and koi information on paper - 
+                        Say goodbye to the hassle of recording water values <br></br> and koi information on paper -
                         <span className="highlight"> KoiCareHome</span> streamlines it all for you.
                     </p>
                 </div>
@@ -80,12 +80,12 @@ const Home = () => {
 
             <div ref={featureRef} className="card-container">
                 <div className='Feature-container'>
-            <h1>Our Feature</h1>       
-            <ManageFishCard />
-                <FeedingHistoryCard />
-                <FoodCalculatorCard />
-                <GrCard /> 
-            </div>
+                    <h1>Our Feature</h1>
+                    <ManageFishCard />
+                    <FeedingHistoryCard />
+                    <FoodCalculatorCard />
+                    <GrCard />
+                </div>
             </div>
         </div>
     );

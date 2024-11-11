@@ -11,7 +11,7 @@ const FoodCalculatorCard = () => {
         <div className="card">
             <img className="card-image" src={Calculator} alt="FoodCalculator"></img>
             <h2 className="card-title">FoodCalculator</h2>
-            <p className="card-description">......................</p>
+            <p className="card-description">Know how much food your Koi need in just a click</p>
         </div>
         </Link>
 

@@ -7,6 +7,7 @@ import readPonds from './ViewAllPonds';
 import updateFish from './UpdateFish';
 import deleteFish from './DeleteFish';
 import { FaPlusCircle } from 'react-icons/fa';
+import { FaCircleArrowLeft } from "react-icons/fa6";
 
 const FishForm = ({ fish, onSubmit, onCancel, title, memberID }) => {
     const [formData, setFormData] = useState(fish);
@@ -278,8 +279,8 @@ const ManageFish = () => {
             )}
             <div className="header">
                 <h1>Fish Management</h1>
-                <div className="add-btn-icon">
-                    <FaPlusCircle className="add-btn-plus" onClick={() => setShowAddForm(true)} />
+                <div className="add-koi-btn-icon">
+                    <FaPlusCircle className="add-koi-btn-plus" onClick={() => setShowAddForm(true)} />
                 </div>
             </div>
             <div className="fish-grid">
@@ -311,9 +312,9 @@ const ManageFish = () => {
                     memberID={memberID}
                 />
             )}
-            <button onClick={() => navigate('/home')} className="back-button">
-                Back to Home
-            </button>
+            <div className="back-btn-icon">
+                <FaCircleArrowLeft onClick={() => navigate('/home')} className="back-btn-plus" />
+            </div>
         </div>
     );
 };
