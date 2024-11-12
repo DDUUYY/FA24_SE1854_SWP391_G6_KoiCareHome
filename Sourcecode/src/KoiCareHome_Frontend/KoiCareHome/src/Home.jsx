@@ -1,4 +1,3 @@
-
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,8 +8,8 @@ import Koi_Img from './assets/Koi_Img.jpg';
 // import KoiGraphic from './assets/Welcome.jpg';
 // import LogoKoiFish from './assets/logokoifish.png';
 
-import SaltCalculator from './assets/calculator.jpg';
-import Order from './assets/order.png';
+import SaltCalculation from "./Card/SaltCalculation.jsx";
+import Order from "./Card/Order.jsx";
 
 
 
@@ -24,6 +23,9 @@ import LogoKoiFish from './assets/logokoifish.png';
 import ManageFishCard from './Card/ManageFishCard';
 import FeedingHistoryCard from './Card/FeedingHistoryCard';
 import FoodCalculatorCard from './Card/FoodCalculatorCard';
+import ReminderCard from './Card/ReminderCard';
+import BlogCard from './Card/BlogCard';
+import AdminCard from './Card/AdminCard';
 
 const Home = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -100,6 +102,11 @@ const Home = () => {
                     <FeedingHistoryCard />
                     <FoodCalculatorCard />
                     <GrCard />
+                    <ReminderCard />
+                    <BlogCard />
+                    <SaltCalculation />
+                    <Order />
+                    <AdminCard />
                 </div>
             </div>
         </div>
