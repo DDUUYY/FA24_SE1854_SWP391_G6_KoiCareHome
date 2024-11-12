@@ -5,6 +5,7 @@ import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model.*;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.MemberRepository;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.OrderHistoryRepository;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.OrderItemRepository;
+import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.validation.OrderValidation;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,13 @@ public class OrderService {
     private MemberRepository memberRepository;
 
     public OrderHistory addOrder(CreateOrderDTO createOrderDTO) throws Exception {
+        // Validate the order data
+        Map<String, String> validationErrors = OrderValidation.validateOrder(createOrderDTO);
+
+        // Nếu có lỗi validation, ném ra Exception với thông báo lỗi chi tiết
+        if (!validationErrors.isEmpty()) {
+            throw new Exception("Validation failed: " + validationErrors);
+        }
 
         // Retrieve member from repository
         Member member = memberRepository.findById(createOrderDTO.getMemberId())
@@ -83,7 +91,14 @@ public class OrderService {
         return orderHistory;
     }
 
+
     public OrderHistory updateOrder(Integer orderId, CreateOrderDTO createOrderDTO) throws Exception {
+        // Kiểm tra dữ liệu đầu vào
+        Map<String, String> validationErrors = OrderValidation.validateOrder(createOrderDTO);
+        if (!validationErrors.isEmpty()) {
+            throw new Exception("Validation failed: " + validationErrors.toString());
+        }
+
         OrderHistory existingOrderHistory = orderHistoryRepository.findById(orderId)
                 .orElseThrow(() -> new Exception("Order not found"));
 
@@ -125,6 +140,7 @@ public class OrderService {
         orderHistoryRepository.save(existingOrderHistory);
         return existingOrderHistory;
     }
+
 
     public OrderHistory deleteOrder(Integer orderId) throws Exception {
 
@@ -177,21 +193,31 @@ public class OrderService {
             BigDecimal subAmount = order.getSubAmount();
             BigDecimal vatPercentage = order.getVat();
 
-            // Kiểm tra nếu vatPercentage không phải là null
-            if (vatPercentage != null) {
-                // Tính VATAmount và TotalAmount
-                BigDecimal vatAmount = subAmount.multiply(vatPercentage.divide(BigDecimal.valueOf(100)));
-                BigDecimal totalAmount = subAmount.add(vatAmount);
+            // Tính VATAmount và TotalAmount cho đơn hàng
+            BigDecimal vatAmount = subAmount.multiply(vatPercentage.divide(BigDecimal.valueOf(100)));
+            BigDecimal totalAmount = subAmount.add(vatAmount);
 
-                order.setVatAmount(vatAmount);
-                order.setTotalAmount(totalAmount);
+            order.setVatAmount(vatAmount);
+            order.setTotalAmount(totalAmount);
+
+            // Tính amount cho từng order item
+            for (OrderItem item : order.getOrderItems()) {
+                BigDecimal quantity = BigDecimal.valueOf(item.getQuantity());
+                BigDecimal price = item.getPrice(); // Giả sử price đã là BigDecimal
+                if (price != null && quantity != null) {
+                    BigDecimal itemAmount = quantity.multiply(price);
+                    item.setAmount(itemAmount);
+                } else {
+                    item.setAmount(BigDecimal.ZERO); // Đặt giá trị mặc định nếu thiếu dữ liệu
+                }
             }
+
         } else {
-            // Xử lý trường hợp vat hoặc subAmount null nếu cần thiết, ví dụ như set giá trị mặc định
+            // Xử lý trường hợp vat hoặc subAmount null nếu cần thiết
             order.setVatAmount(BigDecimal.ZERO);
             order.setTotalAmount(order.getSubAmount() != null ? order.getSubAmount() : BigDecimal.ZERO);
         }
         return order;
     }
-}
 
+}

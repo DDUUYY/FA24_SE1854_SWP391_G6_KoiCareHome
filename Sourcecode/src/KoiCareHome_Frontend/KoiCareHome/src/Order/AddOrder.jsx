@@ -12,6 +12,8 @@ function AddOrder() {
         ]
     });
 
+    const [errors, setErrors] = useState({}); // To hold error messages for validation
+
     useEffect(() => {
         const userID = localStorage.getItem('userID');
         if (userID) {
@@ -44,14 +46,17 @@ function AddOrder() {
         });
     };
 
-
     const deleteItem = (index) => {
         const items = [...order.orderItems];
         items.splice(index, 1);
         setOrder({ ...order, orderItems: items });
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Clear previous errors
+        setErrors({});
 
         try {
             const response = await fetch('http://localhost:8080/orders/add', {
@@ -73,7 +78,8 @@ function AddOrder() {
                     orderItems: [{ productName: '', quantity: '', price: '', amount: '' }]
                 });
             } else {
-                alert(result.message || 'Failed to add order');
+                // Handle validation error messages from backend
+                setErrors(result);
             }
         } catch (error) {
             console.error('Error adding order:', error);
@@ -94,14 +100,29 @@ function AddOrder() {
                         onChange={handleChange}
                         required
                     />
+                    {errors.orderDate && <div className="error-message">{errors.orderDate}</div>}
                 </div>
                 <div className="form-group">
                     <label>Sub Amount:</label>
-                    <input type="number" name="subAmount" value={order.subAmount} onChange={handleChange} required />
+                    <input
+                        type="number"
+                        name="subAmount"
+                        value={order.subAmount}
+                        onChange={handleChange}
+                        required
+                    />
+                    {errors.subAmount && <div className="error-message">{errors.subAmount}</div>}
                 </div>
                 <div className="form-group">
                     <label>VAT (%):</label>
-                    <input type="number" name="vat" value={order.vat} onChange={handleChange} required />
+                    <input
+                        type="number"
+                        name="vat"
+                        value={order.vat}
+                        onChange={handleChange}
+                        required
+                    />
+                    {errors.vat && <div className="error-message">{errors.vat}</div>}
                 </div>
 
                 <h3 className="item-header">Order Items</h3>
@@ -109,21 +130,59 @@ function AddOrder() {
                     <div key={index} className="order-item-group">
                         <div className="form-group">
                             <label>Product Name:</label>
-                            <input type="text" name="productName" value={item.productName} onChange={(e) => handleItemChange(index, e)} required />
+                            <input
+                                type="text"
+                                name="productName"
+                                value={item.productName}
+                                onChange={(e) => handleItemChange(index, e)}
+                                required
+                            />
+                            {errors[`orderItems[${index}].productName`] && (
+                                <div className="error-message">{errors[`orderItems[${index}].productName`]}</div>
+                            )}
                         </div>
                         <div className="form-group">
                             <label>Quantity:</label>
-                            <input type="number" name="quantity" value={item.quantity} onChange={(e) => handleItemChange(index, e)} required />
+                            <input
+                                type="number"
+                                name="quantity"
+                                value={item.quantity}
+                                onChange={(e) => handleItemChange(index, e)}
+                                required
+                            />
+                            {errors[`orderItems[${index}].quantity`] && (
+                                <div className="error-message">{errors[`orderItems[${index}].quantity`]}</div>
+                            )}
                         </div>
                         <div className="form-group">
                             <label>Price:</label>
-                            <input type="number" name="price" value={item.price} onChange={(e) => handleItemChange(index, e)} required />
+                            <input
+                                type="number"
+                                name="price"
+                                value={item.price}
+                                onChange={(e) => handleItemChange(index, e)}
+                                required
+                            />
+                            {errors[`orderItems[${index}].price`] && (
+                                <div className="error-message">{errors[`orderItems[${index}].price`]}</div>
+                            )}
                         </div>
                         <div className="form-group">
                             <label>Total Amount:</label>
-                            <input type="number" name="totalAmount" value={order.totalAmount} onChange={handleChange} required />
+                            <input
+                                type="number"
+                                name="totalAmount"
+                                value={item.amount}
+                                disabled
+                            />
                         </div>
-                        <button type="button" onClick={() => deleteItem(index)} className="delete-item-button">Delete</button>
+                        <button
+                            type="button"
+                            onClick={() => deleteItem(index)}
+                            className="delete-item-button"
+                        >
+                            Delete
+                        </button>
                     </div>
                 ))}
 
