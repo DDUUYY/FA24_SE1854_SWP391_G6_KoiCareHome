@@ -2,67 +2,64 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import HomeIcon from '../assets/HomeButton.png';
+import { FaTrashAlt } from 'react-icons/fa'; // Import icon thùng rác
 import './Reminder.css';
 
 const Reminder = () => {
-    const navigate = useNavigate(); // Sử dụng hook điều hướng
-    const [reminders, setReminders] = useState([]); // Lưu trữ danh sách reminders
+    const navigate = useNavigate();
+    const [reminders, setReminders] = useState([]);
     const [notificationHistory, setNotificationHistory] = useState(
-        JSON.parse(localStorage.getItem('notificationHistory')) || [] // Lưu trữ lịch sử thông báo từ localStorage
+        JSON.parse(localStorage.getItem('notificationHistory')) || []
     );
     const [newReminder, setNewReminder] = useState({
         title: '',
         dateTime: '',
         frequency: ''
     });
-    const memberID = parseInt(localStorage.getItem('userID'), 10); // Lấy memberID từ localStorage để xác định tài khoản hiện tại
+    const memberID = parseInt(localStorage.getItem('userID'), 10);
 
-    // Yêu cầu quyền thông báo từ trình duyệt nếu chưa được cấp phép
     const requestNotificationPermission = async () => {
         if (Notification.permission === 'default') {
             await Notification.requestPermission();
         }
     };
 
-    // Hàm hiển thị thông báo nếu quyền đã được cấp
     const showNotification = (title, message) => {
         if (Notification.permission === 'granted') {
             new Notification(title, { body: message });
         }
     };
 
-    // Kiểm tra thời gian của các reminder để hiện thông báo
     useEffect(() => {
         requestNotificationPermission();
         const interval = setInterval(() => {
-            const now = new Date(); // Lấy thời gian hiện tại
+            const now = new Date();
             reminders.forEach((reminder) => {
-                if (reminder.memberID === memberID) { // Chỉ thông báo cho reminders của tài khoản hiện tại
+                if (reminder.memberID === memberID) {
                     const reminderTime = new Date(reminder.dateTime);
-                    if (reminderTime <= now && reminderTime > new Date(now.getTime() - 60000)) { // Kiểm tra nếu đến giờ thông báo
+                    if (reminderTime <= now && reminderTime > new Date(now.getTime() - 60000)) {
                         showNotification(reminder.title, `It's time for your reminder: ${reminder.frequency}`);
                         const newNotification = {
                             title: reminder.title,
                             dateTime: now.toLocaleString(),
                             frequency: reminder.frequency
                         };
-                        const updatedHistory = [...notificationHistory, newNotification]; // Cập nhật lịch sử thông báo
+                        const updatedHistory = [...notificationHistory, newNotification];
                         setNotificationHistory(updatedHistory);
-                        localStorage.setItem('notificationHistory', JSON.stringify(updatedHistory)); // Lưu vào localStorage
+                        localStorage.setItem('notificationHistory', JSON.stringify(updatedHistory));
                     }
                 }
             });
-        }, 60000); // Kiểm tra mỗi phút
-
-        return () => clearInterval(interval); // Clear interval khi component unmount
+        }, 60000);
+        return () => clearInterval(interval);
     }, [reminders, notificationHistory, memberID]);
 
-    // Fetch danh sách reminders từ API khi component được render lần đầu
     useEffect(() => {
         const fetchReminders = async () => {
             try {
                 const response = await axios.get(`/api/reminders/user/${memberID}`);
-                setReminders(response.data); // Lưu danh sách reminders vào state
+                setReminders(response.data);
             } catch (error) {
                 console.error('Error fetching reminders:', error);
             }
@@ -70,42 +67,60 @@ const Reminder = () => {
         fetchReminders();
     }, [memberID]);
 
-    // Cập nhật state khi người dùng nhập vào form
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setNewReminder({ ...newReminder, [name]: value });
     };
 
-    // Hàm thêm reminder mới vào danh sách và gửi lên server
     const addReminder = async () => {
         try {
-            const reminderData = { ...newReminder, memberID }; // Thêm memberID vào dữ liệu reminder
+            const reminderData = { ...newReminder, memberID };
             const response = await axios.post('/api/reminders/create', reminderData);
-            setReminders([...reminders, response.data]); // Cập nhật danh sách reminders sau khi thêm mới
-            setNewReminder({ title: '', dateTime: '', frequency: '' }); // Reset form sau khi thêm
+            setReminders([...reminders, response.data]);
+            setNewReminder({ title: '', dateTime: '', frequency: '' });
         } catch (error) {
             console.error('Error adding reminder:', error);
         }
     };
 
-    // Hàm xóa reminder khỏi danh sách và server
     const deleteReminder = async (id) => {
         try {
             await axios.delete(`/api/reminders/delete/${id}`);
-            setReminders(reminders.filter((reminder) => reminder.id !== id)); // Cập nhật danh sách sau khi xóa
+            setReminders(reminders.filter((reminder) => reminder.id !== id));
         } catch (error) {
             console.error('Error deleting reminder:', error);
         }
     };
 
-    // Hàm xóa toàn bộ lịch sử thông báo của tài khoản hiện tại
+    const toggleReminderStatus = async (id, currentStatus) => {
+        try {
+            const updatedReminder = { isActive: !currentStatus };
+            await axios.put(`/api/reminders/edit/${id}`, updatedReminder);
+            setReminders((prevReminders) =>
+                prevReminders.map((reminder) =>
+                    reminder.id === id ? { ...reminder, isActive: !currentStatus } : reminder
+                )
+            );
+        } catch (error) {
+            console.error('Error updating reminder status:', error);
+        }
+    };
+
     const clearNotificationHistory = () => {
-        setNotificationHistory([]); // Xóa trong state
-        localStorage.setItem('notificationHistory', JSON.stringify([])); // Xóa trong localStorage
+        setNotificationHistory([]);
+        localStorage.setItem('notificationHistory', JSON.stringify([]));
     };
 
     return (
         <div className="reminder-container">
+            <div className="navbar">
+                <img 
+                    src={HomeIcon} 
+                    alt="Back to Home"  
+                    className="home-icon" 
+                    onClick={() => navigate('/home')} 
+                />
+            </div>
             <h2>Reminders</h2>
             <div className="three-column-layout">
                 {/* Cột 1: Thêm reminder */}
@@ -141,8 +156,6 @@ const Reminder = () => {
                         </select>
                         <button type="button" onClick={addReminder}>Add Reminder</button>
                     </form>
-                    {/* Nút quay về trang Home */}
-                    <button className="back-button" onClick={() => navigate('/home')}>Back to Home</button>
                 </div>
 
                 {/* Cột 2: Danh sách reminder */}
@@ -155,6 +168,7 @@ const Reminder = () => {
                                 <th>Time</th>
                                 <th>Frequency</th>
                                 <th>Action</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -164,7 +178,19 @@ const Reminder = () => {
                                     <td>{new Date(reminder.dateTime).toLocaleString()}</td>
                                     <td>{reminder.frequency}</td>
                                     <td>
-                                        <button onClick={() => deleteReminder(reminder.id)}>Delete</button> {/* Nút xóa reminder */}
+                                        <label className="switch">
+                                            <input
+                                                type="checkbox"
+                                                checked={reminder.isActive}
+                                                onChange={() => toggleReminderStatus(reminder.id, reminder.isActive)}
+                                            />
+                                            <span className="slider round"></span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <button onClick={() => deleteReminder(reminder.id)} className="delete-button">
+                                            <FaTrashAlt />
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
@@ -175,7 +201,7 @@ const Reminder = () => {
                 {/* Cột 3: Lịch sử thông báo */}
                 <div className="column">
                     <h3>Notification History</h3>
-                    <button onClick={clearNotificationHistory} className="clear-history-button">Clear History Log</button> {/* Nút xóa lịch sử */}
+                    <button onClick={clearNotificationHistory} className="clear-history-button">Clear History Log</button>
                     <table className="reminder-table">
                         <thead>
                             <tr>
@@ -186,7 +212,7 @@ const Reminder = () => {
                         </thead>
                         <tbody>
                             {notificationHistory
-                                .filter((notification) => notification.memberID === memberID) // Chỉ hiển thị log của tài khoản hiện tại
+                                .filter((notification) => notification.memberID === memberID)
                                 .map((notification, index) => (
                                     <tr key={index}>
                                         <td>{notification.title}</td>

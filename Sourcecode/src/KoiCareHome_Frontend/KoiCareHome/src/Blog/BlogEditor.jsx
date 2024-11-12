@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import LogoBlog from '../assets/LogoBlog.jpg';
+import './BlogEditor.css'; // Import CSS cho trang
 
 const BlogEditor = () => {
   const { id } = useParams(); // Lấy ID của bài viết từ URL
@@ -65,6 +67,16 @@ const BlogEditor = () => {
 
   return (
     <div className="blog-editor-container">
+      {/* Nút "Back to Home" */}
+      <div className="navbar">
+        <img 
+          src={LogoBlog} 
+          alt="Back to Public Blog" 
+          className="home-icon" 
+          onClick={() => navigate('/public-blogs')} 
+        />
+      </div>
+
       <h2>{id ? 'Edit Blog' : 'Create Blog'}</h2>
 
       {error && <p className="error-message">{error}</p>}
@@ -75,19 +87,25 @@ const BlogEditor = () => {
         placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        className="input-field"
+        maxLength={255} // Giới hạn 255 ký tự cho Title
       />
       <textarea
         placeholder="Content"
         value={content}
         onChange={(e) => setContent(e.target.value)}
+        className="textarea-field"
+        maxLength={255} // Giới hạn 255 ký tự cho Content
       />
       <input
         type="text"
         placeholder="Author (optional)"
         value={author}
         onChange={(e) => setAuthor(e.target.value)}
+        className="input-field"
+        maxLength={255} // Giới hạn 255 ký tự cho Author
       />
-      <button onClick={handleSave}>{id ? 'Update' : 'Create'}</button>
+      <button onClick={handleSave} className="save-button">{id ? 'Update' : 'Create'}</button>
     </div>
   );
 };

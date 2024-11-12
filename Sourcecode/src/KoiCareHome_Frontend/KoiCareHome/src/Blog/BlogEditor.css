@@ -1,47 +1,75 @@
 /* BlogEditor.css */
 
 .blog-editor-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    text-align: center;
-  }
-  
-  .blog-editor-container h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .blog-editor-container input,
-  .blog-editor-container textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-  }
-  
-  .blog-editor-container textarea {
-    height: 150px;
-    resize: vertical;
-  }
-  
-  .blog-editor-container button {
-    padding: 10px 15px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .blog-editor-container button:hover {
-    background-color: #0056b3;
-  }
-  
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+/* Nút "Back to Home" */
+.navbar {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.home-icon {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+/* Tiêu đề của trang */
+.blog-editor-container h2 {
+  font-size: 28px;
+  color: #FF6600;
+  margin-bottom: 20px;
+}
+
+/* Các trường nhập liệu */
+.input-field, .textarea-field {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.textarea-field {
+  height: 150px;
+  resize: vertical;
+}
+
+/* Nút lưu bài viết */
+.save-button {
+  padding: 12px 20px;
+  font-size: 16px;
+  background-color: #FF6600;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.save-button:hover {
+  background-color: #e04f00;
+}
+
+/* Thông báo lỗi và thành công */
+.error-message {
+  color: #e60000;
+  margin-bottom: 10px;
+}
+
+.success-message {
+  color: #4CAF50;
+  margin-bottom: 10px;
+}
