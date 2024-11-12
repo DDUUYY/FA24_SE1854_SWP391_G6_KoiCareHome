@@ -13,8 +13,10 @@ import Order from './Order/Order';
 import SaltCalculation from './SaltCalculation/SaltCalculation';
 import AddOrder from './Order/AddOrder';
 
-import FoodCalculator from './Calculator/FoodCalculator';
+// import FoodCalculator from './Calculator/FoodCalculator';
 import FoodHistory from './Fish/ConsumeFoodHistory';
+import FoodCalculator from './Calculator/FoodCalculator';
+import FoodHistory from './ConsumeFoodHistory/ConsumeFoodHistory';
 import Chart from './GrowthRecord/Chart';
 const App = () => {
   return (

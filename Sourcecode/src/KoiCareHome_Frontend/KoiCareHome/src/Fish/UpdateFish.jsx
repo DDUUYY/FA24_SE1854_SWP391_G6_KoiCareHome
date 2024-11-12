@@ -14,7 +14,7 @@ const updateFish = async (fishData) => {
         price: parseInt(fishData.price, 10)
     };
 
-    const response = await fetch(`${API_BASE_URL}?fishId=${fishID}`,{
+    const response = await fetch(`${API_BASE_URL}?fishId=${fishID}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedFish)

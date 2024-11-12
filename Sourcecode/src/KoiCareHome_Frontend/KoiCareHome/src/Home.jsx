@@ -2,7 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaRegUserCircle } from "react-icons/fa";
+// import { FaRegUserCircle } from "react-icons/fa";
 // import './home.css';
 // import GrCard from '../src/Card/GrCard';
 import Koi_Img from './assets/Koi_Img.jpg';
@@ -15,6 +15,7 @@ import Order from './assets/order.png';
 
 
 // import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FaRegUserCircle } from "react-icons/fa";
 import './home.css';
 import GrCard from '../src/Card/GrCard';
@@ -73,9 +74,7 @@ const Home = () => {
                         </div>
                     )}
                 </div>
-
             </nav>
-
 
 
             <div ref={homeRef} className="welcome-home">
@@ -93,46 +92,14 @@ const Home = () => {
                     <img src={KoiGraphic} alt="Koi Pond Graphic" />
                 </div>
             </div>
-            <div className="Feature"><h1>Our Feature</h1></div>
 
             <div ref={featureRef} className="card-container">
                 <div className='Feature-container'>
-
+                    <h1>Our Feature</h1>
+                    <ManageFishCard />
+                    <FeedingHistoryCard />
+                    <FoodCalculatorCard />
                     <GrCard />
-                    <Link to="/manage-fish">
-                        <div className="card">
-                            <img className="card-image" src={Koi_Img} alt="Koi" />
-                            <h2 className="card-title">ManageKoi</h2>
-                            <p className="card-description">Users manage their own Kois</p>
-                        </div>
-                    </Link>
-
-                    <Link to="/salt-calculation">
-                        <div className="card">
-                            <img className="card-image" src={SaltCalculator} alt="Koi" />
-                            <h2 className="card-title">Salt Calculator</h2>
-                            <p className="card-description">Users manage their own Kois</p>
-                        </div>
-                    </Link><Link to="/order">
-                        <div className="card">
-                            <img className="card-image" src={Order} alt="Koi" />
-                            <h2 className="card-title">Manage Order</h2>
-                            <p className="card-description">Users manage their own Kois</p>
-                        </div>
-                    </Link>
-
-
-
-                </div>
-
-                <div ref={featureRef} className="card-container">
-                    <div className='Feature-container'>
-                        <h1>Our Feature</h1>
-                        <ManageFishCard />
-                        <FeedingHistoryCard />
-                        <FoodCalculatorCard />
-                        <GrCard />
-                    </div>
                 </div>
             </div>
         </div>

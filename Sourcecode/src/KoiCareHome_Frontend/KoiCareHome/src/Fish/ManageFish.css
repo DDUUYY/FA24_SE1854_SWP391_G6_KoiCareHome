@@ -6,10 +6,7 @@
 }
 
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 20px;
 }
 
 /* Fish card styles */
@@ -87,14 +84,54 @@
 }
 
 /* Button styles */
-.add-btn {
-  background: #3b82f6;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
+.add-koi-btn-icon {
+  position: fixed;
+  bottom: 6%;
+  right: 3%;
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 0.5rem;
+  cursor: pointer;
+  margin-right: 40px;
+}
+
+.add-koi-btn-plus {
+  font-size: 48px;
+  color: orange;
+  transition: color 0.3s;
+}
+
+.add-koi-btn-plus:hover {
+  color: rgba(255, 166, 0, 0.404);
+}
+
+/* Tooltip styles */
+.add-koi-btn-icon::after {
+  content: "Click here to add new Koi!";
+  visibility: hidden;
+  /* Hidden by default */
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  /* Positioning */
+  z-index: 1;
+  /* On top */
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  /* Center it horizontally */
+  opacity: 0;
+  /* Invisible by default */
+  transition: opacity 0.3s;
+}
+
+.add-koi-btn-icon:hover::after {
+  visibility: visible;
+  opacity: 1;
+  /* Fade in */
 }
 
 .edit-btn {
@@ -148,10 +185,23 @@
 }
 
 /* Back button */
-.back-button {
-  margin-top: 2rem;
-  padding: 0.5rem 1rem;
-  background: #6b7280;
-  color: white;
-  border-radius: 0.375rem;
+.back-btn-icon {
+  position: fixed;
+  top: 8%;
+  left: 3%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 40px;
+}
+
+.back-btn-plus {
+  font-size: 48px;
+  color: orange;
+  transition: color 0.3s;
+}
+
+.back-btn-plus:hover {
+  color: rgba(255, 166, 0, 0.404);
 }

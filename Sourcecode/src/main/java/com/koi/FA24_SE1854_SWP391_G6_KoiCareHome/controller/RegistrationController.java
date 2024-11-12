@@ -45,5 +45,4 @@ public class RegistrationController {
             return ResponseEntity.status(401).body("Invalid email or password");
         }
     }
-    
 }

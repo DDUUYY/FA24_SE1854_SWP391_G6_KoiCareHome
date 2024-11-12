@@ -3,6 +3,7 @@
  * Date: October 22, 2024 
  */
 
+<<<<<<< HEAD
 .record-section {
 	position: relative;
 	max-width: 75%;
@@ -26,6 +27,17 @@
 }
 
 
+=======
+.record-section{
+	position: relative;
+	max-width: 75%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	
+}
+
+>>>>>>> ToAnh_Fish
 .records-table {
 	width: 100%;
 	border-collapse: collapse;
@@ -38,8 +50,12 @@
 	background-color: #f2f2f2;
 }
 
+<<<<<<< HEAD
 .records-table th,
 .records-table td {
+=======
+.records-table th, .records-table td {
+>>>>>>> ToAnh_Fish
 	padding: 15px 15px;
 	border: 1px solid #ddd;
 }
@@ -78,6 +94,7 @@
 }
 
 .add-record-icon {
+<<<<<<< HEAD
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -93,6 +110,23 @@
 
 .add-record-plus:hover {
 	color: #218838;
+=======
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer; 
+    margin-right: 40px; 
+}
+
+.add-record-plus {
+    font-size: 24px; 
+    color: #2cc650; 
+    transition: color 0.3s; 
+}
+
+.add-record-plus:hover {
+    color: #218838; 
+>>>>>>> ToAnh_Fish
 }
 
 .fish-select {
@@ -100,17 +134,29 @@
 	display: flex;
 	align-items: center;
 	font-family: 'Arial', sans-serif;
+<<<<<<< HEAD
 }
 
 .fish-select label {
+=======
+  }
+  
+  .fish-select label {
+>>>>>>> ToAnh_Fish
 	font-size: 1.1rem;
 	margin-right: 10px;
 	margin-left: 25px;
 	color: #333;
 	font-weight: bold;
+<<<<<<< HEAD
 }
 
 .fish-select select {
+=======
+  }
+  
+  .fish-select select {
+>>>>>>> ToAnh_Fish
 	width: 250px;
 	padding: 10px;
 	font-size: 1rem;
@@ -121,11 +167,16 @@
 	outline: none;
 	transition: all 0.3s ease;
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+<<<<<<< HEAD
 	appearance: none;
+=======
+	appearance: none; 
+>>>>>>> ToAnh_Fish
 	background-repeat: no-repeat;
 	background-position: right 10px center;
 	background-size: 10px;
 	margin-right: 20px;
+<<<<<<< HEAD
 }
 
 .fish-select select:hover {
@@ -151,4 +202,31 @@
 
 .profile-button.statistics-button:hover {
 	background-color: #218838;
+=======
+  }
+  
+  .fish-select select:hover {
+	border-color: #1e9d44;
+	background-color: #fdfdfd;
+  }
+  
+  .fish-select select:focus {
+	border-color: #1e9d44;
+	box-shadow: 0 0 8px rgba(46, 199, 80, 0.3);
+  }
+
+  .profile-button.statistics-button {
+    padding: 12px 24px;
+    font-size: 1.1rem; 
+    background-color: #2cc650;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.profile-button.statistics-button:hover {
+    background-color: #218838;
+>>>>>>> ToAnh_Fish
 }

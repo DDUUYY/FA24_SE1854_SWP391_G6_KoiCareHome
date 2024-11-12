@@ -37,22 +37,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-<<<<<<< HEAD
 
-
-
-=======
->>>>>>> GrowthRecord
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-<<<<<<< HEAD
 
-
-
-=======
->>>>>>> GrowthRecord
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -87,10 +77,7 @@
         </dependency>
 
 
-<<<<<<< HEAD
 
-=======
->>>>>>> GrowthRecord
     </dependencies>
 
     <build>
@@ -210,8 +197,6 @@
         </plugins>
     </build>
 
-<<<<<<< HEAD
+
 </project>
-=======
-</project>
->>>>>>> GrowthRecord
+

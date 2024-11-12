@@ -115,7 +115,7 @@ public class FishService {
      * @return the updated entity
      */
     public Fish updateFish(int id, Fish updatedFish) {
-        Optional<Fish> existingFishOpt = fishRepository.findById(id);
+        Optional<Fish> existingFishOpt = fishRepository.findFishById(id);
         if (existingFishOpt.isEmpty()) {
             throw new NotFoundException(FISH_NOT_FOUND_MESSAGE);
         }
@@ -147,7 +147,6 @@ public class FishService {
             fish.setPrice(updatedFish.getPrice());
         }
 
-
         return fishRepository.save(fish);
     }
 
@@ -158,12 +157,10 @@ public class FishService {
      */
     @Transactional
     public void deleteByID(int id) {
-        if(fishRepository.existsById(id)){
-            updateFish(id, fishRepository.findById(id).get());
+        if(fishRepository.findFishById(id).isPresent()){
             fishRepository.deleteByID(id);
         } else{
             throw new NotFoundException(FISH_NOT_FOUND_MESSAGE);
         }
-
     }
 }

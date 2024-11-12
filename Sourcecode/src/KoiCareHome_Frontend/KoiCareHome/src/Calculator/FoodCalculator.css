@@ -1,0 +1,197 @@
+/* Container */
+.calculate-food-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Header */
+.page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: orange;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.header-icon {
+    color: orange;
+}
+
+.page-header p {
+    color: orange;
+    font-size: 1.1rem;
+}
+
+/* Pond Grid */
+.ponds-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Pond Card */
+.pond-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    display: flex;
+    gap: 1rem;
+}
+
+.pond-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pond-card.selected {
+    border-color: orange;
+    background-color: #ebf8ff;
+}
+
+.pond-icon {
+    color: orange;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ebf8ff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.pond-info {
+    flex: 1;
+}
+
+.pond-info h3 {
+    margin: 0 0 0.5rem 0;
+    color: orange;
+    font-size: 1.25rem;
+}
+
+.pond-info p {
+    margin: 0.25rem 0;
+    color: orange;
+    font-size: 0.875rem;
+}
+
+/* Calculation Result */
+.calculation-result {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.result-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    color: orange;
+}
+
+.result-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.result-value {
+    font-size: 3rem;
+    color: orange;
+    font-weight: bold;
+}
+
+.result-value .unit {
+    font-size: 1.5rem;
+    color: orange;
+    margin-left: 0.5rem;
+}
+
+.loading {
+    font-size: 1.5rem;
+    color: orange;
+    animation: pulse 1.5s infinite;
+}
+
+/* Error Message */
+.error-message {
+    background-color: #fff5f5;
+    border: 1px solid #feb2b2;
+    color: #c53030;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* Back Button */
+.back-btn-icon {
+    position: fixed;
+    top: 8%;
+    left: 3%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-right: 40px;
+}
+
+.back-btn-plus {
+    font-size: 48px;
+    color: orange;
+    transition: color 0.3s;
+}
+
+.back-btn-plus:hover {
+    color: rgba(255, 166, 0, 0.404);
+}
+
+/* Animation */
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .calculate-food-container {
+        padding: 1rem;
+    }
+
+    .page-header h1 {
+        font-size: 2rem;
+    }
+
+    .result-value {
+        font-size: 2.5rem;
+    }
+
+    .result-value .unit {
+        font-size: 1.25rem;
+    }
+}
