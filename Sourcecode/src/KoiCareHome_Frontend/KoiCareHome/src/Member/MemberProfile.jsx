@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// eslint-disable-next-line no-unused-vars
-=======
 /* eslint-disable no-unused-vars */
->>>>>>> GrowthRecord
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './MemberProfile.css';
@@ -12,10 +8,6 @@ import UserProfile from "../assets/User_Profile.jpg";
  * Author: Ha Huy Nghia Hiep
  * Date: October 19, 2024
  */
-<<<<<<< HEAD
-
-=======
->>>>>>> GrowthRecord
 const MemberProfile = () => {
   const navigate = useNavigate();
   const [member, setMember] = useState({
@@ -24,25 +16,16 @@ const MemberProfile = () => {
     email: "",
     phoneNumber: "",
   });
-<<<<<<< HEAD
-=======
-  const [showPopup, setShowPopup] = useState(false);  
->>>>>>> GrowthRecord
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     loadMember();
   }, []);
 
   const loadMember = async () => {
-<<<<<<< HEAD
-    const id = localStorage.getItem('userID'); // Get the ID from localStorage
-    if (!id) {
-      navigate('/login'); 
-=======
     const id = localStorage.getItem('userID');
     if (!id) {
       navigate('/login');
->>>>>>> GrowthRecord
       return;
     }
 
@@ -60,30 +43,6 @@ const MemberProfile = () => {
   };
 
   const handleDelete = async () => {
-<<<<<<< HEAD
-    const id = localStorage.getItem('userID'); // Get the ID from localStorage
-    const confirmDelete = window.confirm("Are you sure you want to delete your account?");
-    if (confirmDelete) {
-      try {
-        const response = await fetch(`http://localhost:8080/api/Member/${id}`, {
-          method: "DELETE",
-        });
-        if (response.ok) {
-          alert("Account deleted successfully.");
-          localStorage.removeItem('userID'); // Remove the userID from localStorage
-          navigate("/login");
-        } else {
-          console.error("Error deleting account:", response.statusText);
-          alert("Failed to delete the account. Please try again.");
-        }
-      } catch (error) {
-        console.error("Error deleting account", error);
-        alert("Failed to delete the account. Please try again.");
-      }
-    }
-  };
-
-=======
     const id = localStorage.getItem('userID');
     try {
       const response = await fetch(`http://localhost:8080/api/Member/${id}`, {
@@ -107,17 +66,12 @@ const MemberProfile = () => {
     setShowPopup(!showPopup);  // popup visibility
   };
 
->>>>>>> GrowthRecord
   return (
     <section className="profile-section">
       <div className="profile-container">
         <div className="profile-card">
           <div className="profile-content">
-<<<<<<< HEAD
-          <img
-=======
             <img
->>>>>>> GrowthRecord
               src={UserProfile}
               alt="User Profile"
               className="profile-avatar"
@@ -126,22 +80,14 @@ const MemberProfile = () => {
               <button
                 type="button"
                 className="profile-button"
-<<<<<<< HEAD
-                onClick={() => navigate(`/UpdateMember/${localStorage.getItem('userID')}`)} 
-=======
                 onClick={() => navigate(`/UpdateMember/${localStorage.getItem('userID')}`)}
->>>>>>> GrowthRecord
               >
                 Update
               </button>
               <button
                 type="button"
                 className="profile-button delete-button"
-<<<<<<< HEAD
-                onClick={handleDelete}
-=======
-                onClick={togglePopup}  
->>>>>>> GrowthRecord
+                onClick={togglePopup}
               >
                 Delete
               </button>
@@ -178,8 +124,6 @@ const MemberProfile = () => {
           </div>
         </div>
       </div>
-<<<<<<< HEAD
-=======
 
       {showPopup && (
         <div className="popup">
@@ -193,7 +137,6 @@ const MemberProfile = () => {
           </div>
         </div>
       )}
->>>>>>> GrowthRecord
     </section>
   );
 };

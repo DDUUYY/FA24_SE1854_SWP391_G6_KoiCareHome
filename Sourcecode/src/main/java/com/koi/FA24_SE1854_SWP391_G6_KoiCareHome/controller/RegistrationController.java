@@ -7,13 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-<<<<<<< HEAD
-
-=======
 /**
  * @author Ha Huy Nghia Hiep
  */
->>>>>>> GrowthRecord
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
@@ -49,9 +45,5 @@ public class RegistrationController {
             return ResponseEntity.status(401).body("Invalid email or password");
         }
     }
-<<<<<<< HEAD
-}
-=======
     
 }
->>>>>>> GrowthRecord

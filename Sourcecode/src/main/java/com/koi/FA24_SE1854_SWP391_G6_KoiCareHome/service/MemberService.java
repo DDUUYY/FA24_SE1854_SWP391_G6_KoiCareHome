@@ -8,23 +8,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
-<<<<<<< HEAD
-
-=======
 /**
  * @author Ha Huy Nghia Hiep
  */
->>>>>>> GrowthRecord
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> GrowthRecord
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -60,11 +51,7 @@ public class MemberService {
     }
 
     public Member getMemberById(Integer MemberID) {
-<<<<<<< HEAD
-        return memberRepository.findById(MemberID).orElse(null);
-=======
       return memberRepository.findById(MemberID).orElse(null);
->>>>>>> GrowthRecord
     }
 
     public Member updateMember(Integer MemberID, Member updatedMember) {
@@ -82,10 +69,6 @@ public class MemberService {
                 existingMember.setPassword(passwordEncoder.encode(updatedMember.getPassword()));
             }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> GrowthRecord
             return memberRepository.save(existingMember);
         }
         return null;
