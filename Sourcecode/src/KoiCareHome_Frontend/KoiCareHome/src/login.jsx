@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './style.css';
+<<<<<<< HEAD
 
+=======
+>>>>>>> GrowthRecord
 /*
  * Author: Ha Huy Nghia Hiep
  * Date: October 19, 2024
@@ -9,15 +12,22 @@ import './style.css';
 
 const Login = () => {
   const [errorMessage, setErrorMessage] = useState('');
+<<<<<<< HEAD
   const navigate = useNavigate();
+=======
+  const navigate = useNavigate();  
+>>>>>>> GrowthRecord
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
 
+<<<<<<< HEAD
     console.log('Login attempt with:', { email, password }); // In ra để kiểm tra
 
+=======
+>>>>>>> GrowthRecord
     fetch('http://localhost:8080/auth/login', {
       method: 'POST',
       headers: {
@@ -27,7 +37,11 @@ const Login = () => {
     })
       .then((response) => {
         if (response.ok) {
+<<<<<<< HEAD
           return response.json(); // Giả sử API trả về JSON
+=======
+          return response.json(); 
+>>>>>>> GrowthRecord
         } else {
           return response.text().then((text) => {
             throw new Error(text);
@@ -35,6 +49,7 @@ const Login = () => {
         }
       })
       .then((data) => {
+<<<<<<< HEAD
         console.log('Login response data:', data); // In ra toàn bộ dữ liệu nhận được từ API
 
         // Xử lý nếu data là số (ví dụ: userID)
@@ -109,10 +124,33 @@ const Login = () => {
           )}
           <div className="inputbox">
             <ion-icon name="email-outline"></ion-icon>
+=======
+        // Save the user ID to localStorage 
+        localStorage.setItem('userID', data);
+        navigate('/home');
+      })
+      .catch((error) => {
+        setErrorMessage(error.message || 'Login failed');
+      });
+  };
+
+  return (
+    <body className="login-signup-bg">
+    <section >
+      <form onSubmit={handleSubmit}>
+        <h1 className="title" >Login</h1>
+        {errorMessage && (
+          <div className="dialog-row">
+            <label className="text-center redText">{errorMessage}</label>
+          </div>
+        )}
+       <div className="inputbox">
+>>>>>>> GrowthRecord
             <input name="email" id="email" type="email" required />
             <label htmlFor="email">Email</label>
           </div>
           <div className="inputbox">
+<<<<<<< HEAD
             <ion-icon name="lock-closed-outline"></ion-icon>
             <input name="password" type="password" id="password" required />
             <label htmlFor="password">Password</label>
@@ -126,6 +164,20 @@ const Login = () => {
         </form>
       </section>
     </div>
+=======
+            <input name="password" type="password" id="password" required />
+            <label htmlFor="password">Password</label>
+          </div>
+        <button type="submit">Log in</button>
+        <div className="register">
+          <p>
+            Do not have an account? <a href="/signup">Register!!</a>
+          </p>
+        </div>
+      </form>
+    </section>
+    </body>
+>>>>>>> GrowthRecord
   );
 };
 

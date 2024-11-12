@@ -1,0 +1,28 @@
+.View-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 8%;
+}
+
+.View-content {
+    background: orange;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 500px;
+    width: 100%;
+    text-align: left;
+}
+
+.View-content h2 {
+    margin-top: 0;
+}
+
+.View-content button {
+    margin-top: 20px;
+}

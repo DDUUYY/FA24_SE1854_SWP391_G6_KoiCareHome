@@ -23,7 +23,11 @@
 }
 
 .logo-text {
+<<<<<<< HEAD
     font-family: 'Poppins', sans-serif;
+=======
+    font-family: 'Poppins', sans-serif; 
+>>>>>>> GrowthRecord
     font-size: 2.5rem;
     font-weight: bold;
     color: white;
@@ -64,7 +68,11 @@
     font-family: 'Poppins', sans-serif;
     color: #ff6b00;
     margin-bottom: 1rem;
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> GrowthRecord
 }
 
 .subheading {
@@ -79,6 +87,7 @@
 }
 
 .highlight {
+<<<<<<< HEAD
     color: #ff6b00;
 }
 
@@ -86,12 +95,25 @@
     flex: 1;
     display: flex;
     justify-content: flex-start;
+=======
+    color: #ff6b00; 
+}
+
+.welcome-image {
+    flex: 1; 
+    display: flex;
+    justify-content: flex-start; 
+>>>>>>> GrowthRecord
 }
 
 .welcome-image img {
     max-width: 400px;
     height: auto;
+<<<<<<< HEAD
     margin-left: 28%;
+=======
+    margin-left: 28%; 
+>>>>>>> GrowthRecord
 }
 
 
@@ -102,19 +124,32 @@
 }
 
 .user-icon {
+<<<<<<< HEAD
     font-size: 1.5rem;
+=======
+    font-size: 1.9rem;
+>>>>>>> GrowthRecord
     color: white;
     cursor: pointer;
 }
 
 .user-icon:hover {
+<<<<<<< HEAD
     color: white;
+=======
+    color: white; 
+>>>>>>> GrowthRecord
 }
 
 .dropdown-menu {
     position: absolute;
+<<<<<<< HEAD
     top: 60px;
     right: 20px;
+=======
+    top: 60px; 
+    right: 20px; 
+>>>>>>> GrowthRecord
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -145,28 +180,45 @@
 }
 
 .logo {
+<<<<<<< HEAD
     font-family: 'Poppins', sans-serif;
+=======
+    font-family: 'Poppins', sans-serif; 
+>>>>>>> GrowthRecord
     font-size: 2.5rem;
     font-weight: bold;
     color: white;
 }
 
 .user-icon a {
+<<<<<<< HEAD
     text-decoration: none;
     color: white;
+=======
+    text-decoration: none; 
+    color: white;          
+>>>>>>> GrowthRecord
 }
 
 .user-icon a:hover,
 .user-icon a:active,
 .user-icon a:visited {
+<<<<<<< HEAD
     color: white;
 }
 
 .Feature-container {
+=======
+    color: white;         
+}
+
+.Feature-container{
+>>>>>>> GrowthRecord
     background-color: #f9f9f9;
 }
 
 .Feature-container h1 {
+<<<<<<< HEAD
     display: flex;
     margin-left: 45%;
     font-size: 2.5rem;
@@ -236,4 +288,12 @@
 .card-description {
     font-size: 0.9em;
     color: #666;
+=======
+        display: flex;
+        margin-left: 45%;
+        font-size: 2.5rem;
+        font-family: 'Poppins', sans-serif;
+        color: #ff6b00;
+        margin-bottom: 1rem;
+>>>>>>> GrowthRecord
 }

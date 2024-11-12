@@ -1,5 +1,6 @@
 /*
  * Author: Ha Huy Nghia Hiep
+<<<<<<< HEAD
  * Date: October 22, 2024
  */
 
@@ -11,6 +12,32 @@
     align-items: center;
 }
 
+=======
+ * Date: October 22, 2024 
+ */
+
+ .record-section {
+    position: relative;
+    max-width: 75%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+	margin-left: 10%;
+}
+
+.fish-select-container {
+    position: sticky;
+    top: 0; /* Adjust based on layout */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: #fff; /* Background to prevent overlap */
+    padding: 10px;
+    z-index: 1;
+}
+
+
+>>>>>>> GrowthRecord
 .records-table {
 	width: 100%;
 	border-collapse: collapse;
@@ -77,4 +104,65 @@
 
 .add-record-plus:hover {
     color: #218838; 
+<<<<<<< HEAD
+=======
+}
+
+.fish-select {
+	margin: 20px 0;
+	display: flex;
+	align-items: center;
+	font-family: 'Arial', sans-serif;
+  }
+  
+  .fish-select label {
+	font-size: 1.1rem;
+	margin-right: 10px;
+	margin-left: 25px;
+	color: #333;
+	font-weight: bold;
+  }
+  
+  .fish-select select {
+	width: 250px;
+	padding: 10px;
+	font-size: 1rem;
+	color: #333;
+	background-color: #f4f4f4;
+	border: 2px solid #2cc650;
+	border-radius: 8px;
+	outline: none;
+	transition: all 0.3s ease;
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+	appearance: none; 
+	background-repeat: no-repeat;
+	background-position: right 10px center;
+	background-size: 10px;
+	margin-right: 20px;
+  }
+  
+  .fish-select select:hover {
+	border-color: #1e9d44;
+	background-color: #fdfdfd;
+  }
+  
+  .fish-select select:focus {
+	border-color: #1e9d44;
+	box-shadow: 0 0 8px rgba(46, 199, 80, 0.3);
+  }
+
+  .profile-button.statistics-button {
+    padding: 12px 24px;
+    font-size: 1.1rem; 
+    background-color: #2cc650;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.profile-button.statistics-button:hover {
+    background-color: #218838;
+>>>>>>> GrowthRecord
 }

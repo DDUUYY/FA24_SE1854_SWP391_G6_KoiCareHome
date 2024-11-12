@@ -95,7 +95,11 @@ const UpdateMember = () => {
 
   return (
     <div className="update-member-form-container">
+<<<<<<< HEAD
       <h1 className="update-member-title">Update your information</h1>
+=======
+      <h1 className="update-member-title">Change your information</h1>
+>>>>>>> GrowthRecord
       {error && <p className="update-member-error">{error}</p>}
       <form onSubmit={handleSubmit} className="update-member-form">
         <input
@@ -148,7 +152,11 @@ const UpdateMember = () => {
           onChange={handleInputChange}
           className="update-member-input"
         />
+<<<<<<< HEAD
         <button type="submit" className="update-member-submit-btn">Update </button>
+=======
+        <button type="submit" className="update-member-submit-btn">Confirm </button>
+>>>>>>> GrowthRecord
         <button type="button" className="back-button" onClick={handleBack}>Back</button>
       </form>
     </div>

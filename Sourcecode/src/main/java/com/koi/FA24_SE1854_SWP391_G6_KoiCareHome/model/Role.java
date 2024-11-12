@@ -5,6 +5,12 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+<<<<<<< HEAD
+=======
+/**
+ * @author Ha Huy Nghia Hiep
+ */
+>>>>>>> GrowthRecord
 
 @Entity
 @Data
@@ -38,5 +44,8 @@ public class Role {
 
     private String UpdateBy;
 }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> GrowthRecord

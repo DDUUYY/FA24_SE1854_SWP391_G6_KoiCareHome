@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model;
 //
 //
@@ -60,6 +61,8 @@
 
 
 
+=======
+>>>>>>> GrowthRecord
 package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model;
 
 
@@ -68,7 +71,13 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+<<<<<<< HEAD
 
+=======
+/**
+ * @author Ha Huy Nghia Hiep
+ */
+>>>>>>> GrowthRecord
 
 @Entity
 @Data
@@ -81,7 +90,11 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+<<<<<<< HEAD
     private Integer memberID;
+=======
+    private Integer MemberID;
+>>>>>>> GrowthRecord
 
     private String Password;
 
@@ -118,4 +131,7 @@ public class Member {
     }
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> GrowthRecord

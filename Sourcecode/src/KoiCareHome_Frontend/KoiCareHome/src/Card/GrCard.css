@@ -9,7 +9,12 @@
     border-radius: 10px;
     box-shadow: 5px 5px 5px hsl(0, 0%, 0%, 0.1);
     padding: 20px;
+<<<<<<< HEAD
     margin: 10px;
+=======
+    margin: 35px;
+    margin-right: 42px;
+>>>>>>> GrowthRecord
     text-align: center;
     max-width: 300px;
     display: inline-block;
