@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react';
 import { Line } from "react-chartjs-2";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate,useLocation  } from "react-router-dom";
 import './Chart.css';
 
 /*
@@ -72,7 +72,6 @@ const Chart = () => {
             <h2 className="chart-title">Growth Statistics</h2>
             <Line data={data} />
             <button onClick={handleBackClick} className="chart-back-button">Back</button>
-            <button onClick={() => navigate(-1)} className="chart-back-button">Back</button>
         </div>
     );
 };

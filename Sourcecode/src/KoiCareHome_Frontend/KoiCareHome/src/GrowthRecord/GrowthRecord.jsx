@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
-import { FaEye, FaTrashAlt, FaPlusCircle, FaChartBar } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { FaEye, FaTrashAlt, FaPlusCircle ,FaChartBar } from "react-icons/fa";
+import { useNavigate,useLocation } from "react-router-dom";
 import "./GrowthRecord.css";
 import ViewRecord from './ViewRecord';
 
@@ -14,19 +14,27 @@ const GrowthRecord = () => {
     const [growthRecords, setGrowthRecords] = useState([]);
     const [fishes, setFishes] = useState([]);
     const [selectedFish, setSelectedFish] = useState(null);
-    const [ViewOpen, setViewOpen] = useState(false);
-    const [selectedRecord, setSelectedRecord] = useState(null);
+    const [ViewOpen, setViewOpen] = useState(false); 
+    const [selectedRecord, setSelectedRecord] = useState(null); 
     const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const fishID = queryParams.get("fishID");
+        if (fishID) {
+            setSelectedFish(fishID);
+        }
+    }, [location]);
 
     useEffect(() => {
         if (selectedFish) {
             loadGrowthRecords(selectedFish);
         } else {
-            setGrowthRecords([]); // Clear records if no fish is selected
+            setGrowthRecords([]);
         }
     }, [selectedFish]);
 
-    // Fetch available fishes on component load
     useEffect(() => {
         loadFishes();
     }, []);
@@ -66,7 +74,7 @@ const GrowthRecord = () => {
                 method: "DELETE",
             });
             if (selectedFish) {
-                loadGrowthRecords(selectedFish);
+                loadGrowthRecords(selectedFish); 
             }
         } catch (error) {
             console.error("Error deleting record:", error);
@@ -99,6 +107,7 @@ const GrowthRecord = () => {
 
     return (
         <section className="record-section">
+            <div className="fish-select-container">
             <div className="fish-select">
                 <label htmlFor="fish">Select Fish:</label>
                 <select
@@ -123,11 +132,11 @@ const GrowthRecord = () => {
                     style={{ cursor: selectedFish ? 'pointer' : 'not-allowed', color: selectedFish ? '#2cc650' : 'gray' }}
                 />
             </div>
-
+         </div>
             <table className="records-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>No.</th>
                         <th>Measurement Date</th>
                         <th>Size</th>
                         <th>Weight</th>
@@ -157,9 +166,9 @@ const GrowthRecord = () => {
                                     </td>
                                     <td>{record.description}</td>
                                     <td>
-                                        <button
-                                            className="action-button view"
-                                            onClick={() => openView(record)}
+                                        <button 
+                                            className="action-button view" 
+                                            onClick={() => openView(record)} 
                                         >
                                             <FaEye />
                                         </button>
@@ -177,19 +186,19 @@ const GrowthRecord = () => {
                         })}
                 </tbody>
                 <button
-                    type="button"
-                    className="profile-button statistics-button"
-                    onClick={() => navigate(`/chart?fishID=${selectedFish}`)}
-                    disabled={!selectedFish}
-                >
-                    <FaChartBar />
-                </button>
+                type="button"
+                className="profile-button statistics-button"
+                onClick={() => navigate(`/chart?fishID=${selectedFish}`)}
+                disabled={!selectedFish}
+            >
+                <FaChartBar /> 
+            </button>
                 <button
                     type="button"
                     className="profile-button back-button"
                     onClick={() => navigate(`/home`)}
-                >
-                    Back
+                > 
+                    Back 
                 </button>
             </table>
 

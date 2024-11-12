@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './GrCard.css';
-import order from '../assets/OrderImage.png';
+import order from '../assets/OrderImage.jpg';
 
 const Order = () => {
     return (

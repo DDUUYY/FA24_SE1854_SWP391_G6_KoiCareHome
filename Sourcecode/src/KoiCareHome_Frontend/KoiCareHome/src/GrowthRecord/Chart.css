@@ -3,7 +3,7 @@
  * Date: October 25, 2024 
  */
 
-.chart-container {
+ .chart-container {
     width: 75%;
     margin: auto;
     text-align: center;
@@ -27,4 +27,5 @@
 .chart-title {
     font-size: 1.5rem;
     margin-bottom: 20px;
+    color: black;
 }
