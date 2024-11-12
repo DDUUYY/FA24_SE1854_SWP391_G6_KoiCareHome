@@ -1,0 +1,106 @@
+/* General container and layout */
+.salt-calc-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 2px solid #f4b299;
+    border-radius: 10px;
+    background-color: #fff;
+    text-align: center;
+}
+
+.salt-calc-heading {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.salt-calc-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.salt-calc-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.salt-calc-input {
+    width: 200px;
+    height: 40px;
+    border: 2px solid #f4b299;
+    border-radius: 20px;
+    padding: 5px 15px;
+    background-color: #f4b299;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    outline: none;
+}
+
+.salt-calc-input:focus {
+    background-color: #f4b299;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.salt-calc-submit-btn {
+    width: 50%;
+    height: 50px;
+    margin: 30px auto 0;
+    background-color: #f4b299;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.salt-calc-submit-btn:hover {
+    background-color: #e8a383;
+}
+
+/* Calculation results section */
+.salt-calc-results {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f4b299;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.salt-calc-results-heading {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.salt-calc-results-text {
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+/* Note section styling */
+.salt-calc-note {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f4b299;
+    border-radius: 10px;
+}
+
+.salt-calc-note-heading {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.salt-calc-note-text {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+}
