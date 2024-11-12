@@ -1,12 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
-<<<<<<< HEAD
 import { FaEye, FaTrashAlt, FaPlusCircle, FaChartBar } from "react-icons/fa";
-import { useNavigate, useLocation } from "react-router-dom";
-=======
-import { FaEye, FaTrashAlt, FaPlusCircle ,FaChartBar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
->>>>>>> ToAnh_Fish
 import "./GrowthRecord.css";
 import ViewRecord from './ViewRecord';
 
@@ -19,41 +14,19 @@ const GrowthRecord = () => {
     const [growthRecords, setGrowthRecords] = useState([]);
     const [fishes, setFishes] = useState([]);
     const [selectedFish, setSelectedFish] = useState(null);
-<<<<<<< HEAD
     const [ViewOpen, setViewOpen] = useState(false);
     const [selectedRecord, setSelectedRecord] = useState(null);
     const navigate = useNavigate();
-    const location = useLocation();
-
-    useEffect(() => {
-        const queryParams = new URLSearchParams(location.search);
-        const fishID = queryParams.get("fishID");
-        if (fishID) {
-            setSelectedFish(fishID);
-        }
-    }, [location]);
-=======
-    const [ViewOpen, setViewOpen] = useState(false); 
-    const [selectedRecord, setSelectedRecord] = useState(null); 
-    const navigate = useNavigate();
->>>>>>> ToAnh_Fish
 
     useEffect(() => {
         if (selectedFish) {
             loadGrowthRecords(selectedFish);
         } else {
-<<<<<<< HEAD
-            setGrowthRecords([]);
-        }
-    }, [selectedFish]);
-
-=======
             setGrowthRecords([]); // Clear records if no fish is selected
         }
     }, [selectedFish]);
 
     // Fetch available fishes on component load
->>>>>>> ToAnh_Fish
     useEffect(() => {
         loadFishes();
     }, []);
@@ -93,11 +66,7 @@ const GrowthRecord = () => {
                 method: "DELETE",
             });
             if (selectedFish) {
-<<<<<<< HEAD
                 loadGrowthRecords(selectedFish);
-=======
-                loadGrowthRecords(selectedFish); 
->>>>>>> ToAnh_Fish
             }
         } catch (error) {
             console.error("Error deleting record:", error);
@@ -130,52 +99,20 @@ const GrowthRecord = () => {
 
     return (
         <section className="record-section">
-<<<<<<< HEAD
-            <div className="fish-select-container">
-                <div className="fish-select">
-                    <label htmlFor="fish">Select Fish:</label>
-                    <select
-                        id="fish"
-                        value={selectedFish || ''}
-                        onChange={handleFishSelect}
-                        disabled={fishes.length === 0}
-                    >
-                        <option value="" disabled>Select a fish</option>
-                        {fishes.map((fish) => (
-                            <option key={fish.fishID} value={fish.fishID}>
-                                {fish.name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-
-                <div className="add-record-icon">
-                    <FaPlusCircle
-                        className="add-record-plus"
-                        onClick={() => selectedFish && navigate(`/addRecord/${selectedFish}`)}
-                        style={{ cursor: selectedFish ? 'pointer' : 'not-allowed', color: selectedFish ? '#2cc650' : 'gray' }}
-                    />
-                </div>
-            </div>
-            <table className="records-table">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-=======
             <div className="fish-select">
                 <label htmlFor="fish">Select Fish:</label>
                 <select
-                   id="fish"
-                   value={selectedFish || ''}
-                   onChange={handleFishSelect}
-                   disabled={fishes.length === 0}
+                    id="fish"
+                    value={selectedFish || ''}
+                    onChange={handleFishSelect}
+                    disabled={fishes.length === 0}
                 >
-                <option value="" disabled>Select a fish</option>
-                {fishes.map((fish) => (
-                    <option key={fish.fishID} value={fish.fishID}>
-                        {fish.name}
-                    </option>
-                ))}
+                    <option value="" disabled>Select a fish</option>
+                    {fishes.map((fish) => (
+                        <option key={fish.fishID} value={fish.fishID}>
+                            {fish.name}
+                        </option>
+                    ))}
                 </select>
             </div>
 
@@ -191,7 +128,6 @@ const GrowthRecord = () => {
                 <thead>
                     <tr>
                         <th>ID</th>
->>>>>>> ToAnh_Fish
                         <th>Measurement Date</th>
                         <th>Size</th>
                         <th>Weight</th>
@@ -221,15 +157,9 @@ const GrowthRecord = () => {
                                     </td>
                                     <td>{record.description}</td>
                                     <td>
-<<<<<<< HEAD
                                         <button
                                             className="action-button view"
                                             onClick={() => openView(record)}
-=======
-                                        <button 
-                                            className="action-button view" 
-                                            onClick={() => openView(record)} 
->>>>>>> ToAnh_Fish
                                         >
                                             <FaEye />
                                         </button>
@@ -247,7 +177,6 @@ const GrowthRecord = () => {
                         })}
                 </tbody>
                 <button
-<<<<<<< HEAD
                     type="button"
                     className="profile-button statistics-button"
                     onClick={() => navigate(`/chart?fishID=${selectedFish}`)}
@@ -255,26 +184,12 @@ const GrowthRecord = () => {
                 >
                     <FaChartBar />
                 </button>
-=======
-                type="button"
-                className="profile-button statistics-button"
-                onClick={() => navigate(`/chart?fishID=${selectedFish}`)}
-                disabled={!selectedFish}
-            >
-                <FaChartBar /> 
-            </button>
->>>>>>> ToAnh_Fish
                 <button
                     type="button"
                     className="profile-button back-button"
                     onClick={() => navigate(`/home`)}
-<<<<<<< HEAD
                 >
                     Back
-=======
-                > 
-                    Back 
->>>>>>> ToAnh_Fish
                 </button>
             </table>
 
