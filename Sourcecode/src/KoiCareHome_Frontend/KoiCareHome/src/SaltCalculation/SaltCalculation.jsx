@@ -7,9 +7,14 @@ const SaltCalculation = () => {
     const [desiredConcentration, setDesiredConcentration] = useState('');
     const [waterChange, setWaterChange] = useState('');
     const [response, setResponse] = useState(null);
+    const [error, setError] = useState(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Reset error and response before starting calculation
+        setError(null);
+        setResponse(null);
 
         const requestData = {
             pondVolume: parseFloat(pondVolume),
@@ -20,7 +25,7 @@ const SaltCalculation = () => {
 
         const memberId = localStorage.getItem('userID');
         if (!memberId) {
-            console.error('Error: memberID not found in localStorage.');
+            setError('Member ID not found in local storage.');
             return;
         }
 
@@ -35,13 +40,15 @@ const SaltCalculation = () => {
 
             if (!res.ok) {
                 const errorMessage = await res.text();
-                throw new Error(`Failed to fetch: ${errorMessage}`);
+                throw new Error(errorMessage);
             }
 
             const data = await res.json();
             setResponse(data);
+            setError(null); // Clear any previous errors
+
         } catch (error) {
-            console.error('Error fetching salt calculation:', error.message);
+            setError(error.message); // Set the error message
         }
     };
 
@@ -89,8 +96,14 @@ const SaltCalculation = () => {
                         className="salt-calc-input"
                     />
                 </label>
-                <button type="submit" className="salt-calc-submit-btn">Calculate Salt</button>
+                <button type="submit" className="salt-calc-submit-btn">Calculate</button>
             </form>
+
+            {error && (
+                <div className="error-message">
+                    <p>Error: {error}</p>
+                </div>
+            )}
 
             {response && (
                 <div className="salt-calc-results">
@@ -105,117 +118,3 @@ const SaltCalculation = () => {
 };
 
 export default SaltCalculation;
-
-
-/* // src/SaltCalculation/SaltCalculation.jsx
-import React, { useState } from 'react';
-import './SaltCalculation.css';
-
-const SaltCalculation = () => {
-    const [pondVolume, setPondVolume] = useState('');
-    const [currentConcentration, setCurrentConcentration] = useState('');
-    const [desiredConcentration, setDesiredConcentration] = useState('');
-    const [waterChange, setWaterChange] = useState('');
-    const [response, setResponse] = useState(null);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        const requestData = {
-            pondVolume: parseFloat(pondVolume),
-            currentConcentration: parseFloat(currentConcentration),
-            desiredConcentration: parseFloat(desiredConcentration),
-            waterChange: parseFloat(waterChange),
-        };
-
-
-        // Lấy memberID từ localStorage
-        const memberId = localStorage.getItem('userID'); // Dùng userID như là memberID
-
-        // Kiểm tra nếu memberID không tồn tại
-        if (!memberId) {
-            console.error('Error: memberID not found in localStorage.');
-            return; // Ngừng thực hiện nếu không có memberID
-        }
-
-        try {
-            const res = await fetch(`http://localhost:8080/api/calculate-salt?memberID=${memberId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestData),
-            });
-
-            // Kiểm tra nếu phản hồi không thành công
-            if (!res.ok) {
-                const errorMessage = await res.text();
-                throw new Error(`Failed to fetch: ${errorMessage}`);
-            }
-
-            const data = await res.json();
-            setResponse(data);
-        } catch (error) {
-            console.error('Error fetching salt calculation:', error.message);
-        }
-    };
-
-
-
-    return (
-        <div className="salt-calculation-container">
-            <h2>Salt Calculation</h2>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Pond Volume (liters):
-                    <input
-                        type="number"
-                        value={pondVolume}
-                        onChange={(e) => setPondVolume(e.target.value)}
-                        required
-                    />
-                </label>
-                <label>
-                    Current Concentration (%):
-                    <input
-                        type="number"
-                        value={currentConcentration}
-                        onChange={(e) => setCurrentConcentration(e.target.value)}
-                        required
-                    />
-                </label>
-                <label>
-                    Desired Concentration (%):
-                    <input
-                        type="number"
-                        value={desiredConcentration}
-                        onChange={(e) => setDesiredConcentration(e.target.value)}
-                        required
-                    />
-                </label>
-                <label>
-                    Water Change (liters):
-                    <input
-                        type="number"
-                        value={waterChange}
-                        onChange={(e) => setWaterChange(e.target.value)}
-                        required
-                    />
-                </label>
-                <button type="submit">Calculate Salt</button>
-            </form>
-
-            {response && (
-                <div className="calculation-results">
-                    <h3>Results:</h3>
-                    <p>Total Salt Needed: {response.totalSalt} kg</p>
-                    <p>Salt for Water Change: {response.saltPerWaterChange} kg</p>
-                    <p>{response.message}</p>
-                </div>
-            )}
-        </div>
-    );
-};
-
-export default SaltCalculation;
- */
