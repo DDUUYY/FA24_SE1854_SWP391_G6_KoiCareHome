@@ -89,7 +89,7 @@ function AddOrder() {
 
     return (
         <div className="add-order-container">
-            <h1 className="form-header">Add New Order</h1>
+            <h1 className="form-header">ADD NEW ORDER</h1>
             <form onSubmit={handleSubmit} className="order-form">
                 <div className="form-group">
                     <label>Order Date:</label>
@@ -125,7 +125,7 @@ function AddOrder() {
                     {errors.vat && <div className="error-message">{errors.vat}</div>}
                 </div>
 
-                <h3 className="item-header">Order Items</h3>
+                <h3 className="item-header">ORDER ITEMS</h3>
                 {order.orderItems.map((item, index) => (
                     <div key={index} className="order-item-group">
                         <div className="form-group">
@@ -167,15 +167,7 @@ function AddOrder() {
                                 <div className="error-message">{errors[`orderItems[${index}].price`]}</div>
                             )}
                         </div>
-                        <div className="form-group">
-                            <label>Total Amount:</label>
-                            <input
-                                type="number"
-                                name="totalAmount"
-                                value={item.amount}
-                                disabled
-                            />
-                        </div>
+
                         <button
                             type="button"
                             onClick={() => deleteItem(index)}

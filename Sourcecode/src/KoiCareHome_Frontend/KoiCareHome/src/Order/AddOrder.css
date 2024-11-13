@@ -1,78 +1,139 @@
+/* Container cho trang */
 .add-order-container {
-    max-width: 800px;
-    margin: auto;
+    width: 80%;
+    margin: 0 auto;
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Tiêu đề form */
 .form-header {
-    text-align: center;
-    margin-bottom: 20px;
+    font-size: 2rem;
     color: #333;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
+/* Form chung */
+.order-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Nhóm form input */
 .form-group {
     display: flex;
     flex-direction: column;
-    flex: 1;
-    /* Allows each form-group to take equal space */
-    min-width: 150px;
-    /* Minimum width to keep fields from becoming too narrow */
-    margin-bottom: 0;
+    gap: 8px;
 }
 
-.form-group label {
-    font-size: 1.1em;
-    margin-bottom: 5px;
+/* Label */
+label {
+    font-size: 1rem;
+    color: #333;
 }
 
-.form-group input {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
-}
-
-.order-item-group {
-    display: flex;
-    gap: 15px;
+/* Các input */
+input[type="date"],
+input[type="number"],
+input[type="text"] {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    margin-bottom: 15px;
-    background-color: #fff;
-    flex-wrap: nowrap;
-    /* Prevent wrapping to force items on one line */
-    overflow-x: auto;
-    /* Enable horizontal scrolling if items overflow */
+    font-size: 1rem;
+    width: 100%;
 }
 
-.button-container {
-    display: flex;
-    flex-direction: column;
-    /* Arrange buttons vertically */
-    align-items: center;
-    /* Center the buttons horizontally */
+/* Các thông báo lỗi */
+.error-message {
+    color: red;
+    font-size: 0.9rem;
+}
+
+/* Tiêu đề phần order items */
+.item-header {
+    font-size: 1.5rem;
+    color: #333;
     margin-top: 20px;
 }
 
-.add-item-button,
-.submit-button {
-    width: 380px;
-    padding: 10px 20px;
-    margin-bottom: 10px;
+/* Nhóm order items */
+.order-item-group {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-.add-item-button {
-    background-color: #4CAF50;
+/* Nút xóa item */
+.delete-item-button {
+    margin-top: 2%;
+    background-color: #e74c3c;
     color: white;
     border: none;
+    padding: 8px 12px;
     border-radius: 4px;
+    font-size: 0.9rem; /* Giảm kích thước font */
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: 20%;
+}
+
+.delete-item-button:hover {
+    background-color: #c0392b;
+}
+
+/* Nút thêm item */
+.add-item-button {
+    margin: 2%;
+    background-color: #ff6b00;
+    color: white;
+    border: none;
+    padding: 8px 12px;  /* Giảm kích thước padding */
+    border-radius: 4px;
+    font-size: 0.9rem; /* Giảm kích thước font */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 20%;
 }
 
 .add-item-button:hover {
-    background-color: #45a049;
+    background-color: #e8a383;
 }
+
+/* Nút submit */
+.submit-button {
+    margin: 2%;
+    background-color: #ff6b00;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+    width: 20%;
+}
+
+.submit-button:hover {
+    background-color: #e8a383;
+}
+
+/* Nút container */
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+
+

@@ -1,11 +1,11 @@
 package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.service;
 
+import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.validation.OrderValidation;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.dto.CreateOrderDTO;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model.*;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.MemberRepository;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.OrderHistoryRepository;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.OrderItemRepository;
-import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.validation.OrderValidation;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +32,70 @@ public class OrderService {
 
     @Autowired
     private MemberRepository memberRepository;
+    public OrderHistory calculateOrder(OrderHistory order) {
+        if (order.getVat() != null && order.getSubAmount() != null) {
+            BigDecimal subAmount = order.getSubAmount();
+            BigDecimal vatPercentage = order.getVat();
+
+            // Tính VATAmount và TotalAmount cho đơn hàng
+            BigDecimal vatAmount = subAmount.multiply(vatPercentage.divide(BigDecimal.valueOf(100)));
+            BigDecimal totalAmount = subAmount.add(vatAmount);
+
+            order.setVatAmount(vatAmount);
+            order.setTotalAmount(totalAmount);
+
+            // Tính amount cho từng order item
+            for (OrderItem item : order.getOrderItems()) {
+                BigDecimal quantity = BigDecimal.valueOf(item.getQuantity());
+                BigDecimal price = item.getPrice(); // Giả sử price đã là BigDecimal
+                if (price != null && quantity != null) {
+                    BigDecimal itemAmount = quantity.multiply(price);
+                    item.setAmount(itemAmount);
+                } else {
+                    item.setAmount(BigDecimal.ZERO); // Đặt giá trị mặc định nếu thiếu dữ liệu
+                }
+            }
+        } else {
+            // Xử lý trường hợp vat hoặc subAmount null nếu cần thiết
+            order.setVatAmount(BigDecimal.ZERO);
+            order.setTotalAmount(order.getSubAmount() != null ? order.getSubAmount() : BigDecimal.ZERO);
+        }
+        return order;
+    }
+
+
+//    public OrderHistory calculateOrder(OrderHistory order) {
+//        if (order.getVat() != null && order.getSubAmount() != null) {
+//            BigDecimal subAmount = order.getSubAmount();
+//            BigDecimal vatPercentage = order.getVat();
+//
+//            // Tính VATAmount và TotalAmount cho đơn hàng
+//            BigDecimal vatAmount = subAmount.multiply(vatPercentage.divide(BigDecimal.valueOf(100)));
+//            BigDecimal totalAmount = subAmount.add(vatAmount);
+//
+//
+//            order.setVatAmount(vatAmount);
+//            order.setTotalAmount(totalAmount);
+//
+//            // Tính amount cho từng order item
+//            for (OrderItem item : order.getOrderItems()) {
+//                BigDecimal quantity = BigDecimal.valueOf(item.getQuantity());
+//                BigDecimal price = item.getPrice(); // Giả sử price đã là BigDecimal
+//                if (price != null && quantity != null) {
+//                    BigDecimal itemAmount = quantity.multiply(price);
+//                    item.setAmount(itemAmount);
+//                } else {
+//                    item.setAmount(BigDecimal.ZERO); // Đặt giá trị mặc định nếu thiếu dữ liệu
+//                }
+//            }
+//
+//        } else {
+//            // Xử lý trường hợp vat hoặc subAmount null nếu cần thiết
+//            order.setVatAmount(BigDecimal.ZERO);
+//            order.setTotalAmount(order.getSubAmount() != null ? order.getSubAmount() : BigDecimal.ZERO);
+//        }
+//        return order;
+//    }
 
     public OrderHistory addOrder(CreateOrderDTO createOrderDTO) throws Exception {
         // Validate the order data
@@ -188,36 +252,148 @@ public class OrderService {
                 }).collect(Collectors.toList());
     }
 
-    public OrderHistory calculateOrder(OrderHistory order) {
-        if (order.getVat() != null && order.getSubAmount() != null) {
-            BigDecimal subAmount = order.getSubAmount();
-            BigDecimal vatPercentage = order.getVat();
 
-            // Tính VATAmount và TotalAmount cho đơn hàng
-            BigDecimal vatAmount = subAmount.multiply(vatPercentage.divide(BigDecimal.valueOf(100)));
-            BigDecimal totalAmount = subAmount.add(vatAmount);
-
-            order.setVatAmount(vatAmount);
-            order.setTotalAmount(totalAmount);
-
-            // Tính amount cho từng order item
-            for (OrderItem item : order.getOrderItems()) {
-                BigDecimal quantity = BigDecimal.valueOf(item.getQuantity());
-                BigDecimal price = item.getPrice(); // Giả sử price đã là BigDecimal
-                if (price != null && quantity != null) {
-                    BigDecimal itemAmount = quantity.multiply(price);
-                    item.setAmount(itemAmount);
-                } else {
-                    item.setAmount(BigDecimal.ZERO); // Đặt giá trị mặc định nếu thiếu dữ liệu
-                }
-            }
-
-        } else {
-            // Xử lý trường hợp vat hoặc subAmount null nếu cần thiết
-            order.setVatAmount(BigDecimal.ZERO);
-            order.setTotalAmount(order.getSubAmount() != null ? order.getSubAmount() : BigDecimal.ZERO);
-        }
-        return order;
-    }
 
 }
+
+//public List<CreateOrderDTO> getOrdersByMemberId(Integer memberID) {
+//    List<OrderHistory> orders = orderHistoryRepository.findByMember_MemberID(memberID);
+//    return orders.stream()
+//            .filter(order -> Boolean.TRUE.equals(order.getIsActive())) // Chỉ lấy các đơn hàng đang hoạt động
+//            .map(order -> {
+//                CreateOrderDTO orderDTO = new CreateOrderDTO();
+//                orderDTO.setId(order.getId());
+//                orderDTO.setMemberId(order.getMember().getMemberID());
+//                orderDTO.setOrderDate(order.getOrderDate());
+//                orderDTO.setSubAmount(order.getSubAmount());
+//                orderDTO.setVat(order.getVat());
+//                orderDTO.setVatAmount(order.getVatAmount());
+//                orderDTO.setTotalAmount(order.getTotalAmount());
+//
+//                List<CreateOrderDTO.OrderItemDTO> orderItems = order.getOrderItems().stream().map(item -> {
+//                    CreateOrderDTO.OrderItemDTO itemDTO = new CreateOrderDTO.OrderItemDTO();
+//                    itemDTO.setId(item.getId());
+//                    itemDTO.setProductName(item.getProductName());
+//                    itemDTO.setQuantity(item.getQuantity());
+//                    itemDTO.setPrice(item.getPrice());
+//                    itemDTO.setAmount(item.getAmount());
+//                    return itemDTO;
+//                }).collect(Collectors.toList());
+//
+//                orderDTO.setOrderItems(orderItems);
+//                return orderDTO;
+//            }).collect(Collectors.toList());
+//}
+
+//    public OrderHistory addOrder(CreateOrderDTO createOrderDTO) throws Exception {
+//
+//        Member member = memberRepository.findById(createOrderDTO.getMemberId())
+//                .orElseThrow(() -> new Exception("Member not found"));
+//
+//
+//        OrderHistory orderHistory = new OrderHistory();
+//        orderHistory.setMember(member);
+//        orderHistory.setOrderDate(createOrderDTO.getOrderDate() != null
+//                ? createOrderDTO.getOrderDate()
+//                : java.sql.Date.valueOf(LocalDate.now()));
+//        orderHistory.setSubAmount(createOrderDTO.getSubAmount());
+//        orderHistory.setVat(createOrderDTO.getVat());
+//        orderHistory.setVatAmount(createOrderDTO.getVatAmount());
+//        orderHistory.setTotalAmount(createOrderDTO.getTotalAmount());
+//        orderHistory.setIsActive(true);  // Active by default
+//        orderHistory.setCreateDate(Instant.now());
+//        orderHistory.setCreateBy(member.getFirstName() + " " + member.getLastName());
+//
+//
+//        List<OrderItem> orderItems = new ArrayList<>();
+//        for (CreateOrderDTO.OrderItemDTO itemDTO : createOrderDTO.getOrderItems()) {
+//            OrderItem orderItem = new OrderItem();
+//            orderItem.setOrderHistory(orderHistory);
+//            orderItem.setProductName(itemDTO.getProductName());
+//            orderItem.setQuantity(itemDTO.getQuantity());
+//            orderItem.setPrice(itemDTO.getPrice());
+//            orderItem.setAmount(itemDTO.getAmount());
+//            orderItem.setIsActive(true);  // Active by default
+//            orderItem.setCreateDate(OffsetDateTime.now());
+//            orderItem.setCreateBy(member.getFirstName() + " " + member.getLastName());
+//
+//            orderItems.add(orderItem);
+//            orderHistory.setOrderItems(orderItems);
+//        }
+//        orderHistory.setOrderItems(orderItems);
+//
+//
+//        orderHistory = orderHistoryRepository.save(orderHistory);
+//
+//        return orderHistory;
+//    }
+
+//    public OrderHistory updateOrder(Integer orderId, CreateOrderDTO createOrderDTO) throws Exception {
+//
+//        OrderHistory existingOrderHistory = orderHistoryRepository.findById(orderId)
+//                .orElseThrow(() -> new Exception("Order not found"));
+//
+//
+//        existingOrderHistory.setOrderDate(createOrderDTO.getOrderDate() != null ? createOrderDTO.getOrderDate() : existingOrderHistory.getOrderDate());
+//        existingOrderHistory.setSubAmount(createOrderDTO.getSubAmount() != null ? createOrderDTO.getSubAmount() : existingOrderHistory.getSubAmount());
+//        existingOrderHistory.setVat(createOrderDTO.getVat() != null ? createOrderDTO.getVat() : existingOrderHistory.getVat());
+//        existingOrderHistory.setVatAmount(createOrderDTO.getVatAmount() != null ? createOrderDTO.getVatAmount() : existingOrderHistory.getVatAmount());
+//        existingOrderHistory.setTotalAmount(createOrderDTO.getTotalAmount() != null ? createOrderDTO.getTotalAmount() : existingOrderHistory.getTotalAmount());
+//
+//
+//        existingOrderHistory.setUpdateDate(OffsetDateTime.now());
+//        existingOrderHistory.setUpdateBy(existingOrderHistory.getMember().getFirstName() + " " + existingOrderHistory.getMember().getLastName());
+//
+//
+//        if (createOrderDTO.getOrderItems() != null) {
+//            List<OrderItem> existingOrderItems = existingOrderHistory.getOrderItems();
+//            Map<Integer, OrderItem> existingItemsMap = existingOrderItems.stream()
+//                    .collect(Collectors.toMap(OrderItem::getId, Function.identity()));
+//
+//            for (CreateOrderDTO.OrderItemDTO itemDTO : createOrderDTO.getOrderItems()) {
+//                if (itemDTO.getId() != null && existingItemsMap.containsKey(itemDTO.getId())) {
+//                    // Update existing order item
+//                    OrderItem existingItem = existingItemsMap.get(itemDTO.getId());
+//                    existingItem.setProductName(itemDTO.getProductName() != null ? itemDTO.getProductName() : existingItem.getProductName());
+//                    existingItem.setQuantity(itemDTO.getQuantity() != null ? itemDTO.getQuantity() : existingItem.getQuantity());
+//                    existingItem.setPrice(itemDTO.getPrice() != null ? itemDTO.getPrice() : existingItem.getPrice());
+//                    existingItem.setAmount(itemDTO.getAmount() != null ? itemDTO.getAmount() : existingItem.getAmount());
+//                    existingItem.setUpdateDate(OffsetDateTime.now());
+//                    existingItem.setUpdateBy(existingOrderHistory.getMember().getFirstName() + " " + existingOrderHistory.getMember().getLastName());
+//                }
+//            }
+//        }
+//
+//
+//        orderHistoryRepository.save(existingOrderHistory);
+//        return existingOrderHistory;
+//    }
+
+//    public List<CreateOrderDTO> getOrdersByMemberId(Integer memberID) {
+//        List<OrderHistory> orders = orderHistoryRepository.findByMember_MemberID(memberID);
+//        return orders.stream().map(order -> {
+//            CreateOrderDTO orderDTO = new CreateOrderDTO();
+//            orderDTO.setId(order.getId());
+//            orderDTO.setMemberId(order.getMember().getMemberID());
+//            orderDTO.setOrderDate(order.getOrderDate());
+//            orderDTO.setSubAmount(order.getSubAmount());
+//
+//            orderDTO.setVatAmount(order.getVatAmount());
+//            orderDTO.setTotalAmount(order.getTotalAmount());
+//
+//            List<CreateOrderDTO.OrderItemDTO> orderItems = order.getOrderItems().stream().map(item -> {
+//                CreateOrderDTO.OrderItemDTO itemDTO = new CreateOrderDTO.OrderItemDTO();
+//                itemDTO.setId(item.getId());
+//                itemDTO.setProductName(item.getProductName());
+//                itemDTO.setQuantity(item.getQuantity());
+//                itemDTO.setPrice(item.getPrice());
+//                itemDTO.setAmount(item.getAmount());
+//                return itemDTO;
+//            }).collect(Collectors.toList());
+//
+//            orderDTO.setOrderItems(orderItems);
+//            return orderDTO;
+//        }).collect(Collectors.toList());
+//    }
+
+

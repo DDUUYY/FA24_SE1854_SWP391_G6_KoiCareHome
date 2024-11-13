@@ -16,13 +16,10 @@ public class SaltCalculatorService {
         double desiredConcentration = request.getDesiredConcentration();
         double waterChange = request.getWaterChange();
 
-        // Tính lượng muối cần thêm vào hồ (kg)
         double saltRequired = (desiredConcentration - currentConcentration) * volume / 1000;
 
-        // Tính lượng muối cần thêm cho nước thay (kg)
         double saltForWaterChange = desiredConcentration * waterChange / 1000;
 
-        // So sánh với nồng độ chuẩn và tạo thông báo
         String message;
         if (desiredConcentration < STANDARD_CONCENTRATION) {
             message = "Nồng độ muối bạn muốn đạt thấp hơn mức chuẩn 0.5%. Bạn nên tăng thêm muối để đạt hiệu quả chống bệnh tật và tảo.";
