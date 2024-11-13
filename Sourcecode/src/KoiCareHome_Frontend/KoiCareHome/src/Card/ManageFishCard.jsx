@@ -12,10 +12,10 @@ const ManageFishCard = () => {
             <div className="card">
                 <img className="card-image" src={Koi_Img} alt="Koi"></img>
                 <h2 className="card-title">ManageKoi</h2>
-                <p className="card-description">Users manage their own Kois</p>
+                <p className="card-description">An efficiently way to track, nurture, and organize your Kois</p>
             </div>
         </Link>
-        
+
     );
 }
 

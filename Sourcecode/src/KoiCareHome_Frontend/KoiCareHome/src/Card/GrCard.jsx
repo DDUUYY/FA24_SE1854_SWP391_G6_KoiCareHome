@@ -14,7 +14,7 @@ const GrCard = () => {
             <div className="card">
                 <img className="card-image" src={growthRecordImg} alt="Growth Record"></img>
                 <h2 className="card-title">GrowthRecord</h2>
-                <p className="card-description">Users monitor the growth of fish</p>
+                <p className="card-description">Record the growth of your koi fish and view the statistic chart</p>
             </div>
         </Link>
     );

@@ -61,11 +61,17 @@ const Chart = () => {
         if (fishID) fetchData();
     }, [location.search]);
 
+    const handleBackClick = () => {
+        const params = new URLSearchParams(location.search);
+        const fishID = params.get('fishID');
+        navigate(`/GrowthRecord?fishID=${fishID}`);
+    };
+
     return (
         <div className="chart-container">
             <h2 className="chart-title">Growth Statistics</h2>
             <Line data={data} />
-            <button onClick={() => navigate(-1)} className="chart-back-button">Back</button>
+            <button onClick={handleBackClick} className="chart-back-button">Back</button>
         </div>
     );
 };

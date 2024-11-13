@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './MemberProfile.css';
 import UserProfile from "../assets/User_Profile.jpg";
+
 /*
  * Author: Ha Huy Nghia Hiep
  * Date: October 19, 2024
@@ -15,7 +16,7 @@ const MemberProfile = () => {
     email: "",
     phoneNumber: "",
   });
-  const [showPopup, setShowPopup] = useState(false);  
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     loadMember();
@@ -86,7 +87,7 @@ const MemberProfile = () => {
               <button
                 type="button"
                 className="profile-button delete-button"
-                onClick={togglePopup}  
+                onClick={togglePopup}
               >
                 Delete
               </button>

@@ -1,14 +1,32 @@
-/* eslint-disable react/prop-types */
-// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './ManageFish.css';
+import createFish from './AddFish';
+import readFishes from './ViewAllFishes';
+import readPonds from './ViewAllPonds';
+import updateFish from './UpdateFish';
+import deleteFish from './DeleteFish';
+import { FaPlusCircle } from 'react-icons/fa';
+import { FaCircleArrowLeft } from "react-icons/fa6";
 
-const API_BASE_URL = 'http://localhost:8080/api/fish';
-
-const FishForm = ({ fish, onSubmit, onCancel, title }) => {
+const FishForm = ({ fish, onSubmit, onCancel, title, memberID }) => {
     const [formData, setFormData] = useState(fish);
-    console.log('Form data:', formData); 
+    const [ponds, setPonds] = useState([]);
+
+    useEffect(() => {
+        const fetchPonds = async (memberID) => {
+            try {
+                const data = await readPonds(memberID);
+                setPonds(data);
+            } catch (error) {
+                console.error('Error fetching ponds:', error);
+            }
+        };
+
+        if (memberID) {
+            fetchPonds(memberID);
+        }
+    }, [memberID]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,26 +37,27 @@ const FishForm = ({ fish, onSubmit, onCancel, title }) => {
         }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSubmit(formData);
-    };
-
     return (
         <div className="modal-overlay">
             <div className="modal-content">
                 <h2>{title}</h2>
-                <form onSubmit={handleSubmit} className="fish-form">
-                    <input
-                        type="number"
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    onSubmit(formData);
+                }} className="fish-form">
+                    <select
                         name="pondID"
                         value={formData.pondID}
                         onChange={handleChange}
-                        placeholder="Pond ID"
-                        min="0"
-                        step="1"
                         required
-                    />
+                    >
+                        <option value="">Select Pond</option>
+                        {ponds && ponds.map(pond => (
+                            <option key={pond.pondID} value={pond.pondID}>
+                                Pond: {pond.pondID}
+                            </option>
+                        ))}
+                    </select>
                     <input
                         type="text"
                         name="name"
@@ -52,7 +71,7 @@ const FishForm = ({ fish, onSubmit, onCancel, title }) => {
                         name="size"
                         value={formData.size}
                         onChange={handleChange}
-                        placeholder="Fish Size"
+                        placeholder="Fish Size - cm"
                         min="0"
                     />
                     <input
@@ -60,7 +79,7 @@ const FishForm = ({ fish, onSubmit, onCancel, title }) => {
                         name="weight"
                         value={formData.weight}
                         onChange={handleChange}
-                        placeholder="Fish Weight"
+                        placeholder="Fish Weight - kg"
                         min="0"
                     />
                     <input
@@ -163,6 +182,7 @@ const ManageFish = () => {
     const [showAddForm, setShowAddForm] = useState(false);
     const [selectedFish, setSelectedFish] = useState(null);
     const [notification, setNotification] = useState({ message: '', type: '' });
+    const [ponds, setPonds] = useState([]);
     const navigate = useNavigate();
 
     const emptyFish = {
@@ -178,6 +198,7 @@ const ManageFish = () => {
         price: ''
     };
 
+
     useEffect(() => {
         const id = localStorage.getItem("userID");
         if (id) {
@@ -190,119 +211,55 @@ const ManageFish = () => {
     useEffect(() => {
         if (memberID) {
             loadFishes(memberID);
+            fetchPonds(memberID);
         }
     }, [memberID]);
 
+    const fetchPonds = async (id) => {
+        try {
+            const data = await readPonds(id);
+            setPonds(data);
+        } catch (error) {
+            showNotification('Error loading ponds', 'error');
+        }
+    };
+
     const loadFishes = async (id) => {
         try {
-            const response = await fetch(`${API_BASE_URL}/member?memberId=${id}`);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            const data = await response.json();
-
-            const parsedFishes = Array.isArray(data) ? data.map(fish => ({
-                ...fish,
-                fishID: parseInt(fish.fishID, 10),
-                pondID: parseInt(fish.pondID, 10),
-                size: fish.size ? parseInt(fish.size, 10) : null,
-                weight: fish.weight ? parseInt(fish.weight, 10) : null,
-                age: fish.age ? parseInt(fish.age, 10) : null,
-                price: parseInt(fish.price, 10)
-            })) : [];
-
-            setFishes(parsedFishes);
-            console.log('Loaded fishes:', parsedFishes); // Thêm dòng này
-        // eslint-disable-next-line no-unused-vars
+            const data = await readFishes(id);
+            setFishes(data);
         } catch (error) {
             showNotification('Error loading fishes', 'error');
         }
     };
 
     const handleCreate = async (fishData) => {
-        const fishToAdd = {
-            ...fishData,
-            memberID,
-            pondID: parseInt(fishData.pondID, 10),
-            size: fishData.size ? parseInt(fishData.size, 10) : null,
-            weight: fishData.weight ? parseInt(fishData.weight, 10) : null,
-            age: fishData.age ? parseInt(fishData.age, 10) : null,
-            price: parseInt(fishData.price, 10)
-        };
-
         try {
-            const response = await fetch(API_BASE_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(fishToAdd),
-            });
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-            const createdFish = await response.json();
-            console.log('Created fish:', createdFish); // Thêm dòng này
-            setFishes(prev => [...prev, {
-                ...createdFish,
-                fishID: parseInt(createdFish.fishID, 10),
-                pondID: parseInt(createdFish.pondID, 10)
-            }]);
+            const createdFish = await createFish(fishData, memberID);
+            setFishes(prev => [...prev, createdFish]);
             setShowAddForm(false);
             showNotification('Fish added successfully!');
-        // eslint-disable-next-line no-unused-vars
         } catch (error) {
             showNotification('Error adding fish', 'error');
         }
     };
 
     const handleUpdate = async (fishData) => {
-        const fishID = parseInt(fishData.fishID, 10);
-        if (isNaN(fishID)) {
-            showNotification('Invalid fish ID', 'error');
-            return;
-        }
-
-        const updatedFish = {
-            ...fishData,
-            fishID: fishID,
-            pondID: parseInt(fishData.pondID, 10),
-            size: fishData.size ? parseInt(fishData.size, 10) : null,
-            weight: fishData.weight ? parseInt(fishData.weight, 10) : null,
-            age: fishData.age ? parseInt(fishData.age, 10) : null,
-            price: parseInt(fishData.price, 10)
-        };
-
         try {
-            const response = await fetch(`${API_BASE_URL}?fishId=${fishID}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updatedFish),
-            });
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-            setFishes(prev => prev.map(fish =>
-                fish.fishID === fishID ? updatedFish : fish
-            ));
+            const updatedFish = await updateFish(fishData);
+            setFishes(prev => prev.map(fish => fish.fishID === updatedFish.fishID ? updatedFish : fish));
             setSelectedFish(null);
             showNotification('Fish updated successfully!');
-        // eslint-disable-next-line no-unused-vars
         } catch (error) {
             showNotification('Error updating fish', 'error');
         }
     };
 
     const handleDelete = async (id) => {
-        const fishID = parseInt(id, 10);
-        if (isNaN(fishID)) {
-            showNotification('Invalid fish ID', 'error');
-            return;
-        }
-
         try {
-            const response = await fetch(`${API_BASE_URL}?fishId=${fishID}`, {
-                method: 'DELETE',
-            });
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-            setFishes(prev => prev.filter(fish => fish.fishID !== fishID));
+            await deleteFish(id);
+            setFishes(prev => prev.filter(fish => fish.fishID !== id));
             showNotification('Fish deleted successfully!');
-        // eslint-disable-next-line no-unused-vars
         } catch (error) {
             showNotification('Error deleting fish', 'error');
         }
@@ -320,14 +277,12 @@ const ManageFish = () => {
                     {notification.message}
                 </div>
             )}
-
             <div className="header">
                 <h1>Fish Management</h1>
-                <button onClick={() => setShowAddForm(true)} className="add-btn">
-                    Add New Fish
-                </button>
+                <div className="add-koi-btn-icon">
+                    <FaPlusCircle className="add-koi-btn-plus" onClick={() => setShowAddForm(true)} />
+                </div>
             </div>
-
             <div className="fish-grid">
                 {fishes.map(fish => (
                     <FishCard
@@ -335,31 +290,31 @@ const ManageFish = () => {
                         fish={fish}
                         onEdit={setSelectedFish}
                         onDelete={handleDelete}
+                        ponds={ponds}
                     />
                 ))}
             </div>
-
             {showAddForm && (
                 <FishForm
                     fish={emptyFish}
                     onSubmit={handleCreate}
                     onCancel={() => setShowAddForm(false)}
                     title="Add New Fish"
+                    memberID={memberID}
                 />
             )}
-
-            {selectedFish && selectedFish.fishID && (
+            {selectedFish && (
                 <FishForm
                     fish={selectedFish}
                     onSubmit={handleUpdate}
                     onCancel={() => setSelectedFish(null)}
                     title="Edit Fish"
+                    memberID={memberID}
                 />
             )}
-
-            <button onClick={() => navigate('/home')} className="fish-back-button">
-                Back to Home
-            </button>
+            <div className="back-btn-icon">
+                <FaCircleArrowLeft onClick={() => navigate('/home')} className="back-btn-plus" />
+            </div>
         </div>
     );
 };

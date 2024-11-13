@@ -1,0 +1,215 @@
+.order-item-card {
+    padding: 10px;
+    border: 1px solid #f5a623;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #fff7e6;
+}
+
+.order-item-card input {
+    width: 100%;
+    margin-top: 5px;
+}
+
+.order-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.search-bar {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 500px;
+}
+
+.search-bar input {
+    flex-grow: 1;
+    padding: 5px;
+    border-radius: 10px;
+    border: 1px solid #d6d6d6;
+}
+
+.order-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.order-card {
+    padding: 20px;
+    border: 1px solid #f1c4a3;
+    border-radius: 10px;
+    background-color: #fff4ed;
+    width: 300px;
+}
+
+.order-card h3 {
+    color: #f08a5d;
+}
+
+.order-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px;
+}
+
+.order-buttons button {
+    margin: 10px;
+    padding: 5px 10px;
+    background-color: #f08a5d;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.add-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #f08a5d;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.order-card {
+    padding: 20px;
+    border: 1px solid #f1c4a3;
+    border-radius: 10px;
+    background-color: #fff4ed;
+    width: 300px;
+}
+
+.order-card h4 {
+    margin-top: 10%;
+    color: #f08a5d;
+}
+
+.order-card h3 {
+    color: #f08a5d;
+}
+
+.order-card .form-group {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    /* Label and input width */
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.order-card label {
+    font-weight: bold;
+    color: #333;
+}
+
+.order-card input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    background-color: #f9f9f9;
+}
+
+/* Ensure the container is flexible enough for responsive design */
+.order-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 600px;
+    /* Set a maximum width */
+    margin: auto;
+    /* Centers the container horizontally */
+}
+
+.order-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.order-list {
+    display: flex;
+    justify-content: center;
+    /* Center align the order-card */
+    flex-wrap: wrap;
+    /* Allow cards to wrap if needed */
+    gap: 20px;
+    width: 100%;
+    max-width: 800px;
+    /* Optional: limit the width for better layout */
+}
+
+.order-card {
+    padding: 20px;
+    border: 1px solid #f1c4a3;
+    border-radius: 10px;
+    background-color: #fff4ed;
+    width: 300px;
+    text-align: left;
+    /* Optional: align text inside card */
+}
+
+.order-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 columns of equal width */
+    gap: 20px;
+    /* Space between the cards */
+    width: 100%;
+    padding: 10px;
+    justify-items: center;
+}
+
+.order-card {
+    padding: 20px;
+    border: 1px solid #f1c4a3;
+    border-radius: 10px;
+    background-color: #fff4ed;
+    width: 100%;
+    /* Card width adjusts to fit the grid column */
+    max-width: 300px;
+    /* Optional: limit card width for consistency */
+}
+
+.order-card h3 {
+    color: #f08a5d;
+}
+
+/* Lớp chứa thông báo lỗi */
+.error-message {
+    color: red;
+    /* Màu chữ đỏ để thông báo lỗi rõ ràng */
+    font-size: 14px;
+    /* Cỡ chữ vừa đủ */
+    font-weight: bold;
+    /* In đậm để nổi bật */
+    margin-top: 5px;
+    /* Khoảng cách phía trên */
+    margin-bottom: 10px;
+    /* Khoảng cách phía dưới */
+    background-color: #f8d7da;
+    /* Màu nền sáng với chút hồng nhạt */
+    padding: 5px;
+    /* Thêm padding để thông báo không bị chật */
+    border-radius: 3px;
+    /* Bo tròn góc cho thông báo */
+    border: 1px solid #f5c6cb;
+    /* Viền màu hồng nhạt */
+}
+
+/* Để dễ nhìn hơn khi có thông báo lỗi cho từng trường hợp */
+.error-field {
+    border: 1px solid red;
+    /* Viền đỏ cho input có lỗi */
+    background-color: #ffe6e6;
+    /* Màu nền sáng nhạt cho input có lỗi */
+}

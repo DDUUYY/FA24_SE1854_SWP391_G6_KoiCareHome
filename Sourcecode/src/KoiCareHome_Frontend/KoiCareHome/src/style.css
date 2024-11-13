@@ -3,7 +3,7 @@
  * Date: October 19, 2024
  */
 
- * {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -22,19 +22,19 @@
 }
 
 section {
-    position: relative;
-    max-width: 500px;
-    background-color: transparent;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    border-radius: 20px;
-    backdrop-filter: blur(55px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 3rem;
-    transition: all 0.5s ease-in-out;
-  }
-  
+  position: relative;
+  max-width: 500px;
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  backdrop-filter: blur(55px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 3rem;
+  transition: all 0.5s ease-in-out;
+}
+
 
 .title {
   font-size: 2rem;
@@ -45,32 +45,33 @@ section {
 
 
 .inputbox {
-    position: relative;
-    margin: 20px 0; 
-    max-width: 550px;
-    border-bottom: 2px solid #fff;
-    transition: all 0.5s ease-in-out;
-  }
-  
-  .inputbox input {
-    width: 100%;
-    height: 40px;
-    background: transparent;
-    border: none;
-    outline: none;
-    font-size: 1rem;
-    padding: 0 35px 0 5px;
-    color: #fff;
-  }
-  
-  .inputbox ion-icon {
-    position: absolute;
-    right: 8px;
-    color: #fff;
-    font-size: 1.2rem;
-    top: 12px;
-    transition: all 0.5s ease-in-out;
-  }
+  position: relative;
+  margin: 20px 0;
+  max-width: 550px;
+  border-bottom: 2px solid #fff;
+  transition: all 0.5s ease-in-out;
+}
+
+.inputbox input {
+  width: 100%;
+  height: 40px;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  padding: 0 35px 0 5px;
+  color: #fff;
+}
+
+
+.inputbox ion-icon {
+  position: absolute;
+  right: 8px;
+  color: #fff;
+  font-size: 1.2rem;
+  top: 12px;
+  transition: all 0.5s ease-in-out;
+}
 
 
 .inputbox label {
@@ -84,8 +85,8 @@ section {
   transition: all 0.5s ease-in-out;
 }
 
-input:focus ~ label,
-input:valid ~ label {
+input:focus~label,
+input:valid~label {
   top: -5px;
   font-size: 0.9rem;
   color: #a8a8a8;
@@ -126,4 +127,12 @@ button:hover {
 .register p a:hover {
   text-decoration: underline;
   color: #a8a8a8;
+}
+
+.error {
+  color: rgb(247, 34, 34);
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

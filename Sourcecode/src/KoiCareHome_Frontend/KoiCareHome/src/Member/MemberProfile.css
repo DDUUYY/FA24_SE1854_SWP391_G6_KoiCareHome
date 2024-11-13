@@ -3,13 +3,13 @@
  * Date: October 19, 2024
  */
 
- .profile-section {
+.profile-section {
   background-color: #f8f9fa;
-  padding: 40px; 
+  padding: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; 
+  min-height: 100vh;
   min-width: 240vh;
 }
 
@@ -18,9 +18,10 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  max-width: 1200px; 
-  gap: 40px; /* Increased gap between profile card and details */
+  max-width: 1250px;
+  gap: 30px;
   margin: auto;
+  margin-right: 15%;
 }
 
 
@@ -35,26 +36,26 @@
 
 
 .profile-avatar {
-  width: 180px; 
+  width: 180px;
   height: 180px;
   border-radius: 50%;
-  margin-bottom: 20px; 
+  margin-bottom: 20px;
 }
 
 
 .profile-buttons {
   display: flex;
   justify-content: center;
-  gap: 20px; 
+  gap: 20px;
 }
 
 .profile-button {
-  padding: 12px 20px; 
+  padding: 12px 20px;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
-  font-size: 18px; 
+  font-size: 18px;
   cursor: pointer;
 }
 
@@ -62,7 +63,8 @@
   background-color: #dc3545;
 }
 
-.profile-button:hover, .delete-button:hover {
+.profile-button:hover,
+.delete-button:hover {
   opacity: 0.5;
 }
 
@@ -72,15 +74,16 @@
   background-color: white;
   border-radius: 10px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-  padding: 30px; 
+  padding: 30px;
+  margin-right: 20px;
 }
 
 
 .detail-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px; 
-  font-size: 18px; 
+  margin-bottom: 20px;
+  font-size: 18px;
 }
 
 .label {
@@ -118,6 +121,7 @@ hr {
   text-align: center;
   width: 400px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  margin-right: 10%;
 }
 
 .popup-buttons {
