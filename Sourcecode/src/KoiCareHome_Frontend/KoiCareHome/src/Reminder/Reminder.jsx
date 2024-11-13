@@ -229,32 +229,6 @@ const Reminder = () => {
                         </tbody>
                     </table>
                 </div>
-
-                {/* Notification History Column */}
-                <div className="column">
-                    <h3>Notification History</h3>
-                    <button onClick={clearNotificationHistory} className="clear-history-button">Clear History Log</button>
-                    <table className="reminder-table">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Time</th>
-                                <th>Frequency</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {notificationHistory
-                                .filter((notification) => notification.memberID === memberID)
-                                .map((notification, index) => (
-                                    <tr key={index}>
-                                        <td>{notification.title}</td>
-                                        <td>{notification.dateTime}</td>
-                                        <td>{notification.frequency}</td>
-                                    </tr>
-                                ))}
-                        </tbody>
-                    </table>
-                </div>
             </div>
         </div>
     );
