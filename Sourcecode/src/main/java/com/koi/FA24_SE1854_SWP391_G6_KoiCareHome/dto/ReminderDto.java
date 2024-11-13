@@ -9,7 +9,7 @@
     public class ReminderDto {
         private String title;
 
-        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
         private LocalDateTime dateTime;
 
         private String frequency;

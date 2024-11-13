@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import HomeIcon from '../assets/HomeButton.png';
-import { FaTrashAlt } from 'react-icons/fa'; // Import icon thùng rác
+import { FaTrashAlt } from 'react-icons/fa';
 import './Reminder.css';
 
 const Reminder = () => {
@@ -31,8 +31,90 @@ const Reminder = () => {
         }
     };
 
+    // Fetch reminders
     useEffect(() => {
+        const fetchReminders = async () => {
+            try {
+                const response = await axios.get(`/api/reminders/user/${memberID}`);
+                setReminders(response.data);
+            } catch (error) {
+                console.error('Error fetching reminders:', error);
+            }
+        };
+        fetchReminders();
         requestNotificationPermission();
+    }, [memberID]);
+
+    // Handle input changes for new reminder
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewReminder({ ...newReminder, [name]: value });
+    };
+
+    // Add a new reminder
+    const addReminder = async () => {
+        try {
+            const reminderData = { ...newReminder, memberID };
+            const response = await axios.post('/api/reminders/create', reminderData);
+            setReminders([...reminders, response.data]);
+            setNewReminder({ title: '', dateTime: '', frequency: '' });
+        } catch (error) {
+            console.error('Error adding reminder:', error);
+        }
+    };
+
+    // Delete a reminder
+    const deleteReminder = async (id) => {
+        if (!id) {
+            console.error("ID is undefined for delete action.");
+            return;
+        }
+        console.log("Attempting to delete reminder with ID:", id); // Log id rõ ràng hơn
+        if (window.confirm("Are you sure you want to delete this reminder?")) {
+            try {
+                await axios.delete(`/api/reminders/delete/${id}`);
+                setReminders(reminders.filter((reminder) => reminder.id !== id));
+            } catch (error) {
+                console.error('Error deleting reminder:', error);
+            }
+        }
+    };
+
+    // Toggle reminder active status
+    const toggleReminderStatus = async (id, currentStatus) => {
+        if (!id) {
+            console.error("ID is undefined for toggle status action.");
+            return;
+        }
+        console.log("Attempting to toggle status for reminder with ID:", id);
+    
+        try {
+            const reminder = reminders.find((rem) => rem.id === id);
+            if (!reminder) {
+                console.error("Reminder not found for toggling status.");
+                return;
+            }
+    
+            // Chuyển đổi `dateTime` sang đúng định dạng chuỗi trước khi gửi
+            const updatedReminder = { 
+                ...reminder, 
+                isActive: !currentStatus,
+                dateTime: new Date(reminder.dateTime).toISOString().slice(0, 16) // Đảm bảo đúng định dạng
+            };
+            
+            await axios.put(`/api/reminders/edit/${id}`, updatedReminder);
+            setReminders((prevReminders) =>
+                prevReminders.map((rem) =>
+                    rem.id === id ? { ...rem, isActive: !currentStatus } : rem
+                )
+            );
+        } catch (error) {
+            console.error('Error updating reminder status:', error);
+        }
+    };
+
+    // Notification interval
+    useEffect(() => {
         const interval = setInterval(() => {
             const now = new Date();
             reminders.forEach((reminder) => {
@@ -55,57 +137,7 @@ const Reminder = () => {
         return () => clearInterval(interval);
     }, [reminders, notificationHistory, memberID]);
 
-    useEffect(() => {
-        const fetchReminders = async () => {
-            try {
-                const response = await axios.get(`/api/reminders/user/${memberID}`);
-                setReminders(response.data);
-            } catch (error) {
-                console.error('Error fetching reminders:', error);
-            }
-        };
-        fetchReminders();
-    }, [memberID]);
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setNewReminder({ ...newReminder, [name]: value });
-    };
-
-    const addReminder = async () => {
-        try {
-            const reminderData = { ...newReminder, memberID };
-            const response = await axios.post('/api/reminders/create', reminderData);
-            setReminders([...reminders, response.data]);
-            setNewReminder({ title: '', dateTime: '', frequency: '' });
-        } catch (error) {
-            console.error('Error adding reminder:', error);
-        }
-    };
-
-    const deleteReminder = async (id) => {
-        try {
-            await axios.delete(`/api/reminders/delete/${id}`);
-            setReminders(reminders.filter((reminder) => reminder.id !== id));
-        } catch (error) {
-            console.error('Error deleting reminder:', error);
-        }
-    };
-
-    const toggleReminderStatus = async (id, currentStatus) => {
-        try {
-            const updatedReminder = { isActive: !currentStatus };
-            await axios.put(`/api/reminders/edit/${id}`, updatedReminder);
-            setReminders((prevReminders) =>
-                prevReminders.map((reminder) =>
-                    reminder.id === id ? { ...reminder, isActive: !currentStatus } : reminder
-                )
-            );
-        } catch (error) {
-            console.error('Error updating reminder status:', error);
-        }
-    };
-
+    // Clear notification history
     const clearNotificationHistory = () => {
         setNotificationHistory([]);
         localStorage.setItem('notificationHistory', JSON.stringify([]));
@@ -114,16 +146,16 @@ const Reminder = () => {
     return (
         <div className="reminder-container">
             <div className="navbar">
-                <img 
-                    src={HomeIcon} 
-                    alt="Back to Home"  
-                    className="home-icon" 
-                    onClick={() => navigate('/home')} 
+                <img
+                    src={HomeIcon}
+                    alt="Back to Home"
+                    className="home-icon"
+                    onClick={() => navigate('/home')}
                 />
             </div>
             <h2>Reminders</h2>
             <div className="three-column-layout">
-                {/* Cột 1: Thêm reminder */}
+                {/* Add Reminder Column */}
                 <div className="column">
                     <h3>Add Reminder</h3>
                     <form className="reminder-form">
@@ -158,7 +190,7 @@ const Reminder = () => {
                     </form>
                 </div>
 
-                {/* Cột 2: Danh sách reminder */}
+                {/* Reminder List Column */}
                 <div className="column middle-column">
                     <h3>Your Reminders</h3>
                     <table className="reminder-table">
@@ -167,8 +199,8 @@ const Reminder = () => {
                                 <th>Title</th>
                                 <th>Time</th>
                                 <th>Frequency</th>
-                                <th>Action</th>
                                 <th>Status</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -198,7 +230,7 @@ const Reminder = () => {
                     </table>
                 </div>
 
-                {/* Cột 3: Lịch sử thông báo */}
+                {/* Notification History Column */}
                 <div className="column">
                     <h3>Notification History</h3>
                     <button onClick={clearNotificationHistory} className="clear-history-button">Clear History Log</button>
