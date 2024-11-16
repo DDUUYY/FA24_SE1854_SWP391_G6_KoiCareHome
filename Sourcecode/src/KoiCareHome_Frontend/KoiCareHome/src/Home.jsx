@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 // import { FaRegUserCircle } from "react-icons/fa";
 // import './home.css';
@@ -30,6 +30,13 @@ import AdminCard from './Card/AdminCard';
 const Home = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const navigate = useNavigate();
+    const [userRoleID, setUserRoleID] = useState(null);
+    
+    useEffect(() => {
+        // Lấy giá trị userRoleID từ localStorage
+        const role = localStorage.getItem('userRoleID'); // Dùng đúng key 'userRoleID'
+        setUserRoleID(parseInt(role, 10)); // Chuyển sang số để dễ so sánh
+    }, []);
 
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
@@ -37,6 +44,7 @@ const Home = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('userID');  // Optionally clear user data
+        localStorage.removeItem('userRoleID'); // Clear role data
         navigate('/login', { replace: true });  // This replaces the current page in the history stack
     };
 
@@ -106,7 +114,7 @@ const Home = () => {
                     <BlogCard />
                     <SaltCalculation />
                     <Order />
-                    <AdminCard />
+                    {userRoleID === 2 && <AdminCard />}
                 </div>
             </div>
         </div>

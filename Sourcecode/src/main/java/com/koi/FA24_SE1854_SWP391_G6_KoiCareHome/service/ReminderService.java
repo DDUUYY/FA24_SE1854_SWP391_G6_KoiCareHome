@@ -46,6 +46,7 @@ public class ReminderService {
         reminder.setDateTime(reminderDto.getDateTime());
         reminder.setFrequency(reminderDto.getFrequency());
         reminder.setUpdateDate(LocalDateTime.now()); // Sử dụng LocalDateTime cho updateDate
+        reminder.setIsActive(reminderDto.getIsActive());
         return reminderRepository.save(reminder);
     }
 

@@ -1,5 +1,6 @@
 package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ public class Reminder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ReminderID")
+    @JsonProperty("id") // Thêm dòng này để ánh xạ JSON thành "id"
     private Integer reminderId;
 
     @Column(name = "Title", nullable = false)

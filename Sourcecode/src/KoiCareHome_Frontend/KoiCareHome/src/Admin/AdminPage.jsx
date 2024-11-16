@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './AdminPage.css';
+import HomeIcon from '../assets/HomeButton.png';
 
 const AdminPage = () => {
   const [members, setMembers] = useState([]);
@@ -25,12 +26,29 @@ const AdminPage = () => {
 
   const fetchMembers = async () => {
     try {
-      const response = await axios.get('/api/admin/members');
-      setMembers(response.data);
+        const response = await axios.get('/api/admin/members');
+        
+        // Chuyển đổi từng mảng con thành đối tượng Member
+        const formattedMembers = response.data.map((member) => ({
+            MemberID: member[0],
+            Password: member[1],
+            RoleName: member[2],
+            FirstName: member[3],
+            LastName: member[4],
+            email: member[5],
+            PhoneNumber: member[6],
+            isActive: member[7],
+            CreateDate: member[8],
+            CreateBy: member[9],
+            UpdateDate: member[10],
+            UpdateBy: member[11],
+        }));
+        
+        setMembers(formattedMembers);
     } catch (error) {
-      console.error('Error fetching members:', error);
+        console.error('Error fetching members:', error);
     }
-  };
+};
 
   // Tải danh sách bài viết chờ duyệt
   const fetchPendingPosts = async () => {
@@ -66,6 +84,16 @@ const AdminPage = () => {
 
   return (
     <div className="admin-container">
+      {/* Thêm hình ảnh điều hướng về trang chủ */}
+      <nav className="navbar">
+        <img 
+          src={HomeIcon} 
+          alt="Back to Home" 
+          className="home-icon" 
+          onClick={() => navigate('/home')} 
+        />
+        <span className="navbar-title">Admin Dashboard</span>
+      </nav>
       <h2>Manage Members</h2>
       <table className="admin-table">
         <thead>
@@ -80,18 +108,18 @@ const AdminPage = () => {
         <tbody>
           {members.map((member) => (
             <tr key={member.MemberID}>
-              <td>{member.MemberID}</td>
-              <td>{member.FirstName} {member.LastName}</td>
-              <td>{member.email}</td>
-              <td>{member.isActive ? 'Active' : 'Inactive'}</td>
-              <td>
-                <button 
-                  className={`status-btn ${member.isActive ? 'block' : 'unblock'}`}
-                  onClick={() => toggleMemberStatus(member.MemberID)}
-                >
-                  {member.isActive ? 'Block' : 'Unblock'}
-                </button>
-              </td>
+                <td>{member.MemberID}</td>
+                <td>{member.FirstName} {member.LastName}</td>
+                <td>{member.email}</td>
+                <td>{member.isActive ? 'Active' : 'Inactive'}</td>
+                <td>
+                    <button 
+                        className={`status-btn ${member.isActive ? 'block' : 'unblock'}`}
+                        onClick={() => toggleMemberStatus(member.MemberID)}
+                    >
+                        {member.isActive ? 'Block' : 'Unblock'}
+                    </button>
+                </td>
             </tr>
           ))}
         </tbody>

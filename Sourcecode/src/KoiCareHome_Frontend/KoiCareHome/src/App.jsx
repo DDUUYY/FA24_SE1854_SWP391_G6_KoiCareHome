@@ -22,6 +22,7 @@ import Reminder from './Reminder/Reminder';
 import BlogList from './Blog/BlogList';
 import BlogCreator from './Blog/BlogCreator';
 import BlogEditor from './Blog/BlogEditor';
+import BlogDetail from './Blog/BlogDetail';
 import AdminPage from './Admin/AdminPage';
 
 const App = () => {
@@ -52,6 +53,7 @@ const App = () => {
         <Route path="/public-blogs" element={<BlogList />} />
         <Route path="/create-blog" element={<BlogCreator />} />
         <Route path="/edit-blog/:id" element={<BlogEditor />} />
+        <Route path="/blogs/:id" element={<BlogDetail />} />
         <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </Router>

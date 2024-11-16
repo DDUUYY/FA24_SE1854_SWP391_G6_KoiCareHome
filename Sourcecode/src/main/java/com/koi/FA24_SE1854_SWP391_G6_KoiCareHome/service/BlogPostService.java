@@ -23,6 +23,17 @@ public class BlogPostService {
     }
 
     public BlogPost createBlogPost(BlogPostDto blogPostDto) {
+        // Kiểm tra độ dài của tiêu đề, nội dung và tác giả
+        if (blogPostDto.getTitle().length() > 255) {
+            throw new IllegalArgumentException("Title exceeds maximum length of 255 characters.");
+        }
+        if (blogPostDto.getContent().length() > 255) {
+            throw new IllegalArgumentException("Content exceeds maximum length of 255 characters.");
+        }
+        if (blogPostDto.getAuthor() != null && blogPostDto.getAuthor().length() > 255) {
+            throw new IllegalArgumentException("Author exceeds maximum length of 255 characters.");
+        }
+
         BlogPost blogPost = new BlogPost();
         blogPost.setTitle(blogPostDto.getTitle());
         blogPost.setContent(blogPostDto.getContent());
@@ -30,11 +41,10 @@ public class BlogPostService {
         blogPost.setIsActive(true);
         blogPost.setStatus("Pending");
 
-        // Kiểm tra và gán Author, nếu rỗng thì đặt là "Unknown User"
+        // Gán tác giả và MemberID
         String author = blogPostDto.getAuthor();
         blogPost.setAuthor(author == null || author.trim().isEmpty() ? "Unknown User" : author);
 
-        // Gán memberID từ DTO
         if (blogPostDto.getMemberId() != null) {
             blogPost.setMemberId(blogPostDto.getMemberId());
         } else {
@@ -46,12 +56,23 @@ public class BlogPostService {
 
 
     public BlogPost editBlogPost(Integer id, BlogPostDto blogPostDto) {
+        if (blogPostDto.getTitle().length() > 255) {
+            throw new IllegalArgumentException("Title exceeds maximum length of 255 characters.");
+        }
+        if (blogPostDto.getContent().length() > 255) {
+            throw new IllegalArgumentException("Content exceeds maximum length of 255 characters.");
+        }
+        if (blogPostDto.getAuthor() != null && blogPostDto.getAuthor().length() > 255) {
+            throw new IllegalArgumentException("Author exceeds maximum length of 255 characters.");
+        }
+
         BlogPost blogPost = blogPostRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("BlogPost not found"));
         blogPost.setTitle(blogPostDto.getTitle());
         blogPost.setContent(blogPostDto.getContent());
         blogPost.setAuthor(blogPostDto.getAuthor());
         blogPost.setUpdateDate(new Date());
+
         return blogPostRepository.save(blogPost);
     }
 
