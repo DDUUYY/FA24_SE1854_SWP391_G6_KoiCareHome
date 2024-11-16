@@ -1,10 +1,11 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useRef, useEffect } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { Link, useNavigate } from 'react-router-dom';
 // import { FaRegUserCircle } from "react-icons/fa";
 // import './home.css';
 // import GrCard from '../src/Card/GrCard';
-import Koi_Img from './assets/Koi_Img.jpg';
+// import Koi_Img from './assets/Koi_Img.jpg';
 // import KoiGraphic from './assets/Welcome.jpg';
 // import LogoKoiFish from './assets/logokoifish.png';
 
