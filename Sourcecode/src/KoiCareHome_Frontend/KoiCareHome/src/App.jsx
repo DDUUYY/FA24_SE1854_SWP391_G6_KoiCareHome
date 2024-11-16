@@ -13,8 +13,6 @@ import Order from './Order/Order';
 import SaltCalculation from './SaltCalculation/SaltCalculation';
 import AddOrder from './Order/AddOrder';
 
-// import FoodCalculator from './Calculator/FoodCalculator';
-// import FoodHistory from './Fish/ConsumeFoodHistory';
 import FoodCalculator from './Calculator/FoodCalculator';
 import FoodHistory from './ConsumeFoodHistory/ConsumeFoodHistory';
 import Chart from './GrowthRecord/Chart';
@@ -35,10 +33,6 @@ const App = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/profile" element={<MemberProfile />} />
         <Route path='/UpdateMember/:id' element={<UpdateMember />} />
-        {/* <Route path="/manage-fish" element={<ManageFish />} /> */}
-        {/* <Route path="/growthRecord" element={<GrowthRecord />} /> */}
-        {/* <Route path="/addRecord" element={<AddRecord />} /> */}
-
         <Route path="/order" element={<Order />} />
         <Route path="/salt-calculation" element={<SaltCalculation />} />
         <Route path="/add-order" element={<AddOrder />} />

@@ -37,14 +37,13 @@ const Home = () => {
         const role = localStorage.getItem('userRoleID'); // Dùng đúng key 'userRoleID'
         setUserRoleID(parseInt(role, 10)); // Chuyển sang số để dễ so sánh
     }, []);
-
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('userID');  // Optionally clear user data
-        localStorage.removeItem('userRoleID'); // Clear role data
+        localStorage.removeItem('userID'); 
+        localStorage.removeItem('userRoleID'); // Optionally clear user data
         navigate('/login', { replace: true });  // This replaces the current page in the history stack
     };
 

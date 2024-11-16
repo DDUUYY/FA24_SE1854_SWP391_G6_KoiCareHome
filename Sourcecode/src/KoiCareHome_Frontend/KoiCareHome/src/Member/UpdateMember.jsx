@@ -54,7 +54,7 @@ const UpdateMember = () => {
     e.preventDefault();
     const { firstName, lastName, email, phoneNumber, newPassword, confirmNewPassword } = formData;
 
-    // Validate required fields
+    
     if (!firstName || !lastName || !email || !phoneNumber) {
       setError("Please fill in all required fields.");
       return;

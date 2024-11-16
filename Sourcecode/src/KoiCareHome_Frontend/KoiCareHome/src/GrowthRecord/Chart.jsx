@@ -1,7 +1,6 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react';
 import { Line } from "react-chartjs-2";
-import { useNavigate,useLocation  } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import './Chart.css';
 
 /*
@@ -35,9 +34,12 @@ const Chart = () => {
             const response = await fetch(`http://localhost:8080/api/GrowthRecord?fishID=${fishID}`);
             const records = await response.json();
 
-            const labels = records.map(record => record.measurementDate);
-            const sizeData = records.map(record => record.size);
-            const weightData = records.map(record => record.weight);
+            
+            const sortedRecords = records.sort((a, b) => new Date(a.measurementDate) - new Date(b.measurementDate));
+
+            const labels = sortedRecords.map(record => record.measurementDate);
+            const sizeData = sortedRecords.map(record => record.size);
+            const weightData = sortedRecords.map(record => record.weight);
 
             setData({
                 labels: labels,

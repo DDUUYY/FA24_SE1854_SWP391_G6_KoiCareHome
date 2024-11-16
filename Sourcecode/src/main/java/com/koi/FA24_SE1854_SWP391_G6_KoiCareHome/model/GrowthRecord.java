@@ -28,8 +28,8 @@ public class GrowthRecord {
 
       private Integer fishID;
 
-@Column(nullable = false)
-private LocalDate MeasurementDate;
+
+private LocalDate measurementDate;
 @Column(nullable = false)
 private BigDecimal Size;
 @Column(nullable = false)
@@ -52,7 +52,9 @@ private String UpdateBy;
       public void onPrePersist() {
             this.CreateDate = LocalDateTime.now();
             this.UpdateDate = LocalDateTime.now();
-            this.MeasurementDate = LocalDate.now();
+            if (this.measurementDate == null) {
+                  this.measurementDate = LocalDate.now();
+            }
       }
 
       @PreUpdate

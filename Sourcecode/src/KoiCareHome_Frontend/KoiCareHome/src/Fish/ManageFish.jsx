@@ -170,7 +170,7 @@ const FishCard = ({ fish, onEdit, onDelete }) => {
             </div>
             <div className="fish-actions">
                 <button onClick={() => onEdit(fish)} className="edit-btn">Edit</button>
-                <button onClick={handleDelete} className="delete-btn">Delete</button>
+                <button onClick={handleDelete} className="Fdelete-btn">Delete</button>
             </div>
         </div>
     );

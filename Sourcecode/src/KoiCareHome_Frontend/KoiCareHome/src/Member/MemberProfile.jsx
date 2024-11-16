@@ -86,7 +86,7 @@ const MemberProfile = () => {
               </button>
               <button
                 type="button"
-                className="profile-button delete-button"
+                className="profile-button Mdelete-button"
                 onClick={togglePopup}
               >
                 Delete
