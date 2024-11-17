@@ -6,7 +6,7 @@ import './GrCard.css';
 
 const ReminderCard = () => {
     return (
-        <Link to="/reminder"> {/* Đổi từ "/reminders" thành "/reminder" */}
+        <Link to="/reminder">
             <div className="card">
                 <img className="card-image" src={LogoReminder01} alt="Reminder"></img>
                 <h2 className="card-title">Reminder</h2>

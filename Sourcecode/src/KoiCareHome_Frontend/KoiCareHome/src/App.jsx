@@ -24,6 +24,7 @@ import BlogCreator from './Blog/BlogCreator';
 import BlogEditor from './Blog/BlogEditor';
 import BlogDetail from './Blog/BlogDetail';
 import AdminPage from './Admin/AdminPage';
+import Pond from './Pond/Pond';
 
 const App = () => {
   return (
@@ -55,6 +56,7 @@ const App = () => {
         <Route path="/edit-blog/:id" element={<BlogEditor />} />
         <Route path="/blogs/:id" element={<BlogDetail />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/pond" element={<Pond />} />
       </Routes>
     </Router>
   );

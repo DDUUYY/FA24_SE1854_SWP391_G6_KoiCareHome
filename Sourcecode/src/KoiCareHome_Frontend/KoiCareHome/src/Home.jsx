@@ -27,6 +27,7 @@ import FoodCalculatorCard from './Card/FoodCalculatorCard';
 import ReminderCard from './Card/ReminderCard';
 import BlogCard from './Card/BlogCard';
 import AdminCard from './Card/AdminCard';
+import PondCard from './Card/PondCard.jsx';
 
 const Home = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -108,6 +109,7 @@ const Home = () => {
                 <div className='Feature-container'>
                     <h1>Our Feature</h1>
                     <ManageFishCard />
+                    <PondCard/>
                     <FeedingHistoryCard />
                     <FoodCalculatorCard />
                     <GrCard />

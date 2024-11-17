@@ -18,7 +18,7 @@ public class PondService {
         this.pondRepository = pondRepository;
     }
 
-    public List<Pond> getAllPondWithMemberId(int memberId) {
+    public List<Pond> getAllPondWithMemberId(Integer memberId) {
         return pondRepository.findAllPondWithMemberId(memberId);
     }
 
@@ -41,8 +41,11 @@ public class PondService {
             pond.setDepth(pondDetails.getDepth());
             pond.setVolume(pondDetails.getVolume());
             pond.setDrainageCount(pondDetails.getDrainageCount());
+            pond.setPumpCapacity(pondDetails.getPumpCapacity());
             pond.setEquipment(pondDetails.getEquipment());
+            pond.setQuantity(pondDetails.getQuantity());
             pond.setIsActive(pondDetails.getIsActive());
+            pond.setUpdateBy(pondDetails.getUpdateBy());
             return pondRepository.save(pond);
         }
         return null;

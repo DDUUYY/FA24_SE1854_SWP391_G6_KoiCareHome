@@ -26,7 +26,7 @@ public class Pond {
     @Column(name = "MemberID", nullable = false)
     private Integer memberID;
 
-    @Column(name = "ReminderID", nullable = false)
+    @Column(name = "ReminderID")
     private Integer reminderID;
 
     @Column(name = "Size", nullable = false, precision = 10, scale = 2)
@@ -57,7 +57,7 @@ public class Pond {
     @Column(name = "CreateDate")
     private LocalDateTime createDate;
 
-    @Column(name = "CreateBy", nullable = false)
+    @Column(name = "CreateBy")
     private String createBy;
 
     @Column(name = "UpdateDate")
@@ -69,14 +69,15 @@ public class Pond {
     @PrePersist
     protected void onCreate() {
         createDate = LocalDateTime.now();
-        updateDate = LocalDateTime.now();
-        isActive = true;
+        updateDate = null; // Ban đầu null khi tạo mới
+        isActive = true; // Mặc định hồ được kích hoạt khi tạo
+        if (createBy == null) {
+            createBy = "System"; // Giá trị mặc định nếu không được cung cấp
+        }
     }
 
     @PreUpdate
     protected void onUpdate() {
         updateDate = LocalDateTime.now();
     }
-
-
 }
