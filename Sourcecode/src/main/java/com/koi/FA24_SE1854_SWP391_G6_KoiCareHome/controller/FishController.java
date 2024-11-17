@@ -1,8 +1,11 @@
 package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.controller;
 
+import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.exception.AlreadyExistedException;
+import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.exception.NotFoundException;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model.Fish;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.service.FishService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,9 +33,15 @@ public class FishController {
      * @return the ResponseEntity with status 200 (OK) and with body of the new Fish
      */
     @PostMapping
-    public ResponseEntity<Fish> saveFish(@RequestBody Fish fish) {
-        Fish newFish = fishService.saveFish(fish);
-        return ResponseEntity.ok(newFish);
+    public ResponseEntity<Fish> saveFish(@RequestBody Fish fish, @RequestParam(name = "memberId") int memberID) {
+        try {
+            Fish newFish = fishService.saveFish(fish, memberID);
+            return ResponseEntity.ok(newFish);
+        } catch (AlreadyExistedException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        } catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     /**
@@ -74,37 +83,53 @@ public class FishController {
      */
     @GetMapping("/{fishId}")
     public ResponseEntity<Fish> getFishById(@PathVariable int fishId) {
-        Optional<Fish> fish = fishService.getFishById(fishId);
-        return fish.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        try {
+            Fish fish = fishService.getFishById(fishId);
+            return ResponseEntity.ok(fish);
+        } catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     /**
      * Get a Fish by Name in a specific pond.
      *
-     * @param pondId the ID of the Fish's pond
+     * @param pondId   the ID of the Fish's pond
      * @param fishName the name of the Fish
      * @return the ResponseEntity with status 200 (OK) and with body of the Fish,
      * or with status 404 (Not Found) if the Fish does not exist
      */
     @GetMapping("/pond")
-    public ResponseEntity<Fish> getFishByNameWithPondId(@RequestParam(name = "pondId") int pondId,
-                                                        @RequestParam(name = "fishName") String fishName) {
-        Optional<Fish> fish = fishService.getFishByNameWithPondId(fishName, pondId);
-        return fish.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Fish> getFishByNameWithPondId(@RequestParam(name = "fishName") String fishName,
+                                                        @RequestParam(name = "pondId") int pondId){
+        try {
+            Fish fish = fishService.getFishByNameWithPondId(fishName, pondId);
+            return ResponseEntity.ok(fish);
+        } catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
     }
 
     /**
      * Update a Fish by ID.
      *
      * @param fishId the ID of the Fish to update
-     * @param fish the updated Fish
+     * @param fish   the updated Fish
      * @return the ResponseEntity with status 200 (OK) and with body of the updated Fish,
      * or with status 404 (Not Found) if the Fish does not exist
      */
     @PutMapping
-    public ResponseEntity<Fish> updateFish(@RequestParam(name = "fishId") int fishId, @RequestBody Fish fish) {
-        Fish updatedFish = fishService.updateFish(fishId, fish);
-        return ResponseEntity.ok(updatedFish);
+    public ResponseEntity<Fish> updateFish(@RequestParam(name = "fishId") int fishId, @RequestBody Fish fish,
+                                           @RequestParam(name = "memberId") int memberID) {
+        try {
+            Fish updatedFish = fishService.updateFish(fishId, fish, memberID);
+            return ResponseEntity.ok(updatedFish);
+        } catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (AlreadyExistedException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        }
     }
 
     /**
@@ -114,8 +139,13 @@ public class FishController {
      * @return the ResponseEntity with status 200 (OK) and with body of the message "Fish deleted successfully"
      */
     @DeleteMapping
-    public ResponseEntity<String> deleteFish(@RequestParam(name = "fishId") int fishId) {
-        fishService.deleteByID(fishId);
-        return ResponseEntity.ok("Fish deleted successfully");
+    public ResponseEntity<String> deleteFish(@RequestParam(name = "fishId") int fishId,
+                                             @RequestParam(name = "memberId") int memberID) {
+        try {
+            fishService.deleteByID(fishId, memberID);
+            return ResponseEntity.ok("Fish deleted successfully");
+        } catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 }

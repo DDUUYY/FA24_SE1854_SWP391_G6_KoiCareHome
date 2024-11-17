@@ -6,12 +6,12 @@ const updateFish = async (fishData) => {
 
     const updatedFish = {
         ...fishData,
-        fishID,
+        memberID,
         pondID: parseInt(fishData.pondID, 10),
+        breedID: parseInt(fishData.breedID, 10),
         size: fishData.size ? parseInt(fishData.size, 10) : null,
         weight: fishData.weight ? parseInt(fishData.weight, 10) : null,
-        age: fishData.age ? parseInt(fishData.age, 10) : null,
-        price: parseInt(fishData.price, 10)
+        ageMonth: fishData.ageMonth ? parseInt(fishData.ageMonth, 10) : 0
     };
 
     const response = await fetch(`${API_BASE_URL}?fishId=${fishID}`, {

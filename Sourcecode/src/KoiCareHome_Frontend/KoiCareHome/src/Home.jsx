@@ -10,6 +10,7 @@ import LogoKoiFish from './assets/logokoifish.png';
 import ManageFishCard from './Card/ManageFishCard';
 import FeedingHistoryCard from './Card/FeedingHistoryCard';
 import FoodCalculatorCard from './Card/FoodCalculatorCard';
+import BreedCard from './Card/BreedCard';
 
 const Home = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -85,6 +86,7 @@ const Home = () => {
                     <FeedingHistoryCard />
                     <FoodCalculatorCard />
                     <GrCard />
+                    <BreedCard />
                 </div>
             </div>
         </div>

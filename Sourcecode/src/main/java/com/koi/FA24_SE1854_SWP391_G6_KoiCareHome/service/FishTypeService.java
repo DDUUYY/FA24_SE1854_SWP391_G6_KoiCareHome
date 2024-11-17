@@ -14,8 +14,8 @@ import java.util.Optional;
 @Service
 public class FishTypeService {
 
-    private static final String FISH_TYPE_NOT_FOUND_MESSAGE = "FishType not found.";
-    private static final String FISH_TYPE_ALREADY_EXISTED_MESSAGE = "FishType already existed.";
+    private static final String FISH_TYPE_NOT_FOUND_MESSAGE = "FishType is not found with ";
+    private static final String FISH_TYPE_ALREADY_EXISTED_MESSAGE = "FishType has already existed with name: ";
 
     private final FishTypeRepository fishTypeRepository;
 
@@ -33,10 +33,10 @@ public class FishTypeService {
     public FishType saveFishType(FishType fishType) {
         if(fishTypeRepository.existsByName(fishType.getName()))
         {
-            throw new AlreadyExistedException(FISH_TYPE_ALREADY_EXISTED_MESSAGE);
+            throw new AlreadyExistedException(FISH_TYPE_ALREADY_EXISTED_MESSAGE + fishType.getName());
         }
-        fishType.setCreateBy("user");
-        fishType.setUpdateBy("user");
+        fishType.setCreateBy("User");
+        fishType.setUpdateBy("User");
         return fishTypeRepository.save(fishType);
     }
 
@@ -49,7 +49,7 @@ public class FishTypeService {
     public FishType saveFishTypeByName(String name) {
         if(fishTypeRepository.existsByName(name))
         {
-            throw new AlreadyExistedException(FISH_TYPE_ALREADY_EXISTED_MESSAGE);
+            throw new AlreadyExistedException(FISH_TYPE_ALREADY_EXISTED_MESSAGE + name);
         }
         FishType fishType = new FishType();
         fishType.setName(name);
@@ -73,13 +73,9 @@ public class FishTypeService {
      * @param id the ID of the entity
      * @return the entity
      */
-    public Optional<FishType> getFishTypeByID(int id) {
-        Optional<FishType> existingFishType = fishTypeRepository.findById(id);
-        if (existingFishType.isPresent()) {
-            return existingFishType;
-        } else {
-            throw new NotFoundException(FISH_TYPE_NOT_FOUND_MESSAGE);
-        }
+    public FishType getFishTypeByID(int id) {
+        return fishTypeRepository.findById(id).orElseThrow(() -> new NotFoundException(FISH_TYPE_NOT_FOUND_MESSAGE
+                + "id: " + id));
     }
 
     /**
@@ -88,13 +84,10 @@ public class FishTypeService {
      * @param name the name of the entity
      * @return the entity
      */
-    public Optional<FishType> getFishTypeByName(String name) {
-        Optional<FishType> existingFishType = fishTypeRepository.findByName(name);
-        if (existingFishType.isPresent()) {
-            return existingFishType;
-        } else {
-            throw new NotFoundException(FISH_TYPE_NOT_FOUND_MESSAGE);
-        }
+    public FishType getFishTypeByName(String name) {
+        return fishTypeRepository.findByName(name).orElseThrow(() -> new NotFoundException(FISH_TYPE_NOT_FOUND_MESSAGE
+                + "name: " + name));
+
     }
 
     /**
@@ -105,15 +98,12 @@ public class FishTypeService {
      * @return the updated entity
      */
     public FishType updateFishType(int id, FishType updatedFishType) {
-        Optional<FishType> existingFishType = fishTypeRepository.findById(id);
-        if (existingFishType.isPresent()) {
-            FishType fishType = existingFishType.get();
-            fishType.setName(updatedFishType.getName());
-            fishType.setUpdateBy("user");
-            return fishTypeRepository.save(fishType);
-        } else {
-            throw new NotFoundException(FISH_TYPE_NOT_FOUND_MESSAGE);
-        }
+        FishType existingFishType = fishTypeRepository.findById(id).orElseThrow(() -> new NotFoundException
+                (FISH_TYPE_NOT_FOUND_MESSAGE + "id: " + id));
+        if (fishTypeRepository.existsByName(updatedFishType.getName()))
+            throw new AlreadyExistedException(FISH_TYPE_ALREADY_EXISTED_MESSAGE + updatedFishType.getName());
+        Optional.of(updatedFishType.getName()).ifPresent(existingFishType::setName);
+        return fishTypeRepository.save(existingFishType);
     }
 
     /**
@@ -123,12 +113,9 @@ public class FishTypeService {
      */
     @Transactional
     public void deleteByID(int id) {
-        if(fishTypeRepository.existsById(id)){
-            updateFishType(id, fishTypeRepository.findById(id).get());
-            fishTypeRepository.deleteByID(id);
-        } else{
-            throw new NotFoundException(FISH_TYPE_NOT_FOUND_MESSAGE);
-        }
+        FishType existingFishType = fishTypeRepository.findById(id).orElseThrow(() -> new NotFoundException
+                (FISH_TYPE_NOT_FOUND_MESSAGE + "id: " + id));
+        fishTypeRepository.deleteByID(existingFishType.getFishTypeID());
 
     }
 }

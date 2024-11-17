@@ -23,11 +23,11 @@ public class GrowthRecordController {
 
 
     @PostMapping("/GrowthRecord")
-    public GrowthRecord postGrowRecord(@RequestBody GrowthRecord growthRecord) {
+    public GrowthRecord postGrowRecord(@RequestBody GrowthRecord growthRecord, @RequestParam(name = "memberId") int memberID) {
         if (growthRecord.getFishID() == null) {
             throw new IllegalArgumentException("Fish ID cannot be null");
         }
-        return growthRecordService.postGrowthRecord(growthRecord);
+        return growthRecordService.postGrowthRecord(growthRecord, memberID);
     }
 
 

@@ -1,40 +1,59 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FaPlusCircle, FaFish, FaWater, FaBalanceScale, FaWeight, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaCircleArrowLeft } from "react-icons/fa6";
 import './ManageFish.css';
 import createFish from './AddFish';
 import readFishes from './ViewAllFishes';
 import readPonds from './ViewAllPonds';
 import updateFish from './UpdateFish';
 import deleteFish from './DeleteFish';
-import { FaPlusCircle } from 'react-icons/fa';
-import { FaCircleArrowLeft } from "react-icons/fa6";
+import fetchBreeds from '../Breed/ViewAllBreeds';
 
 const FishForm = ({ fish, onSubmit, onCancel, title, memberID }) => {
     const [formData, setFormData] = useState(fish);
     const [ponds, setPonds] = useState([]);
+    const [breeds, setBreeds] = useState([]);
+    const [ageMonth, setAgeMonth] = useState(0);
 
     useEffect(() => {
-        const fetchPonds = async (memberID) => {
+        const loadData = async () => {
+            if (!memberID) return;
+
             try {
-                const data = await readPonds(memberID);
-                setPonds(data);
+                const [foodData, breedData] = await Promise.all([
+                    readPonds(memberID),
+                    fetchBreeds()
+                ]);
+
+                setPonds(foodData);
+                setBreeds(breedData);
             } catch (error) {
-                console.error('Error fetching ponds:', error);
+                showNotification('Error loading data', 'error');
             }
         };
 
-        if (memberID) {
-            fetchPonds(memberID);
-        }
+        loadData();
     }, [memberID]);
+
+    const calculateAge = (birthDate) => {
+        const birth = new Date(birthDate);
+        const today = new Date();
+        const diffTime = Math.abs(today.getTime() - birth.getTime());
+        const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30.44));
+        setAgeMonth(diffMonths);
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        const numericFields = ['pondID', 'size', 'weight', 'age', 'price'];
         setFormData(prev => ({
             ...prev,
-            [name]: numericFields.includes(name) ? (value === '' ? '' : parseInt(value, 10)) : value
+            [name]: value
         }));
+
+        if (name === 'birthday') {
+            calculateAge(value);
+        }
     };
 
     return (
@@ -43,104 +62,145 @@ const FishForm = ({ fish, onSubmit, onCancel, title, memberID }) => {
                 <h2>{title}</h2>
                 <form onSubmit={(e) => {
                     e.preventDefault();
-                    onSubmit(formData);
+                    onSubmit({ ...formData, ageMonth });
                 }} className="fish-form">
-                    <select
-                        name="pondID"
-                        value={formData.pondID}
-                        onChange={handleChange}
-                        required
-                    >
-                        <option value="">Select Pond</option>
-                        {ponds && ponds.map(pond => (
-                            <option key={pond.pondID} value={pond.pondID}>
-                                Pond: {pond.pondID}
-                            </option>
-                        ))}
-                    </select>
-                    <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder="Fish Name"
-                        required
-                    />
-                    <input
-                        type="number"
-                        name="size"
-                        value={formData.size}
-                        onChange={handleChange}
-                        placeholder="Fish Size - cm"
-                        min="0"
-                    />
-                    <input
-                        type="number"
-                        name="weight"
-                        value={formData.weight}
-                        onChange={handleChange}
-                        placeholder="Fish Weight - kg"
-                        min="0"
-                    />
-                    <input
-                        type="number"
-                        name="age"
-                        value={formData.age}
-                        onChange={handleChange}
-                        placeholder="Fish Age"
-                        min="0"
-                        step="1"
-                    />
-                    <div className="radio-group">
-                        <label>
-                            <input
-                                type="radio"
-                                name="gender"
-                                value="Male"
-                                checked={formData.gender === "Male"}
+                    <div className="form-grid">
+                        <div className="form-group">
+                            <label>
+                                <FaWater className="input-icon" />
+                                Select Pond
+                            </label>
+                            <select
+                                name="pondID"
+                                value={formData.pondID}
                                 onChange={handleChange}
-                            />
-                            Male
-                        </label>
-                        <label>
-                            <input
-                                type="radio"
-                                name="gender"
-                                value="Female"
-                                checked={formData.gender === "Female"}
+                                required
+                            >
+                                <option value="">Choose a pond</option>
+                                {ponds.map(pond => (
+                                    <option key={pond.pondID} value={pond.pondID}>
+                                        {`Pond ${pond.pondID}`}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="form-group">
+                            <label>
+                                <FaFish className="input-icon" />
+                                Koi Breed
+                            </label>
+                            <select
+                                name="breedID"
+                                value={formData.breedID}
                                 onChange={handleChange}
+                                required
+                            >
+                                <option value="">Select breed</option>
+                                {breeds.map(breed => (
+                                    <option key={breed.breedID} value={breed.breedID}>{breed.breedName}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Fish Name</label>
+                            <input
+                                type="text"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                required
+                                placeholder="Enter fish name"
                             />
-                            Female
-                        </label>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Gender</label>
+                            <div className="gender-options">
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="gender"
+                                        value="Male"
+                                        checked={formData.gender === "Male"}
+                                        onChange={handleChange}
+                                    />
+                                    Male
+                                </label>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="gender"
+                                        value="Female"
+                                        checked={formData.gender === "Female"}
+                                        onChange={handleChange}
+                                    />
+                                    Female
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <div className="form-group">
+                            <label>
+                                <FaBalanceScale className="input-icon" />
+                                Size (cm)
+                            </label>
+                            <input
+                                type="number"
+                                name="size"
+                                value={formData.size}
+                                onChange={handleChange}
+                                step="0.1"
+                                placeholder="Enter size"
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label>
+                                <FaWeight className="input-icon" />
+                                Weight (kg)
+                            </label>
+                            <input
+                                type="number"
+                                name="weight"
+                                value={formData.weight}
+                                onChange={handleChange}
+                                step="0.1"
+                                placeholder="Enter weight"
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Birthday</label>
+                            <input
+                                type="date"
+                                name="birthday"
+                                value={formData.birthday}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Age (Months)</label>
+                            <input
+                                type="number"
+                                value={ageMonth}
+                                readOnly
+                                className="readonly-input"
+                            />
+                        </div>
                     </div>
-                    <input
-                        type="text"
-                        name="breed"
-                        value={formData.breed}
-                        onChange={handleChange}
-                        placeholder="Fish Breed"
-                        required
-                    />
-                    <input
-                        type="text"
-                        name="origin"
-                        value={formData.origin}
-                        onChange={handleChange}
-                        placeholder="Fish Origin"
-                        required
-                    />
-                    <input
-                        type="number"
-                        name="price"
-                        value={formData.price}
-                        onChange={handleChange}
-                        placeholder="Fish Price"
-                        min="0"
-                        required
-                    />
+
                     <div className="button-group">
-                        <button type="submit">{title === "Add New Fish" ? "Add" : "Update"}</button>
-                        <button type="button" onClick={onCancel}>Cancel</button>
+                        <button type="submit" className="submit-button">
+                            {title === "Add New Fish" ? "Add" : "Update"}
+                        </button>
+                        <button type="button" onClick={onCancel} className="cancel-button">
+                            Cancel
+                        </button>
                     </div>
                 </form>
             </div>
@@ -159,18 +219,20 @@ const FishCard = ({ fish, onEdit, onDelete }) => {
         <div className="fish-card">
             <h3>{fish.name}</h3>
             <div className="fish-details">
-                <p>Pond ID: {fish.pondID}</p>
-                <p>Breed: {fish.breed}</p>
-                <p>Size: {fish.size}</p>
-                <p>Weight: {fish.weight}</p>
-                <p>Age: {fish.age}</p>
+                <p>Pond: {fish.pondID}</p>
+                <p>Breed: {fish.breedID}</p>
+                <p>Size: {fish.size} cm</p>
+                <p>Weight: {fish.weight} kg</p>
+                <p>Age: {fish.ageMonth} months</p>
                 <p>Gender: {fish.gender}</p>
-                <p>Origin: {fish.origin}</p>
-                <p>Price: ${fish.price}</p>
             </div>
             <div className="fish-actions">
-                <button onClick={() => onEdit(fish)} className="edit-btn">Edit</button>
-                <button onClick={handleDelete} className="delete-btn">Delete</button>
+                <button onClick={() => onEdit(fish)} className="edit-btn">
+                    <FaEdit /> Edit
+                </button>
+                <button onClick={handleDelete} className="delete-btn">
+                    <FaTrash /> Delete
+                </button>
             </div>
         </div>
     );
@@ -183,24 +245,21 @@ const ManageFish = () => {
     const [selectedFish, setSelectedFish] = useState(null);
     const [notification, setNotification] = useState({ message: '', type: '' });
     const [ponds, setPonds] = useState([]);
+    const [breeds, setBreeds] = useState([]);
     const navigate = useNavigate();
 
     const emptyFish = {
         name: '',
         pondID: '',
-        memberID: memberID,
+        breedID: '',
+        gender: '',
+        birthday: '',
         size: '',
         weight: '',
-        age: '',
-        gender: '',
-        breed: '',
-        origin: '',
-        price: ''
     };
 
-
     useEffect(() => {
-        const id = localStorage.getItem("userID");
+        const id = localStorage.getItem('userID');
         if (id) {
             setMemberID(parseInt(id, 10));
         } else {
@@ -209,29 +268,26 @@ const ManageFish = () => {
     }, [navigate]);
 
     useEffect(() => {
-        if (memberID) {
-            loadFishes(memberID);
-            fetchPonds(memberID);
-        }
+        const loadData = async () => {
+            if (!memberID) return;
+
+            try {
+                const [fishesData, foodData, breedData] = await Promise.all([
+                    readFishes(memberID),
+                    readPonds(memberID),
+                    fetchBreeds()
+                ]);
+
+                setFishes(fishesData);
+                setPonds(foodData);
+                setBreeds(breedData);
+            } catch (error) {
+                showNotification('Error loading data', 'error');
+            }
+        };
+
+        loadData();
     }, [memberID]);
-
-    const fetchPonds = async (id) => {
-        try {
-            const data = await readPonds(id);
-            setPonds(data);
-        } catch (error) {
-            showNotification('Error loading ponds', 'error');
-        }
-    };
-
-    const loadFishes = async (id) => {
-        try {
-            const data = await readFishes(id);
-            setFishes(data);
-        } catch (error) {
-            showNotification('Error loading fishes', 'error');
-        }
-    };
 
     const handleCreate = async (fishData) => {
         try {
@@ -246,8 +302,10 @@ const ManageFish = () => {
 
     const handleUpdate = async (fishData) => {
         try {
-            const updatedFish = await updateFish(fishData);
-            setFishes(prev => prev.map(fish => fish.fishID === updatedFish.fishID ? updatedFish : fish));
+            const updatedFish = await updateFish(fishData, memberID);
+            setFishes(prev => prev.map(fish =>
+                fish.fishID === updatedFish.fishID ? updatedFish : fish
+            ));
             setSelectedFish(null);
             showNotification('Fish updated successfully!');
         } catch (error) {
@@ -255,10 +313,10 @@ const ManageFish = () => {
         }
     };
 
-    const handleDelete = async (id) => {
+    const handleDelete = async (fishId) => {
         try {
-            await deleteFish(id);
-            setFishes(prev => prev.filter(fish => fish.fishID !== id));
+            await deleteFish(fishId, memberID);
+            setFishes(prev => prev.filter(fish => fish.fishID !== fishId));
             showNotification('Fish deleted successfully!');
         } catch (error) {
             showNotification('Error deleting fish', 'error');
@@ -277,12 +335,17 @@ const ManageFish = () => {
                     {notification.message}
                 </div>
             )}
+
             <div className="header">
                 <h1>Fish Management</h1>
                 <div className="add-koi-btn-icon">
-                    <FaPlusCircle className="add-koi-btn-plus" onClick={() => setShowAddForm(true)} />
+                    <FaPlusCircle
+                        className="add-koi-btn-plus"
+                        onClick={() => setShowAddForm(true)}
+                    />
                 </div>
             </div>
+
             <div className="fish-grid">
                 {fishes.map(fish => (
                     <FishCard
@@ -290,10 +353,12 @@ const ManageFish = () => {
                         fish={fish}
                         onEdit={setSelectedFish}
                         onDelete={handleDelete}
+                        breeds={breeds}
                         ponds={ponds}
                     />
                 ))}
             </div>
+
             {showAddForm && (
                 <FishForm
                     fish={emptyFish}
@@ -301,8 +366,11 @@ const ManageFish = () => {
                     onCancel={() => setShowAddForm(false)}
                     title="Add New Fish"
                     memberID={memberID}
+                    ponds={ponds}
+                    breeds={breeds}
                 />
             )}
+
             {selectedFish && (
                 <FishForm
                     fish={selectedFish}
@@ -312,8 +380,12 @@ const ManageFish = () => {
                     memberID={memberID}
                 />
             )}
+
             <div className="back-btn-icon">
-                <FaCircleArrowLeft onClick={() => navigate('/home')} className="back-btn-plus" />
+                <FaCircleArrowLeft
+                    onClick={() => navigate('/home')}
+                    className="back-btn-plus"
+                />
             </div>
         </div>
     );

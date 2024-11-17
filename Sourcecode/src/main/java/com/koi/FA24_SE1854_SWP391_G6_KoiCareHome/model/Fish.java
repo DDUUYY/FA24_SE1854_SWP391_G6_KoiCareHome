@@ -4,7 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
+import java.util.Date;
 
 /**
  * @author Quach To Anh
@@ -18,7 +22,7 @@ import java.time.LocalDateTime;
 public class Fish {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increment ID
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "FishID", nullable = false)
     private int fishID;
 
@@ -40,20 +44,17 @@ public class Fish {
     @Column(name = "Weight")
     private BigDecimal weight;
 
-    @Column(name = "Age")
-    private Integer age;
+    @Column(name = "AgeMonth")
+    private Double ageMonth;
+
+    @Column(name = "Birthday")
+    private LocalDate birthday;
 
     @Column(name = "Gender")
     private String gender;
 
-    @Column(name = "Breed")
-    private String breed;
-
-    @Column(name = "Origin")
-    private String origin;
-
-    @Column(name = "Price")
-    private BigDecimal price;
+    @Column(name = "BreedID")
+    private int breedID;
 
     @Column(name = "isActive", nullable = false)
     private boolean isActive;
@@ -70,15 +71,50 @@ public class Fish {
     @Column(name = "UpdateBy")
     private String updateBy;
 
+    public void countAgeMonth() {
+        if (birthday != null) {
+            Period period = Period.between(birthday, LocalDate.now());
+            int days = period.getDays();
+            double dayFraction = (double) days / 30;
+            double totalMonths = (period.getYears() * 12) + period.getMonths() + dayFraction;
+            BigDecimal roundedMonths = BigDecimal.valueOf(totalMonths).setScale(1, RoundingMode.HALF_UP);
+            this.ageMonth = roundedMonths.doubleValue();
+        } else {
+            this.ageMonth = (double) 0;
+        }
+    }
+
+    public void dateOfBirthCal() {
+        if(ageMonth != 0 ) {
+            LocalDate currentDate = LocalDate.now();
+            int fullMonths = ageMonth.intValue();
+            double fractionalMonths = ageMonth - fullMonths;
+            LocalDate dateOfBirth = currentDate.minusMonths(fullMonths);
+            if (fractionalMonths > 0) {
+                int daysInMonth = dateOfBirth.lengthOfMonth();
+                int daysToSubtract = (int) Math.round(fractionalMonths * daysInMonth);
+                dateOfBirth = dateOfBirth.minusDays(daysToSubtract);
+            }
+            this.birthday = dateOfBirth;
+        }else {
+            this.birthday = createDate.toLocalDate();
+        }
+    }
+
     @PrePersist
     protected void onCreate() {
         createDate = LocalDateTime.now();
         updateDate = LocalDateTime.now();
         isActive = true;
+        if(ageMonth == 0){
+            countAgeMonth();
+        }else if(birthday == null){
+            dateOfBirthCal();
+        }
     }
 
     @PreUpdate
     protected void onUpdate() {
         updateDate = LocalDateTime.now();
-    }
-}
+        countAgeMonth();
+    }}
