@@ -1,16 +1,17 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { FaTrashAlt, FaEdit } from 'react-icons/fa';
 import './Pond.css';
+import HomeIcon from '../assets/HomeButton.png';
 
 const Pond = () => {
     const [ponds, setPonds] = useState([]);
+    const navigate = useNavigate();
     const [selectedPond, setSelectedPond] = useState(null); // Hiển thị chi tiết Pond
     const [showForm, setShowForm] = useState(false); // Hiển thị form
     const [formState, setFormState] = useState({
-        memberID: '',
-        reminderID: '',
+        pondID: null,
         size: '',
         depth: '',
         volume: '',
@@ -18,8 +19,6 @@ const Pond = () => {
         pumpCapacity: '',
         equipment: '',
         quantity: '',
-        createBy: 'System', // Giá trị mặc định
-        updateBy: '',
     });
 
     const memberID = parseInt(localStorage.getItem('userID'), 10); // Lấy userID từ localStorage
@@ -43,32 +42,41 @@ const Pond = () => {
         setFormState({ ...formState, [name]: value });
     };
 
-    // Thêm hoặc cập nhật hồ cá
+    // Lưu hồ cá (thêm mới hoặc cập nhật)
     const savePond = async () => {
-        // Lấy memberID từ localStorage
-        const memberID = localStorage.getItem('userID');
-    
-        // Kiểm tra memberID và các trường bắt buộc
-        if (!memberID || !formState.size || !formState.depth || !formState.volume) {
-            alert("Please fill in all required fields: memberID, size, depth, and volume.");
+        if (!formState.size || !formState.depth || !formState.volume) {
+            alert("Please fill in all required fields: size, depth, and volume.");
             return;
         }
     
         try {
             if (selectedPond) {
-                // Cập nhật hồ cá
-                await axios.put(`/api/pond/${selectedPond.pondID}`, formState);
-                alert('Pond updated successfully!');
+                // Gửi yêu cầu cập nhật
+                const response = await axios.put(`/api/pond/${selectedPond.pondID}`, formState);
+    
+                // Cập nhật danh sách Pond trong state
+                setPonds((prevPonds) =>
+                    prevPonds.map((pond) =>
+                        pond.pondID === selectedPond.pondID ? response.data : pond
+                    )
+                );
+    
+                // Cập nhật Pond chi tiết đang hiển thị
+                setSelectedPond(response.data);
+    
+                alert("Pond updated successfully!");
             } else {
-                // Thêm mới hồ cá
+                // Gửi yêu cầu thêm mới
                 const response = await axios.post('/api/pond', {
                     ...formState,
-                    memberID, // Thêm memberID từ localStorage
-                    isActive: true, // Mặc định là true
+                    memberID: localStorage.getItem('userID'),
+                    isActive: true,
                 });
                 setPonds([...ponds, response.data]);
-                alert('Pond added successfully!');
+                alert("Pond added successfully!");
             }
+    
+            // Reset form và đóng modal
             resetForm();
             setShowForm(false);
         } catch (error) {
@@ -77,6 +85,7 @@ const Pond = () => {
         }
     };
     
+
     // Xóa hồ cá
     const deletePond = async (id) => {
         if (window.confirm('Are you sure you want to delete this pond?')) {
@@ -84,7 +93,7 @@ const Pond = () => {
                 await axios.delete(`/api/pond/${id}`);
                 setPonds(ponds.filter((pond) => pond.pondID !== id));
                 alert('Pond deleted successfully!');
-                setSelectedPond(null);
+                setSelectedPond(null); // Xóa thông tin chi tiết
             } catch (error) {
                 console.error('Error deleting pond:', error);
             }
@@ -102,39 +111,34 @@ const Pond = () => {
             pumpCapacity: '',
             equipment: '',
             quantity: '',
-        }); // Reset về trạng thái mặc định
-    
-        setShowForm(false); // Ẩn form
+        }); // Reset trạng thái form
+        setShowForm(false); // Đóng form
     };
-    
+
     return (
         <div className="pond-container">
+            <nav className="navbar">
+                <img 
+                src={HomeIcon} 
+                alt="Back to Home" 
+                className="home-icon" 
+                onClick={() => navigate('/home')} 
+                />
+                <span className="navbar-title">Pond Management</span>
+            </nav>
             {/* Header với tiêu đề và nút Create Pond */}
             <div className="pond-header">
-                <h1>Pond Management</h1>
                 <button
                     className="create-pond-button"
                     onClick={() => {
-                        setFormState({
-                            pondID: null,
-                            memberID: localStorage.getItem('userID'), // Lấy memberID từ localStorage
-                            reminderID: 1,
-                            size: '',
-                            depth: '',
-                            volume: '',
-                            drainageCount: '',
-                            pumpCapacity: '',
-                            equipment: '',
-                            quantity: '',
-                            isActive: true,
-                        });
-                        setShowForm(true);
+                        resetForm();
+                        setShowForm(true); // Hiển thị form thêm mới
                     }}
                 >
                     Create Pond
                 </button>
             </div>
-    
+
             {/* Layout chính */}
             <div className="pond-main">
                 {/* Danh sách Pond bên trái */}
@@ -142,7 +146,7 @@ const Pond = () => {
                     {ponds.map((pond) => (
                         <div
                             key={pond.pondID}
-                            className="pond-card"
+                            className={`pond-card ${selectedPond?.pondID === pond.pondID ? 'selected' : ''}`}
                             onClick={() => setSelectedPond(pond)}
                         >
                             <h4>Pond {pond.pondID}</h4>
@@ -152,14 +156,11 @@ const Pond = () => {
                         </div>
                     ))}
                 </div>
-    
+
                 {/* Chi tiết Pond bên phải */}
                 {selectedPond && (
                     <div className="pond-details">
                         <h3>Pond Details</h3>
-                        <p><strong>Pond ID:</strong> {selectedPond.pondID}</p>
-                        <p><strong>Member ID:</strong> {selectedPond.memberID}</p>
-                        <p><strong>Reminder ID:</strong> {selectedPond.reminderID}</p>
                         <p><strong>Size:</strong> {selectedPond.size} m²</p>
                         <p><strong>Depth:</strong> {selectedPond.depth} m</p>
                         <p><strong>Volume:</strong> {selectedPond.volume} m³</p>
@@ -167,12 +168,25 @@ const Pond = () => {
                         <p><strong>Pump Capacity:</strong> {selectedPond.pumpCapacity || 'N/A'} m³/h</p>
                         <p><strong>Equipment:</strong> {selectedPond.equipment || 'N/A'}</p>
                         <p><strong>Quantity:</strong> {selectedPond.quantity || 'N/A'}</p>
-                        <button className="update-button" onClick={() => handleEdit(selectedPond)}>Update Pond</button>
-                        <button className="delete-button" onClick={() => handleDelete(selectedPond.pondID)}>Delete Pond</button>
-                    </div> 
+                        <button
+                            className="update-button"
+                            onClick={() => {
+                                setFormState(selectedPond);
+                                setShowForm(true); // Hiển thị form cập nhật
+                            }}
+                        >
+                            Update Pond
+                        </button>
+                        <button
+                            className="delete-button"
+                            onClick={() => deletePond(selectedPond.pondID)}
+                        >
+                            Delete Pond
+                        </button>
+                    </div>
                 )}
             </div>
-    
+
             {/* Form thêm hoặc cập nhật Pond */}
             {showForm && (
                 <div className="pond-form-modal">
@@ -182,77 +196,63 @@ const Pond = () => {
                             <label htmlFor="size">Size (m²)</label>
                             <input
                                 id="size"
+                                name="size"
                                 type="number"
                                 value={formState.size}
-                                onChange={(e) =>
-                                    setFormState({ ...formState, size: e.target.value })
-                                }
+                                onChange={handleInputChange}
                                 required
                             />
-
                             <label htmlFor="depth">Depth (m)</label>
                             <input
                                 id="depth"
+                                name="depth"
                                 type="number"
                                 value={formState.depth}
-                                onChange={(e) =>
-                                    setFormState({ ...formState, depth: e.target.value })
-                                }
+                                onChange={handleInputChange}
                                 required
                             />
-
                             <label htmlFor="volume">Volume (m³)</label>
                             <input
                                 id="volume"
+                                name="volume"
                                 type="number"
                                 value={formState.volume}
-                                onChange={(e) =>
-                                    setFormState({ ...formState, volume: e.target.value })
-                                }
+                                onChange={handleInputChange}
                                 required
                             />
-
                             <label htmlFor="drainageCount">Drainage Count</label>
                             <input
                                 id="drainageCount"
+                                name="drainageCount"
                                 type="number"
                                 value={formState.drainageCount || ''}
-                                onChange={(e) =>
-                                    setFormState({ ...formState, drainageCount: e.target.value })
-                                }
+                                onChange={handleInputChange}
                             />
-
                             <label htmlFor="pumpCapacity">Pump Capacity (m³/h)</label>
                             <input
                                 id="pumpCapacity"
+                                name="pumpCapacity"
                                 type="number"
                                 value={formState.pumpCapacity || ''}
-                                onChange={(e) =>
-                                    setFormState({ ...formState, pumpCapacity: e.target.value })
-                                }
+                                onChange={handleInputChange}
                             />
-
                             <label htmlFor="equipment">Equipment</label>
                             <input
                                 id="equipment"
+                                name="equipment"
                                 type="text"
                                 value={formState.equipment || ''}
-                                onChange={(e) =>
-                                    setFormState({ ...formState, equipment: e.target.value })
-                                }
+                                onChange={handleInputChange}
                             />
-
                             <label htmlFor="quantity">Quantity</label>
                             <input
                                 id="quantity"
+                                name="quantity"
                                 type="number"
                                 value={formState.quantity || ''}
-                                onChange={(e) =>
-                                    setFormState({ ...formState, quantity: e.target.value })
-                                }
+                                onChange={handleInputChange}
                             />
-
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <div className="form-actions">
                                 <button type="submit" className="submit-button">
                                     {formState.pondID ? 'Update Pond' : 'Add Pond'}
                                 </button>
@@ -268,9 +268,8 @@ const Pond = () => {
                     </div>
                 </div>
             )}
-
         </div>
-    );    
+    );
 };
 
 export default Pond;

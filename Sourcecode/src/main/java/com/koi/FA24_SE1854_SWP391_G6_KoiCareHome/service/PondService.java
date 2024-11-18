@@ -38,6 +38,7 @@ public class PondService {
         Optional<Pond> optionalPond = pondRepository.findById(id);
         if (optionalPond.isPresent()) {
             Pond pond = optionalPond.get();
+            pond.setSize(pondDetails.getSize());
             pond.setDepth(pondDetails.getDepth());
             pond.setVolume(pondDetails.getVolume());
             pond.setDrainageCount(pondDetails.getDrainageCount());
