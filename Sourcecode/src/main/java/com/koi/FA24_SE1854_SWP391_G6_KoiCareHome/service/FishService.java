@@ -24,7 +24,6 @@ public class FishService {
     private final FishTypeRepository fishTypeRepository;
     private final FishTypeService fishTypeService;
 
-
     @Autowired
     public FishService(FishRepository fishRepository, FishTypeRepository fishTypeRepository, FishTypeService fishTypeService) {
         this.fishRepository = fishRepository;
@@ -121,7 +120,6 @@ public class FishService {
         }
         Fish fish = existingFishOpt.get();
 
-
         if (updatedFish.getSize() != null) {
             fish.setSize(updatedFish.getSize());
         }
@@ -162,5 +160,9 @@ public class FishService {
         } else{
             throw new NotFoundException(FISH_NOT_FOUND_MESSAGE);
         }
+    }
+
+    public int countFishInPond(int pondId) {
+        return fishRepository.findAllFishWithPondId(pondId).size();
     }
 }

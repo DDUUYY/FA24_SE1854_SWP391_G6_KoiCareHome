@@ -80,6 +80,10 @@ public class PondController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePond(@PathVariable Integer id) {
         try {
+            // Kiểm tra nếu còn cá trong hồ
+            if (pondService.hasFishInPond(id)) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot delete pond with fish inside.");
+            }
             pondService.deletePond(id);
             return ResponseEntity.ok("Pond deleted successfully with id: " + id);
         } catch (Exception e) {

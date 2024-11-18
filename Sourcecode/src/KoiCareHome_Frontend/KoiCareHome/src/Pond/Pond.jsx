@@ -7,9 +7,10 @@ import HomeIcon from '../assets/HomeButton.png';
 
 const Pond = () => {
     const [ponds, setPonds] = useState([]);
+    const [fishCounts, setFishCounts] = useState({});
     const navigate = useNavigate();
-    const [selectedPond, setSelectedPond] = useState(null); // Hiển thị chi tiết Pond
-    const [showForm, setShowForm] = useState(false); // Hiển thị form
+    const [selectedPond, setSelectedPond] = useState(null);
+    const [showForm, setShowForm] = useState(false);
     const [formState, setFormState] = useState({
         pondID: null,
         size: '',
@@ -21,52 +22,67 @@ const Pond = () => {
         quantity: '',
     });
 
-    const memberID = parseInt(localStorage.getItem('userID'), 10); // Lấy userID từ localStorage
+    const memberID = parseInt(localStorage.getItem('userID'), 10);
 
-    // Gọi API để lấy danh sách hồ cá
     useEffect(() => {
         const fetchPonds = async () => {
             try {
+                // Gọi API để lấy danh sách hồ cá
                 const response = await axios.get(`/api/pond/member?memberId=${memberID}`);
-                setPonds(response.data);
+                const pondsData = response.data;
+    
+                // Gọi API để lấy số lượng cá trong từng hồ
+                const fishCountPromises = pondsData.map(async (pond) => {
+                    try {
+                        const fishResponse = await axios.get(`/api/fish/pond/${pond.pondID}/count`);
+                        return { pondID: pond.pondID, count: fishResponse.data }; // Trả về số lượng cá
+                    } catch (error) {
+                        console.error(`Error fetching fish count for pond ${pond.pondID}:`, error);
+                        return { pondID: pond.pondID, count: 0 }; // Nếu lỗi, trả về 0
+                    }
+                });
+    
+                // Chờ tất cả các promise hoàn thành
+                const fishCountsArray = await Promise.all(fishCountPromises);
+    
+                // Tạo object để lưu số lượng cá theo pondID
+                const counts = fishCountsArray.reduce((acc, { pondID, count }) => {
+                    acc[pondID] = count;
+                    return acc;
+                }, {});
+    
+                // Cập nhật state
+                setPonds(pondsData); // Cập nhật danh sách hồ
+                setFishCounts(counts); // Cập nhật số lượng cá cho từng hồ
             } catch (error) {
-                console.error('Error fetching ponds:', error);
+                console.error('Error fetching ponds or fish counts:', error);
             }
         };
         fetchPonds();
     }, [memberID]);
 
-    // Xử lý khi nhập dữ liệu vào form
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormState({ ...formState, [name]: value });
     };
 
-    // Lưu hồ cá (thêm mới hoặc cập nhật)
     const savePond = async () => {
         if (!formState.size || !formState.depth || !formState.volume) {
             alert("Please fill in all required fields: size, depth, and volume.");
             return;
         }
-    
+
         try {
             if (selectedPond) {
-                // Gửi yêu cầu cập nhật
                 const response = await axios.put(`/api/pond/${selectedPond.pondID}`, formState);
-    
-                // Cập nhật danh sách Pond trong state
                 setPonds((prevPonds) =>
                     prevPonds.map((pond) =>
                         pond.pondID === selectedPond.pondID ? response.data : pond
                     )
                 );
-    
-                // Cập nhật Pond chi tiết đang hiển thị
                 setSelectedPond(response.data);
-    
                 alert("Pond updated successfully!");
             } else {
-                // Gửi yêu cầu thêm mới
                 const response = await axios.post('/api/pond', {
                     ...formState,
                     memberID: localStorage.getItem('userID'),
@@ -75,8 +91,6 @@ const Pond = () => {
                 setPonds([...ponds, response.data]);
                 alert("Pond added successfully!");
             }
-    
-            // Reset form và đóng modal
             resetForm();
             setShowForm(false);
         } catch (error) {
@@ -84,23 +98,25 @@ const Pond = () => {
             alert(`Error saving pond: ${error.response?.data || error.message}`);
         }
     };
-    
 
-    // Xóa hồ cá
     const deletePond = async (id) => {
+        if (fishCounts[id] > 0) {
+            alert('Cannot delete pond because it contains fish.');
+            return;
+        }
+
         if (window.confirm('Are you sure you want to delete this pond?')) {
             try {
                 await axios.delete(`/api/pond/${id}`);
                 setPonds(ponds.filter((pond) => pond.pondID !== id));
                 alert('Pond deleted successfully!');
-                setSelectedPond(null); // Xóa thông tin chi tiết
+                setSelectedPond(null);
             } catch (error) {
                 console.error('Error deleting pond:', error);
             }
         }
     };
 
-    // Reset form
     const resetForm = () => {
         setFormState({
             pondID: null,
@@ -111,8 +127,8 @@ const Pond = () => {
             pumpCapacity: '',
             equipment: '',
             quantity: '',
-        }); // Reset trạng thái form
-        setShowForm(false); // Đóng form
+        });
+        setShowForm(false);
     };
 
     return (
@@ -126,22 +142,20 @@ const Pond = () => {
                 />
                 <span className="navbar-title">Pond Management</span>
             </nav>
-            {/* Header với tiêu đề và nút Create Pond */}
+
             <div className="pond-header">
                 <button
                     className="create-pond-button"
                     onClick={() => {
                         resetForm();
-                        setShowForm(true); // Hiển thị form thêm mới
+                        setShowForm(true);
                     }}
                 >
                     Create Pond
                 </button>
             </div>
 
-            {/* Layout chính */}
             <div className="pond-main">
-                {/* Danh sách Pond bên trái */}
                 <div className="pond-list">
                     {ponds.map((pond) => (
                         <div
@@ -157,7 +171,6 @@ const Pond = () => {
                     ))}
                 </div>
 
-                {/* Chi tiết Pond bên phải */}
                 {selectedPond && (
                     <div className="pond-details">
                         <h3>Pond Details</h3>
@@ -168,11 +181,12 @@ const Pond = () => {
                         <p><strong>Pump Capacity:</strong> {selectedPond.pumpCapacity || 'N/A'} m³/h</p>
                         <p><strong>Equipment:</strong> {selectedPond.equipment || 'N/A'}</p>
                         <p><strong>Quantity:</strong> {selectedPond.quantity || 'N/A'}</p>
+                        <p><strong>Fish Count:</strong> {fishCounts[selectedPond.pondID] || 0}</p>
                         <button
                             className="update-button"
                             onClick={() => {
                                 setFormState(selectedPond);
-                                setShowForm(true); // Hiển thị form cập nhật
+                                setShowForm(true);
                             }}
                         >
                             Update Pond
@@ -187,7 +201,6 @@ const Pond = () => {
                 )}
             </div>
 
-            {/* Form thêm hoặc cập nhật Pond */}
             {showForm && (
                 <div className="pond-form-modal">
                     <div className="pond-form">

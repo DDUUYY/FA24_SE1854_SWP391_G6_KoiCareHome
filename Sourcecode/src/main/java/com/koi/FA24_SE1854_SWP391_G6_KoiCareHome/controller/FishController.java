@@ -118,4 +118,10 @@ public class FishController {
         fishService.deleteByID(fishId);
         return ResponseEntity.ok("Fish deleted successfully");
     }
+
+    @GetMapping("/pond/{pondId}/count")
+    public ResponseEntity<Integer> countFishInPond(@PathVariable int pondId) {
+        int count = fishService.countFishInPond(pondId);
+        return ResponseEntity.ok(count);
+    }
 }

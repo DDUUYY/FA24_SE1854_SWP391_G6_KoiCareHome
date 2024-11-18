@@ -13,6 +13,4 @@ public interface PondRepository extends JpaRepository<Pond, Integer> {
 
     @Query("SELECT p FROM Pond p WHERE p.memberID = :memberID AND p.isActive = true")
     List<Pond> findAllPondWithMemberId(@Param("memberID") Integer memberID);
-
-
 }

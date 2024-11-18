@@ -1,6 +1,7 @@
 package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.service;
 
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model.Pond;
+import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.FishRepository;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.PondRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,14 @@ public class PondService {
     public PondService(PondRepository pondRepository) {
         this.pondRepository = pondRepository;
     }
+
+    @Autowired
+    private FishRepository fishRepository;
+
+    public boolean hasFishInPond(int pondId) {
+        return !fishRepository.findAllFishWithPondId(pondId).isEmpty();
+    }
+
 
     public List<Pond> getAllPondWithMemberId(Integer memberId) {
         return pondRepository.findAllPondWithMemberId(memberId);
