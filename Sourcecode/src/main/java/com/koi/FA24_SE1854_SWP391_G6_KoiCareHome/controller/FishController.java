@@ -34,14 +34,8 @@ public class FishController {
      */
     @PostMapping
     public ResponseEntity<Fish> saveFish(@RequestBody Fish fish) {
-        try {
-            Fish newFish = fishService.saveFish(fish);
-            return ResponseEntity.ok(newFish);
-        } catch (AlreadyExistedException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
-        } catch (NotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+        Fish newFish = fishService.saveFish(fish);
+        return ResponseEntity.ok(newFish);
     }
 
     /**
@@ -83,12 +77,8 @@ public class FishController {
      */
     @GetMapping("/{fishId}")
     public ResponseEntity<Fish> getFishById(@PathVariable int fishId) {
-        try {
             Fish fish = fishService.getFishById(fishId);
             return ResponseEntity.ok(fish);
-        } catch (NotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
     }
 
     /**
@@ -101,14 +91,9 @@ public class FishController {
      */
     @GetMapping("/pond")
     public ResponseEntity<Fish> getFishByNameWithPondId(@RequestParam(name = "fishName") String fishName,
-                                                        @RequestParam(name = "pondId") int pondId){
-        try {
+                                                        @RequestParam(name = "pondId") int pondId) {
             Fish fish = fishService.getFishByNameWithPondId(fishName, pondId);
             return ResponseEntity.ok(fish);
-        } catch (NotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-
     }
 
     /**
@@ -121,14 +106,8 @@ public class FishController {
      */
     @PutMapping
     public ResponseEntity<Fish> updateFish(@RequestParam(name = "fishId") int fishId, @RequestBody Fish fish) {
-        try {
-            Fish updatedFish = fishService.updateFish(fishId, fish);
-            return ResponseEntity.ok(updatedFish);
-        } catch (NotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        } catch (AlreadyExistedException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
-        }
+        Fish updatedFish = fishService.updateFish(fishId, fish);
+        return ResponseEntity.ok(updatedFish);
     }
 
     /**
@@ -139,12 +118,8 @@ public class FishController {
      */
     @DeleteMapping
     public ResponseEntity<String> deleteFish(@RequestParam(name = "fishId") int fishId) {
-        try {
             fishService.deleteByID(fishId);
             return ResponseEntity.ok("Fish deleted successfully");
-        } catch (NotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
     }
 
     @GetMapping("/pond/{pondId}/count")

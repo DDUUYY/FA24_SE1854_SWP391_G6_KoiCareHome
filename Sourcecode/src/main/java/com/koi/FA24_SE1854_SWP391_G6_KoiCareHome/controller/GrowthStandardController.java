@@ -35,7 +35,7 @@ public class GrowthStandardController {
      */
     @PostMapping
     public ResponseEntity<GrowthStandard> saveGrowthStandard(@RequestBody GrowthStandard growthStandard,
-                                                              @RequestParam(name = "memberId") int memberID) {
+                                                             @RequestParam(name = "memberId") int memberID) {
         try {
             GrowthStandard newGrowthStandard = growthStandardService.saveGrowthStandard(growthStandard, memberID);
             return ResponseEntity.ok(newGrowthStandard);
@@ -93,8 +93,8 @@ public class GrowthStandardController {
      */
     @PutMapping
     public ResponseEntity<GrowthStandard> updateGrowthStandard(@RequestParam(name = "growthStandardId") int id,
-                                                                @RequestBody GrowthStandard growthStandard,
-                                                                @RequestParam(name = "memberId") int memberID) {
+                                                               @RequestBody GrowthStandard growthStandard,
+                                                               @RequestParam(name = "memberId") int memberID) {
         try {
             GrowthStandard updatedGrowthStandard = growthStandardService.updateGrowthStandard(id, growthStandard, memberID);
             return ResponseEntity.ok(updatedGrowthStandard);

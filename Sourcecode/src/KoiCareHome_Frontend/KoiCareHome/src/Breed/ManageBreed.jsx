@@ -224,7 +224,7 @@ const ManageBreed = () => {
 
     const handleCreate = async (breedData) => {
         try {
-            const createdBreed = await addBreed(breedData);
+            const createdBreed = await addBreed(breedData, memberID);
             setBreeds(prev => [...prev, createdBreed]);
             setShowAddForm(false);
             showNotification('Breed added successfully!');
@@ -236,7 +236,7 @@ const ManageBreed = () => {
 
     const handleUpdate = async (breedData) => {
         try {
-            const updatedBreed = await updateBreed(breedData);
+            const updatedBreed = await updateBreed(breedData, memberID);
             setBreeds(prev => prev.map(breed => breed.breedID === updatedBreed.breedID ? updatedBreed : breed));
             setSelectedBreed(null);
             showNotification('Breed updated successfully!');
@@ -248,7 +248,7 @@ const ManageBreed = () => {
 
     const handleDelete = async (id) => {
         try {
-            await deleteBreed(id);
+            await deleteBreed(id, memberID);
             setBreeds(prev => prev.filter(breed => breed.breedID !== id));
             showNotification('Breed deleted successfully!');
         } catch (error) {

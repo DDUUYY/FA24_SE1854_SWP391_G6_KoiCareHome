@@ -1,7 +1,19 @@
-
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+// import { FaRegUserCircle } from "react-icons/fa";
+// import './home.css';
+// import GrCard from '../src/Card/GrCard';
+import Koi_Img from './assets/Koi_Img.jpg';
+// import KoiGraphic from './assets/Welcome.jpg';
+// import LogoKoiFish from './assets/logokoifish.png';
+
+import SaltCalculation from "./Card/SaltCalculation.jsx";
+import Order from "./Card/Order.jsx";
+
+
+
+// import {  useNavigate } from 'react-router-dom';
 import { FaRegUserCircle } from "react-icons/fa";
 import './home.css';
 import GrCard from '../src/Card/GrCard';
@@ -10,22 +22,29 @@ import LogoKoiFish from './assets/logokoifish.png';
 import ManageFishCard from './Card/ManageFishCard';
 import FeedingHistoryCard from './Card/FeedingHistoryCard';
 import FoodCalculatorCard from './Card/FoodCalculatorCard';
+import ReminderCard from './Card/ReminderCard';
+import BlogCard from './Card/BlogCard';
+import AdminCard from './Card/AdminCard';
 import BreedCard from './Card/BreedCard';
-
 import PondCard from './Card/PondCard.jsx';
-
 
 const Home = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const navigate = useNavigate();
-
+    const [userRoleID, setUserRoleID] = useState(null);
+    
+    useEffect(() => {
+        // Lấy giá trị userRoleID từ localStorage
+        const role = localStorage.getItem('userRoleID'); // Dùng đúng key 'userRoleID'
+        setUserRoleID(parseInt(role, 10)); // Chuyển sang số để dễ so sánh
+    }, []);
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('userID');  // Optionally clear user data
-        localStorage.removeItem('userRoleID'); // Clear role data
+        localStorage.removeItem('userID'); 
+        localStorage.removeItem('userRoleID'); // Optionally clear user data
         navigate('/login', { replace: true });  // This replaces the current page in the history stack
     };
 
@@ -92,7 +111,12 @@ const Home = () => {
                     <FeedingHistoryCard />
                     <FoodCalculatorCard />
                     <GrCard />
-                    <BreedCard />
+                    <ReminderCard />
+                    <BlogCard />
+                    <SaltCalculation />
+                    <Order />
+                    {userRoleID === 2 && <AdminCard />}
+                    {userRoleID === 2 && <BreedCard />}
                 </div>
             </div>
         </div>

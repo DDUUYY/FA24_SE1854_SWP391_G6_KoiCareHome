@@ -1,6 +1,6 @@
 const API_BASE_URL = 'http://localhost:8080/api/breed';
 
-const AddBreed = async (breedData) => {
+const AddBreed = async (breedData, memberID) => {
     const breedToAdd = {
         ...breedData,
         minTemperature: breedData.minTemperature ? parseInt(breedData.minTemperature, 10) : null,
@@ -12,7 +12,7 @@ const AddBreed = async (breedData) => {
         minTankVolume: breedData.minTankVolume ? parseInt(breedData.minTankVolume, 10) : null
     };
 
-    const response = await fetch(API_BASE_URL, {
+    const response = await fetch(`${API_BASE_URL}?memberId=${memberID}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(breedToAdd)

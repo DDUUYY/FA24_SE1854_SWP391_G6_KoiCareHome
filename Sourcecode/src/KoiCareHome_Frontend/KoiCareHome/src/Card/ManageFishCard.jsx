@@ -15,7 +15,7 @@ const ManageFishCard = () => {
                 <p className="card-description">An efficiently way to track, nurture, and organize your Kois</p>
             </div>
         </Link>
-        
+
     );
 }
 

@@ -61,6 +61,21 @@ public class Breed {
     @Column(name = "MinTankVolume", precision = 38, scale = 2)
     private BigDecimal minTankVolume;
 
+    @Column(name = "MinSize", precision = 38, scale = 2)
+    private BigDecimal minSize;
+
+    @Column(name = "MaxSize", precision = 38, scale = 2)
+    private BigDecimal maxSize;
+
+    @Column(name = "MinWeight", precision = 38, scale = 2)
+    private BigDecimal minWeight;
+
+    @Column(name = "MaxWeight", precision = 38, scale = 2)
+    private BigDecimal maxWeight;
+
+    @Column(name = "MaxAgeMonth")
+    private Double maxAgeMonth;
+
     @Column(name = "isActive")
     private Boolean isActive;
 

@@ -106,15 +106,12 @@ public class Fish {
         createDate = LocalDateTime.now();
         updateDate = LocalDateTime.now();
         isActive = true;
-        if(ageMonth == 0){
-            countAgeMonth();
-        }else if(birthday == null){
-            dateOfBirthCal();
-        }
+        countAgeMonth(); // Ensure ageMonth is calculated on creation
     }
+
 
     @PreUpdate
     protected void onUpdate() {
         updateDate = LocalDateTime.now();
-        countAgeMonth();
+
     }}

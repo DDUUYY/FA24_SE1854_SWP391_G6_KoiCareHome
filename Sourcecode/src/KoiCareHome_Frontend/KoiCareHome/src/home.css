@@ -23,7 +23,7 @@
 }
 
 .logo-text {
-    font-family: 'Poppins', sans-serif; 
+    font-family: 'Poppins', sans-serif;
     font-size: 2.5rem;
     font-weight: bold;
     color: white;
@@ -64,7 +64,6 @@
     font-family: 'Poppins', sans-serif;
     color: #ff6b00;
     margin-bottom: 1rem;
-    
 }
 
 .subheading {
@@ -79,19 +78,19 @@
 }
 
 .highlight {
-    color: #ff6b00; 
+    color: #ff6b00;
 }
 
 .welcome-image {
-    flex: 1; 
+    flex: 1;
     display: flex;
-    justify-content: flex-start; 
+    justify-content: flex-start;
 }
 
 .welcome-image img {
     max-width: 400px;
     height: auto;
-    margin-left: 28%; 
+    margin-left: 28%;
 }
 
 
@@ -108,13 +107,13 @@
 }
 
 .user-icon:hover {
-    color: white; 
+    color: white;
 }
 
 .dropdown-menu {
     position: absolute;
-    top: 60px; 
-    right: 20px; 
+    top: 60px;
+    right: 20px;
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -145,32 +144,32 @@
 }
 
 .logo {
-    font-family: 'Poppins', sans-serif; 
+    font-family: 'Poppins', sans-serif;
     font-size: 2.5rem;
     font-weight: bold;
     color: white;
 }
 
 .user-icon a {
-    text-decoration: none; 
-    color: white;          
+    text-decoration: none;
+    color: white;
 }
 
 .user-icon a:hover,
 .user-icon a:active,
 .user-icon a:visited {
-    color: white;         
+    color: white;
 }
 
-.Feature-container{
+.Feature-container {
     background-color: #f9f9f9;
 }
 
 .Feature-container h1 {
-        display: flex;
-        margin-left: 45%;
-        font-size: 2.5rem;
-        font-family: 'Poppins', sans-serif;
-        color: #ff6b00;
-        margin-bottom: 1rem;
+    display: flex;
+    margin-left: 45%;
+    font-size: 2.5rem;
+    font-family: 'Poppins', sans-serif;
+    color: #ff6b00;
+    margin-bottom: 1rem;
 }

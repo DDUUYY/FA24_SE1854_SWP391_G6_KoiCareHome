@@ -8,6 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +25,7 @@ public class GrowthRecordService {
     private final GrowthRecordRepository growthRecordRepository;
     private final FishService fishService;
 
-    public GrowthRecord postGrowthRecord(GrowthRecord growthRecord, int memberID) {
+    public GrowthRecord postGrowthRecord(GrowthRecord growthRecord) {
         growthRecord.setIsActive(true);
         GrowthRecord savedRecord = growthRecordRepository.save(growthRecord);
 
@@ -39,32 +43,34 @@ public class GrowthRecordService {
         return growthRecordRepository.findAll();
     }
 
-    public void deleteGrowthRecord(Integer RecordID) {
-        if (!growthRecordRepository.existsById(RecordID)) {
-            throw new EntityNotFoundException("Record with the ID: " + RecordID + " not found");
-        }
-        growthRecordRepository.deleteById(RecordID);
-    }
+   public void deleteGrowthRecord(Integer RecordID) {
+      if(!growthRecordRepository.existsById(RecordID)) {
+throw new EntityNotFoundException("Record with the ID: " + RecordID + " not found");
+      }
+      growthRecordRepository.deleteById(RecordID);
+   }
 
-    public GrowthRecord getGrowthRecordById(Integer RecordID) {
-        return growthRecordRepository.findById(RecordID).orElse(null);
-    }
+   public GrowthRecord getGrowthRecordById(Integer RecordID) {
+      return growthRecordRepository.findById(RecordID).orElse(null);
+   }
 
-    public GrowthRecord updateGrowthRecord(Integer RecordID, GrowthRecord growthRecord) {
-        Optional<GrowthRecord> OptionalGrowthRecord = growthRecordRepository.findById(RecordID);
-        if (OptionalGrowthRecord.isPresent()) {
-            GrowthRecord existingGrowthRecord = OptionalGrowthRecord.get();
-            // existingGrowthRecord.setMeasurementDate(LocalDate.now());
-            existingGrowthRecord.setSize(growthRecord.getSize());
-            existingGrowthRecord.setWeight(growthRecord.getWeight());
-            existingGrowthRecord.setDescription(growthRecord.getDescription());
-            return growthRecordRepository.save(existingGrowthRecord);
-        }
-        return null;
-    }
+   public GrowthRecord updateGrowthRecord(Integer RecordID,GrowthRecord growthRecord) {
+       Optional<GrowthRecord> OptionalGrowthRecord = growthRecordRepository.findById(RecordID);
+       if (OptionalGrowthRecord.isPresent()) {
+           GrowthRecord existingGrowthRecord = OptionalGrowthRecord.get();
+          // existingGrowthRecord.setMeasurementDate(LocalDate.now());
+           existingGrowthRecord.setSize(growthRecord.getSize());
+           existingGrowthRecord.setWeight(growthRecord.getWeight());
+           existingGrowthRecord.setDescription(growthRecord.getDescription());
+           return growthRecordRepository.save(existingGrowthRecord);
+       }
+     return null;
+   }
 
     public List<GrowthRecord> getGrowthRecordsByFishId(Integer fishID) {
         return growthRecordRepository.findByFishIDAndIsActiveTrue(fishID);
     }
+
+
 }
 

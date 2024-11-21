@@ -1,0 +1,97 @@
+/* BlogDetail.css */
+
+/* Container chính */
+.blog-detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* Container cho nút quay lại */
+.back-button-container {
+    position: fixed; /* Cố định vị trí */
+    top: 20px; /* Cách trên cùng 20px */
+    left: 20px; /* Cách bên trái 20px */
+    z-index: 1000; /* Đảm bảo nó luôn hiển thị trên nội dung khác */
+}
+
+/* Nút "Back to Public Blog" */
+.back-button-icon {
+    width: 90px;
+    height: 90px;
+    cursor: pointer;
+    border-radius: 50%; /* Làm cho nút tròn */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 5px;
+}
+
+.back-button-icon:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Tiêu đề blog */
+.blog-title {
+    font-size: 28px;
+    color: #FF6600;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Tác giả và ngày đăng */
+.blog-author, .blog-date {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+/* Nội dung blog */
+.blog-content {
+    font-size: 18px;
+    color: #333;
+    line-height: 1.6;
+    margin-top: 20px;
+    text-align: justify;
+}
+
+/* Tiêu đề danh sách blog khác */
+h2 {
+    font-size: 24px;
+    color: #FF6600;
+    margin-top: 40px;
+    text-align: center;
+}
+
+/* Danh sách các blog khác */
+.other-blogs-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.other-blog-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.other-blog-item:hover {
+    background-color: #f9f9f9;
+}
+
+/* Tiêu đề và tác giả blog khác */
+.other-blog-title {
+    font-size: 20px;
+    color: #FF6600;
+    font-weight: bold;
+}
+
+.other-blog-author {
+    font-size: 14px;
+    color: #888;
+}

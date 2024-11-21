@@ -59,12 +59,12 @@
   cursor: pointer;
 }
 
-.delete-button {
+.Mdelete-button {
   background-color: #dc3545;
 }
 
 .profile-button:hover,
-.delete-button:hover {
+.Mdelete-button:hover {
   opacity: 0.5;
 }
 
