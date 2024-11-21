@@ -10,31 +10,9 @@ import updateFish from './UpdateFish';
 import deleteFish from './DeleteFish';
 import fetchBreeds from '../Breed/ViewAllBreeds';
 
-const FishForm = ({ fish, onSubmit, onCancel, title, memberID }) => {
+const FishForm = ({ fish, onSubmit, onCancel, title, memberID, ponds, breeds }) => {
     const [formData, setFormData] = useState(fish);
-    const [ponds, setPonds] = useState([]);
-    const [breeds, setBreeds] = useState([]);
     const [ageMonth, setAgeMonth] = useState(0);
-
-    useEffect(() => {
-        const loadData = async () => {
-            if (!memberID) return;
-
-            try {
-                const [foodData, breedData] = await Promise.all([
-                    readPonds(memberID),
-                    fetchBreeds()
-                ]);
-
-                setPonds(foodData);
-                setBreeds(breedData);
-            } catch (error) {
-                showNotification('Error loading data', 'error');
-            }
-        };
-
-        loadData();
-    }, [memberID]);
 
     const calculateAge = (birthDate) => {
         const birth = new Date(birthDate);
@@ -272,14 +250,14 @@ const ManageFish = () => {
             if (!memberID) return;
 
             try {
-                const [fishesData, foodData, breedData] = await Promise.all([
+                const [fishesData, pondData, breedData] = await Promise.all([
                     readFishes(memberID),
                     readPonds(memberID),
                     fetchBreeds()
                 ]);
 
                 setFishes(fishesData);
-                setPonds(foodData);
+                setPonds(pondData);
                 setBreeds(breedData);
             } catch (error) {
                 showNotification('Error loading data', 'error');
@@ -302,9 +280,9 @@ const ManageFish = () => {
 
     const handleUpdate = async (fishData) => {
         try {
-            const updatedFish = await updateFish(fishData, memberID);
-            setFishes(prev => prev.map(fish =>
-                fish.fishID === updatedFish.fishID ? updatedFish : fish
+            const updatedFish = await updateFish({ ...fishData });
+            setFishes(prev => prev.map(fishData =>
+                fishData.fishID === updatedFish.fishID ? updatedFish : fishData
             ));
             setSelectedFish(null);
             showNotification('Fish updated successfully!');
@@ -315,7 +293,7 @@ const ManageFish = () => {
 
     const handleDelete = async (fishId) => {
         try {
-            await deleteFish(fishId, memberID);
+            await deleteFish(fishId);
             setFishes(prev => prev.filter(fish => fish.fishID !== fishId));
             showNotification('Fish deleted successfully!');
         } catch (error) {
@@ -378,6 +356,8 @@ const ManageFish = () => {
                     onCancel={() => setSelectedFish(null)}
                     title="Edit Fish"
                     memberID={memberID}
+                    ponds={ponds}
+                    breeds={breeds}
                 />
             )}
 

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,11 +46,11 @@ public class FishService {
      * @param fish the entity to save
      * @return the persisted entity
      */
-    public Fish saveFish(Fish fish, int memberID) {
+    public Fish saveFish(Fish fish) {
         if (fishRepository.existsByNameAndPondIdExceptId(fish.getName(), fish.getFishID(), fish.getPondID())) {
             throw new AlreadyExistedException(FISH_NAME_ALREADY_EXISTED_MESSAGE + fish.getPondID());
         } else if (!fishRepository.existsMemberId(fish.getMemberID())) {
-            throw new NotFoundException(MEMBER_NOT_FOUND_MESSAGE);
+            throw new NotFoundException(MEMBER_NOT_FOUND_MESSAGE + fish.getMemberID());
         }
 
         Optional<FishType> fishType = fishTypeRepository.findByName("KoiFish");
@@ -60,8 +61,8 @@ public class FishService {
 
         FishType newFishType = fishType.get();
         fish.setFishTypeID(newFishType.getFishTypeID());
-        fish.setCreateBy("Member_" + memberID);
-        fish.setUpdateBy("Member_" + memberID);
+        fish.setCreateBy("Member");
+        fish.setUpdateBy("Member");
 
         return fishRepository.save(fish);
     }
@@ -139,9 +140,9 @@ public class FishService {
      * @param updatedFish the updated entity
      * @return the updated entity
      */
-    public Fish updateFish(int id, Fish updatedFish, int memberId) {
-        if (updatedFish.getMemberID()!=0 && ! memberRepository.existsById(updatedFish.getMemberID()))
-            throw new NotFoundException(MEMBER_NOT_FOUND_MESSAGE + memberId);
+    public Fish updateFish(int id, Fish updatedFish) {
+        if (updatedFish.getMemberID() != 0 && !memberRepository.existsById(updatedFish.getMemberID()))
+            throw new NotFoundException(MEMBER_NOT_FOUND_MESSAGE + updatedFish.getMemberID());
 
         if ((updatedFish.getPondID()!= 0) && !pondRepository.existsByIdAndMemberId(updatedFish.getPondID(), updatedFish.getMemberID()))
             throw new NotFoundException(POND_NOT_FOUND_MESSAGE + updatedFish.getPondID());
@@ -151,12 +152,35 @@ public class FishService {
 
         Fish existingFishOpt = fishRepository.findFishById(id).orElseThrow(()
                 -> new NotFoundException(FISH_NOT_FOUND_MESSAGE + "with id: " + id));
-        Optional.of(updatedFish.getPondID()).ifPresent(existingFishOpt::setPondID);
-        Optional.ofNullable(updatedFish.getName()).ifPresent(existingFishOpt::setName);
-        Optional.ofNullable(updatedFish.getSize()).ifPresent(existingFishOpt::setSize);
-        Optional.ofNullable(updatedFish.getAgeMonth()).ifPresent(existingFishOpt::setAgeMonth);
-        Optional.ofNullable(updatedFish.getGender()).ifPresent(existingFishOpt::setGender);
-        Optional.of(updatedFish.getBreedID()).ifPresent(existingFishOpt::setBreedID);
+        boolean flag = false;
+        if (updatedFish.getPondID() != 0) {
+            existingFishOpt.setPondID(updatedFish.getPondID());
+            flag = true;
+        }
+        if (updatedFish.getName() != null) {
+            existingFishOpt.setName(updatedFish.getName());
+            flag = true;
+        }
+        if (updatedFish.getSize().compareTo(BigDecimal.ZERO) != 0) {
+            existingFishOpt.setSize(updatedFish.getSize());
+            flag = true;
+        }
+        if (updatedFish.getAgeMonth() != 0) {
+            existingFishOpt.setAgeMonth(updatedFish.getAgeMonth());
+            flag = true;
+        }
+        if (updatedFish.getGender() != null) {
+            existingFishOpt.setGender(updatedFish.getGender());
+            flag = true;
+        }
+        if (updatedFish.getBreedID() != 0) {
+            existingFishOpt.setBreedID(updatedFish.getBreedID());
+            flag = true;
+        }
+        if(flag){
+            existingFishOpt.setUpdateBy("Member");
+            existingFishOpt = fishRepository.save(existingFishOpt);
+        }
         existingFishOpt.countAgeMonth();
         return existingFishOpt;
     }
@@ -167,10 +191,14 @@ public class FishService {
      * @param id the ID of the entity
      */
     @Transactional
-    public void deleteByID(int id, int memberID) {
+    public void deleteByID(int id) {
         Fish deletedFish = fishRepository.findFishById(id).orElseThrow(()
                 -> new NotFoundException(FISH_NOT_FOUND_MESSAGE + "with id: " + id));
-        updateFish(id, deletedFish, memberID);
+        updateFish(id, deletedFish);
         fishRepository.deleteByID(id);
+    }
+
+    public int countFishInPond(int pondId) {
+        return fishRepository.findAllFishWithPondId(pondId).size();
     }
 }

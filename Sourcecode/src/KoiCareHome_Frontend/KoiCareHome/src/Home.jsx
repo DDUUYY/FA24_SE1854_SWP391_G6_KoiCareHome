@@ -1,6 +1,6 @@
 
 // eslint-disable-next-line no-unused-vars
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaRegUserCircle } from "react-icons/fa";
 import './home.css';
@@ -12,6 +12,9 @@ import FeedingHistoryCard from './Card/FeedingHistoryCard';
 import FoodCalculatorCard from './Card/FoodCalculatorCard';
 import BreedCard from './Card/BreedCard';
 
+import PondCard from './Card/PondCard.jsx';
+
+
 const Home = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const navigate = useNavigate();
@@ -21,7 +24,9 @@ const Home = () => {
     };
 
     const handleLogout = () => {
-        navigate('/login'); // Điều hướng tới trang đăng nhập
+        localStorage.removeItem('userID');  // Optionally clear user data
+        localStorage.removeItem('userRoleID'); // Clear role data
+        navigate('/login', { replace: true });  // This replaces the current page in the history stack
     };
 
     const handleProfile = () => {
@@ -82,6 +87,7 @@ const Home = () => {
             <div ref={featureRef} className="card-container">
                 <div className='Feature-container'>
                     <h1>Our Feature</h1>
+                    <PondCard/>
                     <ManageFishCard />
                     <FeedingHistoryCard />
                     <FoodCalculatorCard />

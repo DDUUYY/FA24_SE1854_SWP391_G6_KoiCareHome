@@ -16,7 +16,7 @@ const MemberProfile = () => {
     email: "",
     phoneNumber: "",
   });
-  const [showPopup, setShowPopup] = useState(false);  
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     loadMember();
@@ -87,7 +87,7 @@ const MemberProfile = () => {
               <button
                 type="button"
                 className="profile-button delete-button"
-                onClick={togglePopup}  
+                onClick={togglePopup}
               >
                 Delete
               </button>

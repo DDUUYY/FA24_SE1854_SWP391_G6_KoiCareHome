@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(AlreadyExistedException.class)
-    public ResponseEntity<ErrorResponse> handleAlreadyExistedException(AlreadyExistedException e) {
-        ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), HttpStatus.CONFLICT.value());
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(errorResponse);
+    public ResponseEntity<String> handleAlreadyExistedException(AlreadyExistedException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 
     @ExceptionHandler(NotFoundException.class)
@@ -21,10 +19,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGlobalException(Exception e) {
-        ErrorResponse errorResponse = new ErrorResponse("An unexpected error occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
+    public ResponseEntity<String> handleGlobalException(Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(errorResponse);
+                .body("An unexpected error occurred: " + e.getMessage());
     }
 
     // Bạn có thể thêm các phương thức xử lý lỗi khác cho các ngoại lệ khác nếu cần

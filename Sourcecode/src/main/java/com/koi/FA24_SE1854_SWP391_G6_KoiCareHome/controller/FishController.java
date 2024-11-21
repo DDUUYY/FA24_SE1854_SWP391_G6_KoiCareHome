@@ -33,9 +33,9 @@ public class FishController {
      * @return the ResponseEntity with status 200 (OK) and with body of the new Fish
      */
     @PostMapping
-    public ResponseEntity<Fish> saveFish(@RequestBody Fish fish, @RequestParam(name = "memberId") int memberID) {
+    public ResponseEntity<Fish> saveFish(@RequestBody Fish fish) {
         try {
-            Fish newFish = fishService.saveFish(fish, memberID);
+            Fish newFish = fishService.saveFish(fish);
             return ResponseEntity.ok(newFish);
         } catch (AlreadyExistedException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
@@ -120,10 +120,9 @@ public class FishController {
      * or with status 404 (Not Found) if the Fish does not exist
      */
     @PutMapping
-    public ResponseEntity<Fish> updateFish(@RequestParam(name = "fishId") int fishId, @RequestBody Fish fish,
-                                           @RequestParam(name = "memberId") int memberID) {
+    public ResponseEntity<Fish> updateFish(@RequestParam(name = "fishId") int fishId, @RequestBody Fish fish) {
         try {
-            Fish updatedFish = fishService.updateFish(fishId, fish, memberID);
+            Fish updatedFish = fishService.updateFish(fishId, fish);
             return ResponseEntity.ok(updatedFish);
         } catch (NotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -139,13 +138,18 @@ public class FishController {
      * @return the ResponseEntity with status 200 (OK) and with body of the message "Fish deleted successfully"
      */
     @DeleteMapping
-    public ResponseEntity<String> deleteFish(@RequestParam(name = "fishId") int fishId,
-                                             @RequestParam(name = "memberId") int memberID) {
+    public ResponseEntity<String> deleteFish(@RequestParam(name = "fishId") int fishId) {
         try {
-            fishService.deleteByID(fishId, memberID);
+            fishService.deleteByID(fishId);
             return ResponseEntity.ok("Fish deleted successfully");
         } catch (NotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+    }
+
+    @GetMapping("/pond/{pondId}/count")
+    public ResponseEntity<Integer> countFishInPond(@PathVariable int pondId) {
+        int count = fishService.countFishInPond(pondId);
+        return ResponseEntity.ok(count);
     }
 }

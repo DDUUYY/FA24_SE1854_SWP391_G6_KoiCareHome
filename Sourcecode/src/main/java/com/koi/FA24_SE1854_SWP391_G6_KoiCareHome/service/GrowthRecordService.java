@@ -29,7 +29,7 @@ public class GrowthRecordService {
         fishUpdate.setSize(growthRecord.getSize());
         fishUpdate.setWeight(growthRecord.getWeight());
 
-        fishService.updateFish(growthRecord.getFishID(), fishUpdate, memberID);
+        fishService.updateFish(growthRecord.getFishID(), fishUpdate);
 
         return savedRecord;
     }

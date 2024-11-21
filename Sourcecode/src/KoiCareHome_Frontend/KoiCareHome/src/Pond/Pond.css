@@ -1,0 +1,222 @@
+/* Container tổng của toàn bộ trang Pond */
+.pond-container {
+    display: flex;
+    flex-direction: column; /* Cột dọc */
+    align-items: center; /* Căn giữa nội dung */
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Header chứa Pond Management và nút Create Pond */
+.pond-header {
+    display: flex;
+    justify-content: space-between; /* Chia đều không gian giữa các thành phần */
+    align-items: center;
+    width: 100%;
+    max-width: 1200px; /* Giới hạn chiều rộng của trang */
+    padding: 0 20px;
+}
+
+.pond-header h1 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #ff6600; /* Màu cam nổi bật */
+}
+
+.create-pond-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.create-pond-button:hover {
+    background-color: #0056b3;
+}
+
+/* Layout chính với danh sách Pond bên trái và chi tiết Pond bên phải */
+.pond-main {
+    display: flex;
+    justify-content: space-between; /* Danh sách và chi tiết cách đều nhau */
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px; /* Giới hạn chiều rộng */
+}
+
+/* Danh sách Pond */
+.pond-list {
+    flex: 2; /* Chiếm 2 phần không gian */
+    display: flex;
+    flex-wrap: wrap; /* Các thẻ sẽ xuống dòng nếu không đủ chỗ */
+    gap: 20px; /* Khoảng cách giữa các thẻ */
+}
+
+.pond-card {
+    width: 280px; /* Chiều rộng cố định */
+    padding: 20px;
+    background: #f9f9f9; /* Màu nền nhẹ */
+    border-radius: 12px; /* Bo góc */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    text-align: left;
+}
+
+.pond-card:hover {
+    transform: scale(1.05);
+}
+
+.pond-card h4 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: bold;
+}
+
+.pond-card p {
+    font-size: 16px;
+    margin: 5px 0;
+    color: #555;
+}
+
+/* Chi tiết Pond */
+.pond-details {
+    flex: 3; /* Chiếm không gian còn lại */
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    max-width: 400px;
+    overflow-y: auto; /* Cuộn dọc nếu nội dung quá dài */
+}
+
+.pond-details h3 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+.pond-details p {
+    font-size: 14px;
+    margin: 5px 0;
+    color: #555;
+}
+
+.pond-details button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.pond-details button:hover {
+    background-color: #0056b3;
+}
+
+.pond-form-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.pond-form {
+    width: 450px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    text-align: center;
+}
+
+.pond-form h3 {
+    font-size: 24px;
+    color: #ff7f0e;
+    margin-bottom: 20px;
+}
+
+.pond-form input,
+.pond-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.pond-form input:focus,
+.pond-form select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.pond-form label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.pond-form .radio-group {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.pond-form .radio-group label {
+    margin: 0 10px;
+    font-weight: normal;
+}
+
+.pond-form button {
+    width: 45%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.pond-form .submit-button {
+    background-color: #007bff;
+    color: #fff;
+    margin-right: 5%;
+}
+
+.pond-form .submit-button:hover {
+    background-color: #0056b3;
+}
+
+.pond-form .cancel-button {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.pond-form .cancel-button:hover {
+    background-color: #495057;
+}

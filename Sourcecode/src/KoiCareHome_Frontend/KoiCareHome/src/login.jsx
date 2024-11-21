@@ -42,32 +42,32 @@ const Login = () => {
   };
 
   return (
-    <body className="login-signup-bg">
-    <section >
-      <form onSubmit={handleSubmit}>
-        <h1 className="title" >Login</h1>
-        {errorMessage && (
-          <div className="dialog-row">
-            <label className="text-center redText">{errorMessage}</label>
-          </div>
-        )}
-       <div className="inputbox">
-            <input name="email" id="email" type="email" required />
-            <label htmlFor="email">Email</label>
-          </div>
-          <div className="inputbox">
-            <input name="password" type="password" id="password" required />
-            <label htmlFor="password">Password</label>
-          </div>
-        <button type="submit">Log in</button>
-        <div className="register">
-          <p>
-            Do not have an account? <a href="/signup">Register!!</a>
-          </p>
-        </div>
-      </form>
-    </section>
-    </body>
+    <div className="login-signup-bg">
+        <section>
+            <form onSubmit={handleSubmit}>
+                <h1 className="title">Login</h1>
+                {errorMessage && (
+                    <div className="dialog-row">
+                        <label className="text-center redText">{errorMessage}</label>
+                    </div>
+                )}
+                <div className="inputbox">
+                    <input name="email" id="email" type="email" required />
+                    <label htmlFor="email">Email</label>
+                </div>
+                <div className="inputbox">
+                    <input name="password" type="password" id="password" required />
+                    <label htmlFor="password">Password</label>
+                </div>
+                <button type="submit">Log in</button>
+                <div className="register">
+                    <p>
+                        Do not have an account? <a href="/signup">Register!!</a>
+                    </p>
+                </div>
+            </form>
+        </section>
+    </div>
   );
 };
 

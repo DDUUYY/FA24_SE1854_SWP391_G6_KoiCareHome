@@ -30,12 +30,12 @@ public class BreedService {
      * @param breed the entity to save
      * @return the persisted entity
      */
-    public Breed saveBreed(Breed breed, int memberID) {
+    public Breed saveBreed(Breed breed) {
         if(breedRepository.existsByName(breed.getBreedName())){
             throw new AlreadyExistedException(BREED_ALREADY_EXISTED_MESSAGE + "name: " + breed.getBreedName());
         }
-        breed.setCreateBy("Admin_" + memberID);
-        breed.setUpdateBy("Admin_" + memberID);
+        breed.setCreateBy("Admin");
+        breed.setUpdateBy("Admin");
         return breedRepository.save(breed);
     }
 
@@ -45,15 +45,15 @@ public class BreedService {
      * @param name the name of the entity to save
      * @return the persisted entity
      */
-    public Breed saveBreedByName(String name, int memberID) {
+    public Breed saveBreedByName(String name) {
         if(breedRepository.existsByName(name))
         {
             throw new AlreadyExistedException(BREED_ALREADY_EXISTED_MESSAGE + "name: " + name);
         }
         Breed breed = new Breed();
         breed.setBreedName(name);
-        breed.setCreateBy("Admin_" + memberID);
-        breed.setUpdateBy("Admin_" + memberID);
+        breed.setCreateBy("Admin");
+        breed.setUpdateBy("Admin");
         return breedRepository.save(breed);
     }
 
@@ -95,23 +95,61 @@ public class BreedService {
      * @param updatedBreed the updated entity
      * @return the updated entity
      */
-    public Breed updateBreed(int id, Breed updatedBreed, int memberID) {
+    public Breed updateBreed(int id, Breed updatedBreed) {
         if (breedRepository.existsByNameExceptId(updatedBreed.getBreedName(), id))
             throw new AlreadyExistedException(BREED_ALREADY_EXISTED_MESSAGE + "name: " + updatedBreed.getBreedName());
 
         Breed existingBreedOpt = breedRepository.findById(id).orElseThrow(()
                 -> new NotFoundException(BREED_NOT_FOUND_MESSAGE + "id: " + id));
-        Optional.of(updatedBreed.getBreedName()).ifPresent(existingBreedOpt::setBreedName);
-        Optional.ofNullable(updatedBreed.getDescription()).ifPresent(existingBreedOpt::setDescription);
-        Optional.ofNullable(updatedBreed.getOrigin()).ifPresent(existingBreedOpt::setOrigin);
-        Optional.ofNullable(updatedBreed.getMinTemperature()).ifPresent(existingBreedOpt::setMinTemperature);
-        Optional.ofNullable(updatedBreed.getMaxTemperature()).ifPresent(existingBreedOpt::setMaxTemperature);
-        Optional.ofNullable(updatedBreed.getMinPH()).ifPresent(existingBreedOpt::setMinPH);
-        Optional.ofNullable(updatedBreed.getMaxPH()).ifPresent(existingBreedOpt::setMaxPH);
-        Optional.ofNullable(updatedBreed.getMinWaterHardness()).ifPresent(existingBreedOpt::setMinWaterHardness);
-        Optional.ofNullable(updatedBreed.getMaxWaterHardness()).ifPresent(existingBreedOpt::setMaxWaterHardness);
-        Optional.of(updatedBreed.getFeedingInstructions()).ifPresent(existingBreedOpt::setFeedingInstructions);
-        Optional.of(updatedBreed.getMinTankVolume()).ifPresent(existingBreedOpt::setMinTankVolume);
+        boolean flag = false;
+        if (updatedBreed.getBreedName() != null) {
+            existingBreedOpt.setBreedName(updatedBreed.getBreedName());
+            flag = true;
+        }
+        if (updatedBreed.getDescription() != null) {
+            existingBreedOpt.setDescription(updatedBreed.getDescription());
+            flag = true;
+        }
+        if (updatedBreed.getOrigin() != null) {
+            existingBreedOpt.setOrigin(updatedBreed.getOrigin());
+            flag = true;
+        }
+        if (updatedBreed.getMinTemperature() != null) {
+            existingBreedOpt.setMinTemperature(updatedBreed.getMinTemperature());
+            flag = true;
+        }
+        if (updatedBreed.getMaxTemperature() != null) {
+            existingBreedOpt.setMaxTemperature(updatedBreed.getMaxTemperature());
+            flag = true;
+        }
+        if (updatedBreed.getMinPH() != null) {
+            existingBreedOpt.setMinPH(updatedBreed.getMinPH());
+            flag = true;
+        }
+        if (updatedBreed.getMaxPH() != null) {
+            existingBreedOpt.setMaxPH(updatedBreed.getMaxPH());
+            flag = true;
+        }
+        if (updatedBreed.getMinWaterHardness() != null) {
+            existingBreedOpt.setMinWaterHardness(updatedBreed.getMinWaterHardness());
+            flag = true;
+        }
+        if (updatedBreed.getMaxWaterHardness() != null) {
+            existingBreedOpt.setMaxWaterHardness(updatedBreed.getMaxWaterHardness());
+            flag = true;
+        }
+        if (updatedBreed.getFeedingInstructions() != null) {
+            existingBreedOpt.setFeedingInstructions(updatedBreed.getFeedingInstructions());
+            flag = true;
+        }
+        if (updatedBreed.getMinTankVolume() != null) {
+            existingBreedOpt.setMinTankVolume(updatedBreed.getMinTankVolume());
+            flag = true;
+        }
+        if(flag){
+            existingBreedOpt.setUpdateBy("Admin");
+            existingBreedOpt = breedRepository.save(existingBreedOpt);
+        }
         return existingBreedOpt;
     }
 
@@ -122,10 +160,10 @@ public class BreedService {
      * @param id the ID of the entity
      */
     @Transactional
-    public void deleteByID(int id, int memberID) {
+    public void deleteByID(int id) {
         Breed deletedBreed = breedRepository.findById(id).orElseThrow(()
                 -> new NotFoundException(BREED_NOT_FOUND_MESSAGE + " id: " + id));
-        updateBreed(id, deletedBreed, memberID);
+        updateBreed(id, deletedBreed);
         breedRepository.deleteByID(id);
     }
 }

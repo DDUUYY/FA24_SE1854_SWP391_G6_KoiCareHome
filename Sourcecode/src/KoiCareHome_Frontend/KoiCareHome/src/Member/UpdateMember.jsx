@@ -52,23 +52,43 @@ const UpdateMember = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const { firstName, lastName, email, phoneNumber, newPassword, confirmNewPassword } = formData;
 
-    if (formData.newPassword && formData.newPassword !== formData.confirmNewPassword) {
+    // Validate required fields
+    if (!firstName || !lastName || !email || !phoneNumber) {
+      setError("Please fill in all required fields.");
+      return;
+    }
+
+    // Validate phone number format (10 digits)
+    if (!/^\d{10}$/.test(phoneNumber)) {
+      setError("Phone number must be exactly 10 digits.");
+      return;
+    }
+
+    // Validate new password (if provided)
+    if (newPassword && !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/.test(newPassword)) {
+      setError("New password must be at least 7 characters long, containing at least one letter and one number.");
+      return;
+    }
+
+    // Check if new passwords match
+    if (newPassword && newPassword !== confirmNewPassword) {
       setError("New passwords do not match.");
       return;
     }
 
     try {
       const updatePayload = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        phoneNumber: formData.phoneNumber
+        firstName,
+        lastName,
+        email,
+        phoneNumber
       };
 
       // Include new password only if provided
-      if (formData.newPassword) {
-        updatePayload.password = formData.newPassword;
+      if (newPassword) {
+        updatePayload.password = newPassword;
       }
 
       const response = await fetch(`http://localhost:8080/api/Member/${id}`, {
@@ -105,6 +125,7 @@ const UpdateMember = () => {
           value={formData.firstName}
           onChange={handleInputChange}
           className="update-member-input"
+          required
         />
         <input
           type="text"
@@ -113,6 +134,7 @@ const UpdateMember = () => {
           value={formData.lastName}
           onChange={handleInputChange}
           className="update-member-input"
+          required
         />
         <input
           type="email"
@@ -121,6 +143,7 @@ const UpdateMember = () => {
           value={formData.email}
           onChange={handleInputChange}
           className="update-member-input"
+          required
         />
         <input
           type="text"
@@ -129,9 +152,8 @@ const UpdateMember = () => {
           value={formData.phoneNumber}
           onChange={handleInputChange}
           className="update-member-input"
+          required
         />
-        
- 
         <input
           type="password"
           name="newPassword"
@@ -148,7 +170,7 @@ const UpdateMember = () => {
           onChange={handleInputChange}
           className="update-member-input"
         />
-        <button type="submit" className="update-member-submit-btn">Confirm </button>
+        <button type="submit" className="update-member-submit-btn">Confirm</button>
         <button type="button" className="back-button" onClick={handleBack}>Back</button>
       </form>
     </div>

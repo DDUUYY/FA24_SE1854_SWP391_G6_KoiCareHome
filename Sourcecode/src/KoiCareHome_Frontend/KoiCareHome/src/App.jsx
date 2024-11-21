@@ -14,6 +14,8 @@ import FoodCalculator from './Calculator/FoodCalculator';
 import FoodHistory from './ConsumeFoodHistory/ConsumeFoodHistory';
 import Breed from './Breed/ManageBreed';
 
+import Pond from './Pond/Pond';
+
 const App = () => {
   return (
     <Router>
@@ -33,6 +35,8 @@ const App = () => {
         <Route path="/calulator/food" element={<FoodCalculator />} />
         <Route path="/consume-food-history" element={<FoodHistory />} />
         <Route path="/breed" element={<Breed />} />
+
+        <Route path="/pond" element={<Pond />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

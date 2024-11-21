@@ -6,7 +6,6 @@ const updateFish = async (fishData) => {
 
     const updatedFish = {
         ...fishData,
-        memberID,
         pondID: parseInt(fishData.pondID, 10),
         breedID: parseInt(fishData.breedID, 10),
         size: fishData.size ? parseInt(fishData.size, 10) : null,

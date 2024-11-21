@@ -102,8 +102,16 @@ public class FishTypeService {
                 (FISH_TYPE_NOT_FOUND_MESSAGE + "id: " + id));
         if (fishTypeRepository.existsByName(updatedFishType.getName()))
             throw new AlreadyExistedException(FISH_TYPE_ALREADY_EXISTED_MESSAGE + updatedFishType.getName());
-        Optional.of(updatedFishType.getName()).ifPresent(existingFishType::setName);
-        return fishTypeRepository.save(existingFishType);
+        boolean flag = false;
+        if (updatedFishType.getName() != null) {
+            existingFishType.setName(updatedFishType.getName());
+            flag = true;
+        }
+        if(flag){
+            existingFishType = fishTypeRepository.save(existingFishType);
+            existingFishType.setUpdateBy("Admin");
+        }
+        return existingFishType;
     }
 
     /**
