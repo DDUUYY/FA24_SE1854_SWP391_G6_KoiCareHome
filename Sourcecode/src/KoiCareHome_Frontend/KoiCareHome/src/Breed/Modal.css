@@ -1,0 +1,21 @@
+.modals-overlay {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.modals-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+button {
+    margin-top: 10px;
+}

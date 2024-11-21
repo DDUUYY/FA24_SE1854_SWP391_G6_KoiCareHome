@@ -17,7 +17,10 @@ const AddFish = async (fishData, memberID) => {
         body: JSON.stringify(fishToAdd)
     });
 
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    if (!response.ok) {
+        const errorData = await response.text(); // Fetch the error message text
+        throw new Error(errorData); // Throw an error with the specific message
+    }
 
     return await response.json();
 };

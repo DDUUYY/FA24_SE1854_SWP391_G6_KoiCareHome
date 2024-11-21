@@ -20,7 +20,7 @@ public class CalculateFoodController {
     }
 
     @GetMapping("/{pondId}")
-    public BigDecimal calculateFoodBaseOnWeights(@PathVariable int pondId) {
-        return calculateFoodService.calculateFoodBaseOnWeights(pondId);
+    public BigDecimal calculateFoodBaseOnWeights(@PathVariable int pondId, @RequestParam(name = "growthStage") float growthStage) {
+        return calculateFoodService.calculateKoiFoodBasedOnWeights(pondId, growthStage);
     }
 }

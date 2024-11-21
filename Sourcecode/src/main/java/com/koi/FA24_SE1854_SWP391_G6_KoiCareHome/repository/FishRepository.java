@@ -19,16 +19,17 @@ public interface FishRepository extends JpaRepository<Fish, Integer> {
     /**
      * This method is to check if another Fish with the same name had already existed in the same pond except the Fish
      * with id = ID
-     * @param name name of Fish
-     * @param ID id of Fish
+     *
+     * @param name   name of Fish
+     * @param ID     id of Fish
      * @param pondID id of Fish's pond
      * @return true if there is at least one other Fish with the same name in the same pond and vice versa
      */
     @Query("SELECT CASE WHEN COUNT(f) > 0 THEN true ELSE false END " +
             "FROM Fish f WHERE f.name = :name AND f.pondID = :pondID AND f.fishID <> :ID AND f.isActive = true")
     boolean existsByNameAndPondIdExceptId(@Param("name") String name,
-                                          @Param("ID") int ID,
-                                          @Param("pondID") int pondID);
+                                          @Param("pondID") int pondID,
+                                          @Param("ID") int ID);
 
     @Query("SELECT CASE WHEN COUNT(f) > 0 THEN true ELSE false END FROM Member f WHERE f.MemberID = :memberId AND f.isActive = true")
     boolean existsMemberId(@Param("memberId") int memberId);
@@ -36,6 +37,7 @@ public interface FishRepository extends JpaRepository<Fish, Integer> {
 
     /**
      * This method is to find a Fish by its id
+     *
      * @param id id of Fish
      * @return a Fish entity with correspond id or null if there is no such id existed in database
      */
@@ -44,7 +46,8 @@ public interface FishRepository extends JpaRepository<Fish, Integer> {
 
     /**
      * This method is to find a Fish by its name in a specific pond
-     * @param name name of Fish
+     *
+     * @param name   name of Fish
      * @param pondID id of Fish's pond
      * @return a Fish entity with correspond name in the required pond or
      * null if there is no such fish with name existed in that pond in database
@@ -55,6 +58,7 @@ public interface FishRepository extends JpaRepository<Fish, Integer> {
 
     /**
      * This method will return all fishes that still existed in a specific pond in the database
+     *
      * @param pondId id of the fish's pondZ
      * @return list of fishes
      */
@@ -63,6 +67,7 @@ public interface FishRepository extends JpaRepository<Fish, Integer> {
 
     /**
      * This method will return all fishes that still existed in database
+     *
      * @return list of fishes
      */
     @Query("SELECT f FROM Fish f WHERE f.isActive = true")
@@ -70,6 +75,7 @@ public interface FishRepository extends JpaRepository<Fish, Integer> {
 
     /**
      * This method is to delete a Fish by changing its status, not to remove it completely from the database
+     *
      * @param id id of Fish
      */
     @Modifying
@@ -78,6 +84,7 @@ public interface FishRepository extends JpaRepository<Fish, Integer> {
 
     /**
      * This method will return all fishes under Member id that still existed in database
+     *
      * @return list of fishes of Member with "id"
      */
     @Query("SELECT f FROM Fish f WHERE f.memberID = :memberID AND f.isActive = true")

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaPlusCircle, FaEdit, FaTrash} from 'react-icons/fa';
+import { FaPlusCircle, FaEdit, FaTrash, FaExclamationCircle } from 'react-icons/fa';
 import { FaCircleArrowLeft } from "react-icons/fa6";
 import './ManageBreed.css';
+import Modal from './Modal';
 import deleteBreed from './DeleteBreed';
 import fetchBreeds from './ViewAllBreeds';
 import updateBreed from './UpdateBreed';
@@ -13,7 +14,8 @@ const BreedForm = ({ breed, onSubmit, onCancel, title }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        const numericFields = ['minTemperature', 'maxTemperature', 'minPH', 'maxPH', 'minWaterHardness', 'maxWaterHardness', 'minTankVolume'];
+        const numericFields = ['minTemperature', 'maxTemperature', 'minPH', 'maxPH', 'minWaterHardness', 'maxWaterHardness',
+             'minTankVolume', 'minSize', 'maxSize', 'minWeight', 'maxWeight', 'maxAgeMonth'];
         setFormData(prev => ({
             ...prev,
             [name]: numericFields.includes(name) ? (value === '' ? '' : parseInt(value, 10)) : value
@@ -114,6 +116,46 @@ const BreedForm = ({ breed, onSubmit, onCancel, title }) => {
                         placeholder="Min tank volume - liters"
                         min="0"
                     />
+                    <input
+                        type="number"
+                        name="minSize"
+                        value={formData.minSize}
+                        onChange={handleChange}
+                        placeholder="Min Koi's size - cm"
+                        min="0"
+                    />
+                    <input
+                        type="number"
+                        name="maxSize"
+                        value={formData.maxSize}
+                        onChange={handleChange}
+                        placeholder="Max Koi's size - cm"
+                        min="0"
+                    />
+                    <input
+                        type="number"
+                        name="minWeight"
+                        value={formData.minWeight}
+                        onChange={handleChange}
+                        placeholder="Min Koi's weight - kg"
+                        min="0"
+                    />
+                    <input
+                        type="number"
+                        name="maxWeight"
+                        value={formData.maxWeight}
+                        onChange={handleChange}
+                        placeholder="Max Koi's weight - kg"
+                        min="0"
+                    />
+                    <input
+                        type="number"
+                        name="maxAgeMonth"
+                        value={formData.maxAgeMonth}
+                        onChange={handleChange}
+                        placeholder="Max Koi's age month - years"
+                        min="0"
+                    />
                     <div className="button-group">
                         <button type="submit">{title === "Add New Breed" ? "Add" : "Update"}</button>
                         <button type="button" onClick={onCancel}>Cancel</button>
@@ -125,32 +167,30 @@ const BreedForm = ({ breed, onSubmit, onCancel, title }) => {
 };
 
 const BreedCard = ({ breed, onEdit, onDelete }) => {
-    const handleDelete = () => {
-        if (window.confirm("Are you sure you want to delete this breed?")) {
-            onDelete(breed.breedID);
-        }
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleShowMore = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
     };
 
     return (
         <div className="breed-card">
-            <h3>{breed.breedName}</h3>
-            <div className="breed-details">
-                <p>Description: {breed.description}</p>
-                <p>Origin: {breed.origin}</p>
-                <p>Min temperature: {breed.minTemperature}</p>
-                <p>Max temperature: {breed.maxTemperature}</p>
-                <p>Min pH: {breed.minPH}</p>
-                <p>Max pH: {breed.maxPH}</p>
-                <p>Min water hardness: {breed.minWaterHardness}</p>
-                <p>Max water hardness: {breed.maxWaterHardness}</p>
-                <p>Feeding instructions: {breed.feedingInstructions}</p>
-                <p>Min tank volume: {breed.minTankVolume}</p>
-            </div>
+            <h3>ID: {breed.breedID}</h3>
+            <p>Name: {breed.breedName}</p>
+            <p>Origin: {breed.origin}</p>
             <div className="breed-actions">
+                <button onClick={handleShowMore} className="btn-show-more">
+                    <FaExclamationCircle size={18} />
+                    <Modal isOpen={isModalOpen} onClose={closeModal} breed={breed} />
+                </button>
                 <button onClick={() => onEdit(breed)} className="btn-edit">
                     <FaEdit size={18} />
                 </button>
-                <button onClick={handleDelete} className="btn-delete">
+                <button onClick={() => onDelete(breed)} className="btn-delete">
                     <FaTrash size={18} />
                 </button>
             </div>
@@ -177,7 +217,12 @@ const ManageBreed = () => {
         minWaterHardness: '',
         maxWaterHardness: '',
         feedingInstructions: '',
-        minTankVolume: ''
+        minTankVolume: '',
+        minSize: '',
+        maxSize: '',
+        minWeight: '',
+        maxWeight: '',
+        maxAgeMonth: ''
     };
 
     useEffect(() => {
