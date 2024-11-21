@@ -204,9 +204,9 @@ public class FishService {
             existingFishOpt.setSize(updatedFish.getSize());
             flag = true;
         }
-        if (updatedFish.getAgeMonth() != 0) {
-            existingFishOpt.setAgeMonth(updatedFish.getAgeMonth());
-            flag = true;
+        if (updatedFish.getBirthday() != null) {
+            existingFishOpt.setBirthday(updatedFish.getBirthday());
+            existingFishOpt.countAgeMonth(); // Update ageMonth based on new birthday
         }
         if (updatedFish.getGender() != null) {
             existingFishOpt.setGender(updatedFish.getGender());
