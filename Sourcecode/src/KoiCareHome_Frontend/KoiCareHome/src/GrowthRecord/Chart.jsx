@@ -81,13 +81,13 @@ const Chart = () => {
     const analyzeGrowthTrends = (records) => {
         const suggestions = [];
         let isConsistentDecline = true; // Flag to track consistent decline in growth
-    
+        
         const growthRates = records.map((record, index) => {
             if (index === 0) return null;
             const prevRecord = records[index - 1];
             const daysBetween =
                 (new Date(record.measurementDate) - new Date(prevRecord.measurementDate)) / (1000 * 60 * 60 * 24);
-    
+        
             return {
                 sizeGrowthPerDay: (record.size - prevRecord.size) / daysBetween,
                 weightGrowthPerDay: (record.weight - prevRecord.weight) / daysBetween,
@@ -97,31 +97,42 @@ const Chart = () => {
         }).filter(Boolean);
     
         const latestGrowth = growthRates[growthRates.length - 1];
+        
+        // Track how many records show growth up and growth down
+        let growthUpCount = 0;
+        let growthDownCount = 0;
     
-        // Check if there is a consistent decline in size and weight
         for (let i = 1; i < growthRates.length; i++) {
             const prev = growthRates[i - 1];
             const current = growthRates[i];
     
-            if (current.size >= prev.size || current.weight >= prev.weight) {
-                isConsistentDecline = false; // Not a consistent decline
-                break;
+            if (current.size < prev.size || current.weight < prev.weight) {
+                growthDownCount++;
+            } else if (current.size > prev.size || current.weight > prev.weight) {
+                growthUpCount++;
             }
         }
     
-        if (latestGrowth.sizeGrowthPerDay > 0 && latestGrowth.sizeGrowthPerDay < 0.1 || latestGrowth.weightGrowthPerDay > 0 && latestGrowth.weightGrowthPerDay < 0.02) {
+        // If most of the records show a decline in growth, do not suggest too fast growth
+        if (growthUpCount > growthDownCount) {
+            if (latestGrowth.sizeGrowthPerDay > 0.8 || latestGrowth.weightGrowthPerDay > 0.4) {
+                suggestions.push("Fish growth is too fast. Check for overfeeding and potential health risks.");
+            }
+        }
+    
+        if (latestGrowth.sizeGrowthPerDay < 0.3 || latestGrowth.weightGrowthPerDay < 0.2) {
             suggestions.push("Fish growth is slow. Consider adjusting feeding habits or water parameters.");
         }
     
-        if (latestGrowth.sizeGrowthPerDay > 0.9 || latestGrowth.weightGrowthPerDay > 0.4) {
-            suggestions.push("Fish growth is too fast. Check for overfeeding and potential health risks.");
-        }
-    
-        if (isConsistentDecline) {
+        if (growthDownCount > growthUpCount) {
             suggestions.push("Fish growth is down. Investigate potential health or environmental issues.");
         }
     
-        setSuggestions(suggestions.length > 0 ? suggestions : ["Growth is on track. Keep monitoring."]);
+        if (suggestions.length === 0) {
+            suggestions.push("Growth is on track. Keep monitoring.");
+        }
+    
+        setSuggestions(suggestions);
     };
 
     const handleNavigateToFoodHistory = () => {
