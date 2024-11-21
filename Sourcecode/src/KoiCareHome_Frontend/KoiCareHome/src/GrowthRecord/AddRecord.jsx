@@ -108,7 +108,7 @@ const AddRecord = () => {
             });
 
             if (response.ok) {
-                await updateFish({ fishID, size: growthRecord.size, weight: growthRecord.weight });
+                await updateFish({ fishID: fishID, size: growthRecord.size, weight: growthRecord.weight });
                 navigate(`/GrowthRecord?fishID=${fishID}`);
             } else {
                 setError("Error adding the growth record.");
@@ -120,53 +120,53 @@ const AddRecord = () => {
 
     return (
         <div className="add-record-container">
-        <h1 className="add-record-title">Add New Growth Record</h1>
-        {error && <div className="add-record-error">{error}</div>}
-        <form onSubmit={handleSubmit} className="add-record-form">
-            <input
-                type="date"
-                name="measurementDate"
-                className="add-record-input"
-                value={growthRecord.measurementDate}
-                onChange={(e) => setGrowthRecord({ ...growthRecord, measurementDate: e.target.value })}
-                required
-            />
-            <input
-                type="number"
-                name="size"
-                className="add-record-input"
-                placeholder="Size (cm)"
-                value={growthRecord.size}
-                onChange={(e) => setGrowthRecord({ ...growthRecord, size: parseFloat(e.target.value) })}
-                required
-            />
-            <input
-                type="number"
-                name="weight"
-                className="add-record-input"
-                placeholder="Weight (kg)"
-                value={growthRecord.weight}
-                onChange={(e) => setGrowthRecord({ ...growthRecord, weight: parseFloat(e.target.value) })}
-                required
-            />
-            <input
-                type="text"
-                name="description"
-                className="add-record-input"
-                placeholder="Description"
-                value={growthRecord.description}
-                onChange={(e) => setGrowthRecord({ ...growthRecord, description: e.target.value })}
-            />
-            <button type="submit" className="add-record-submit-btn">Add Record</button>
-            <button
-                type="button"
-                className="profile-button back-button"
-                onClick={() => navigate(`/GrowthRecord?fishID=${fishID}`)}
-            >
-                Back
-            </button>
-        </form>
-    </div>
+            <h1 className="add-record-title">Add New Growth Record</h1>
+            {error && <div className="add-record-error">{error}</div>}
+            <form onSubmit={handleSubmit} className="add-record-form">
+                <input
+                    type="date"
+                    name="measurementDate"
+                    className="add-record-input"
+                    value={growthRecord.measurementDate}
+                    onChange={(e) => setGrowthRecord({ ...growthRecord, measurementDate: e.target.value })}
+                    required
+                />
+                <input
+                    type="number"
+                    name="size"
+                    className="add-record-input"
+                    placeholder="Size (cm)"
+                    value={growthRecord.size}
+                    onChange={(e) => setGrowthRecord({ ...growthRecord, size: parseFloat(e.target.value) })}
+                    required
+                />
+                <input
+                    type="number"
+                    name="weight"
+                    className="add-record-input"
+                    placeholder="Weight (kg)"
+                    value={growthRecord.weight}
+                    onChange={(e) => setGrowthRecord({ ...growthRecord, weight: parseFloat(e.target.value) })}
+                    required
+                />
+                <input
+                    type="text"
+                    name="description"
+                    className="add-record-input"
+                    placeholder="Description"
+                    value={growthRecord.description}
+                    onChange={(e) => setGrowthRecord({ ...growthRecord, description: e.target.value })}
+                />
+                <button type="submit" className="add-record-submit-btn">Add Record</button>
+                <button
+                    type="button"
+                    className="profile-button back-button"
+                    onClick={() => navigate(`/GrowthRecord?fishID=${fishID}`)}
+                >
+                    Back
+                </button>
+            </form>
+        </div>
     );
 };
 

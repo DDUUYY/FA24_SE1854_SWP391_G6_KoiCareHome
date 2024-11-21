@@ -21,7 +21,6 @@ public class FishService {
     private static final String POND_NOT_FOUND_MESSAGE = "Pond is not found with id: ";
     private static final String FISH_NAME_ALREADY_EXISTED_MESSAGE = "Fish name has already existed in pond ID: ";
     private static final String POND_NOT_SUITABLE_MESSAGE = "This pond is too small for this fish";
-    private static final String VALUE_NOT_SUITABLE_MESSAGE = "This fish can't have that value of size/pond/ageMonth";
 
     private final FishRepository fishRepository;
     private final FishTypeRepository fishTypeRepository;
@@ -72,14 +71,17 @@ public class FishService {
     }
 
     private void checkValidPond(Fish fish) {
-        Breed breed = breedRepository.findById(fish.getBreedID()).get();
-        Pond pond = pondRepository.findById(fish.getBreedID()).get();
+        Breed breed = breedRepository.findById(fish.getBreedID())
+                .orElseThrow(() -> new NotFoundException("There no breed with id: " + fish.getBreedID()));
+        Pond pond = pondRepository.findById(fish.getPondID())
+                .orElseThrow(() -> new NotFoundException("There no pond with id: " + fish.getBreedID()));
         if (breed.getMinTankVolume().compareTo(pond.getVolume()) < 0)
             throw new IllegalArgumentException(POND_NOT_SUITABLE_MESSAGE);
     }
 
     private void checkFishValidation(Fish fish) {
-        Breed breed = breedRepository.findById(fish.getBreedID()).get();
+        Breed breed = breedRepository.findById(fish.getBreedID())
+                .orElseThrow(() -> new NotFoundException("There no breed with id: " + fish.getBreedID()));
         if (fish.getSize().compareTo(breed.getMinSize()) < 0 || fish.getSize().compareTo(breed.getMaxSize()) > 0)
             throw new IllegalArgumentException("Size of this Koi breed must between " + breed.getMinSize() + " and " + breed.getMaxSize() + "(cm)");
         else if (fish.getWeight().compareTo(breed.getMinWeight()) < 0 || fish.getWeight().compareTo(breed.getMaxWeight()) > 0) {
@@ -186,11 +188,11 @@ public class FishService {
             throw new AlreadyExistedException(FISH_NAME_ALREADY_EXISTED_MESSAGE + updatedFish.getPondID());
         }
 
-        checkValidPond(updatedFish);
-        checkFishValidation(updatedFish);
-
         Fish existingFishOpt = fishRepository.findFishById(id).orElseThrow(()
                 -> new NotFoundException(FISH_NOT_FOUND_MESSAGE + "with id: " + id));
+
+        checkValidPond(existingFishOpt);
+        checkFishValidation(existingFishOpt);
         boolean flag = false;
         if (updatedFish.getPondID() != 0) {
             existingFishOpt.setPondID(updatedFish.getPondID());
