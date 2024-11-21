@@ -3,47 +3,56 @@ package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
  * @author Quach To Anh
  */
 @Entity
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "FoodType")
-public class FoodType {
+@Table(name = "GrowthStandard")
+public class GrowthStandard {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int foodTypeId;
+    @Column(name = "GrowthID", nullable = false)
+    private Integer growthStandardID;
 
-    @Column(name = "Name", nullable = false)
-    private String name;
+    @Column(name = "BreedID", nullable = false)
+    private Integer breedID;
 
-    @Column(name = "isActive", nullable = true)
+    @Column(name = "AgeMonths", nullable = false)
+    private Double ageMonths;
+
+    @Column(name = "ExpectedWeight", precision = 10, scale = 2)
+    private BigDecimal expectedWeight;
+
+    @Column(name = "ExpectedSize", precision = 10, scale = 2)
+    private BigDecimal expectedSize;
+
+    @Column(name = "isActive")
     private boolean isActive;
 
-    @Column(name = "CreateDate", nullable = true)
+    @Column(name = "CreateDate")
     private LocalDateTime createDate;
 
-    @Column(name = "CreateBy", nullable = false)
+    @Column(name = "CreateBy")
     private String createBy;
 
-    @Column(name = "UpdateDate", nullable = true)
+    @Column(name = "UpdateDate")
     private LocalDateTime updateDate;
 
-    @Column(name = "UpdateBy", nullable = true)
+    @Column(name = "UpdateBy")
     private String updateBy;
 
     @PrePersist
     protected void onCreate() {
         createDate = LocalDateTime.now();
         updateDate = LocalDateTime.now();
-        createBy = "user";
-        updateBy = "user";
         isActive = true;
     }
 
@@ -51,6 +60,4 @@ public class FoodType {
     protected void onUpdate() {
         updateDate = LocalDateTime.now();
     }
-
-
 }

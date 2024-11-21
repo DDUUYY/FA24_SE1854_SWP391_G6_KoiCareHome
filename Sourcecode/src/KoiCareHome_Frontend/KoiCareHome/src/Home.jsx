@@ -14,7 +14,6 @@ import Order from "./Card/Order.jsx";
 
 
 // import {  useNavigate } from 'react-router-dom';
-// import { useNavigate } from 'react-router-dom';
 import { FaRegUserCircle } from "react-icons/fa";
 import './home.css';
 import GrCard from '../src/Card/GrCard';
@@ -26,6 +25,8 @@ import FoodCalculatorCard from './Card/FoodCalculatorCard';
 import ReminderCard from './Card/ReminderCard';
 import BlogCard from './Card/BlogCard';
 import AdminCard from './Card/AdminCard';
+import BreedCard from './Card/BreedCard';
+import PondCard from './Card/PondCard.jsx';
 
 const Home = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -105,6 +106,7 @@ const Home = () => {
             <div ref={featureRef} className="card-container">
                 <div className='Feature-container'>
                     <h1>Our Feature</h1>
+                    <PondCard/>
                     <ManageFishCard />
                     <FeedingHistoryCard />
                     <FoodCalculatorCard />
@@ -114,6 +116,7 @@ const Home = () => {
                     <SaltCalculation />
                     <Order />
                     {userRoleID === 2 && <AdminCard />}
+                    {userRoleID === 2 && <BreedCard />}
                 </div>
             </div>
         </div>

@@ -60,5 +60,7 @@ public class GrowthRecordController {
         GrowthRecord updatedRecord = growthRecordService.updateGrowthRecord(RecordID, growthRecord);
         if (updatedRecord == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         return ResponseEntity.ok(updatedRecord);
+
 }
+
 }

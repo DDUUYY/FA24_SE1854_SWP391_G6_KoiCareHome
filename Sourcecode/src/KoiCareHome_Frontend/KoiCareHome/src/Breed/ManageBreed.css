@@ -1,51 +1,50 @@
-/* ManageFish.css */
-.fish-management {
+.breed-management {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
   position: relative;
 }
 
-.header {
+.breed-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 2rem;
 }
 
-.header h1 {
+.breed-header h1 {
   font-size: 2.5rem;
   color: #1f2937;
   font-weight: bold;
 }
 
-.add-koi-btn-icon,
-.back-btn-icon {
+.add-breed-btn-icon,
+.back-breed-icon {
   cursor: pointer;
   font-size: 2rem;
   color: #3b82f6;
   transition: color 0.2s;
 }
 
-.add-koi-btn-icon:hover,
-.back-btn-icon:hover {
+.add-breed-btn-icon:hover,
+.back-breed-icon:hover {
   color: #2563eb;
 }
 
-.back-btn-icon {
+.back-breed-icon {
   position: fixed;
   bottom: 2rem;
   left: 2rem;
 }
 
-.fish-grid {
+.breed-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
-.fish-card {
+.breed-card {
   background: white;
   padding: 1.5rem;
   border-radius: 0.75rem;
@@ -53,60 +52,59 @@
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.fish-card:hover {
+.breed-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.fish-card h3 {
+.breed-card h3 {
   font-size: 1.25rem;
   color: #1f2937;
   margin-bottom: 1rem;
   font-weight: 600;
 }
 
-.fish-details {
+.breed-details {
   margin-bottom: 1rem;
 }
 
-.fish-details p {
+.breed-details p {
   color: #4b5563;
   margin-bottom: 0.5rem;
   font-size: 0.875rem;
 }
 
-.fish-actions {
+.breed-actions {
   display: flex;
   gap: 0.5rem;
 }
 
-.edit-btn,
-.delete-btn {
+.edit-breed-btn,
+.delete-breed-btn {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  margin-top: 10px;
   border-radius: 0.375rem;
   font-size: 0.875rem;
   transition: all 0.2s;
 }
 
-.edit-btn {
+.edit-breed-btn {
   background-color: #3b82f6;
   color: white;
 }
 
-.edit-btn:hover {
+.edit-breed-btn:hover {
   background-color: #2563eb;
 }
 
-.delete-btn {
+.delete-breed-btn {
   background-color: #ef4444;
   color: white;
 }
 
-.delete-btn:hover {
+.delete-breed-btn:hover {
   background-color: #dc2626;
 }
 
@@ -140,7 +138,7 @@
   font-weight: 600;
 }
 
-.fish-form {
+.breed-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -187,22 +185,6 @@
   outline: none;
   border-color: #3b82f6;
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
-}
-
-.radio-group {
-  display: flex;
-  flex-direction: column; /* Stack the items vertically */
-}
-
-.gender-options {
-  display: flex; /* Use flexbox for horizontal alignment */
-  gap: 16px; /* Space between radio buttons */
-}
-
-
-.readonly-input {
-  background-color: #f3f4f6;
-  cursor: not-allowed;
 }
 
 .button-group {
@@ -271,15 +253,15 @@
 }
 
 @media (max-width: 768px) {
-  .fish-management {
+  .breed-management {
     padding: 1rem;
   }
 
-  .header h1 {
+  .breed-header h1 {
     font-size: 2rem;
   }
 
-  .fish-grid {
+  .breed-grid {
     grid-template-columns: 1fr;
   }
 
