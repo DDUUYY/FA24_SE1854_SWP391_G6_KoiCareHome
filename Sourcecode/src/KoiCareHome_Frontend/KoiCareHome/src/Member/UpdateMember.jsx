@@ -61,8 +61,8 @@ const UpdateMember = () => {
     }
 
     // Validate phone number format (10 digits)
-    if (!/^\d{10}$/.test(phoneNumber)) {
-      setError("Phone number must be exactly 10 digits.");
+    if (!/^0(3|5|7|8|9)\d{8}$/.test(phoneNumber)) {
+      setError("Phone number must be a valid Vietnamese number (10 digits).");
       return;
     }
 

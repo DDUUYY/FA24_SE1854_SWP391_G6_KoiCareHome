@@ -68,7 +68,7 @@ const Chart = () => {
                 ]
             });
 
-            if (sortedRecords.length > 5) {
+            if (sortedRecords.length > 4) {
                 analyzeGrowthTrends(sortedRecords);
             } else {
                 setSuggestions(["Add more growth records to see tailored suggestions."]);
@@ -80,12 +80,14 @@ const Chart = () => {
 
     const analyzeGrowthTrends = (records) => {
         const suggestions = [];
+        let isConsistentDecline = true; // Flag to track consistent decline in growth
+    
         const growthRates = records.map((record, index) => {
             if (index === 0) return null;
             const prevRecord = records[index - 1];
             const daysBetween =
                 (new Date(record.measurementDate) - new Date(prevRecord.measurementDate)) / (1000 * 60 * 60 * 24);
-
+    
             return {
                 sizeGrowthPerDay: (record.size - prevRecord.size) / daysBetween,
                 weightGrowthPerDay: (record.weight - prevRecord.weight) / daysBetween,
@@ -93,22 +95,32 @@ const Chart = () => {
                 weight: record.weight,
             };
         }).filter(Boolean);
-
+    
         const latestGrowth = growthRates[growthRates.length - 1];
-
-        if (latestGrowth.sizeGrowthPerDay < 0.1 || latestGrowth.weightGrowthPerDay < 0.02) {
-            suggestions.push("Growth is slow. Consider adjusting feeding habits or water parameters.");
+    
+        // Check if there is a consistent decline in size and weight
+        for (let i = 1; i < growthRates.length; i++) {
+            const prev = growthRates[i - 1];
+            const current = growthRates[i];
+    
+            if (current.size >= prev.size || current.weight >= prev.weight) {
+                isConsistentDecline = false; // Not a consistent decline
+                break;
+            }
         }
+    
+        if (latestGrowth.sizeGrowthPerDay > 0 && latestGrowth.sizeGrowthPerDay < 0.1 || latestGrowth.weightGrowthPerDay > 0 && latestGrowth.weightGrowthPerDay < 0.02) {
+            suggestions.push("Fish growth is slow. Consider adjusting feeding habits or water parameters.");
+        }
+    
         if (latestGrowth.sizeGrowthPerDay > 0.9 || latestGrowth.weightGrowthPerDay > 0.4) {
-            suggestions.push("Growth is too fast. Check for overfeeding and potential health risks.");
+            suggestions.push("Fish growth is too fast. Check for overfeeding and potential health risks.");
         }
-        if (latestGrowth.weight / latestGrowth.size < 0.05) {
-            suggestions.push("Weight-to-size ratio is low. Increase feeding frequency or improve feed quality.");
+    
+        if (isConsistentDecline) {
+            suggestions.push("Fish growth is down. Investigate potential health or environmental issues.");
         }
-        if (latestGrowth.weight / latestGrowth.size > 0.15) {
-            suggestions.push("Weight-to-size ratio is high. Check for potential overfeeding.");
-        }
-
+    
         setSuggestions(suggestions.length > 0 ? suggestions : ["Growth is on track. Keep monitoring."]);
     };
 
@@ -117,9 +129,7 @@ const Chart = () => {
     };
 
     const handleNavigateToPond = () => {
-        const params = new URLSearchParams(location.search);
-        const fishID = params.get('fishID');
-        navigate(`/Pond?fishID=${fishID}`);
+        navigate(`/Pond`);
     };
 
     const handleNavigateToFoodCalculator = () => {
@@ -130,6 +140,9 @@ const Chart = () => {
         const params = new URLSearchParams(location.search);
         const fishID = params.get('fishID');
         navigate(`/GrowthRecord?fishID=${fishID}`);
+    };
+    const handleNavigateToManageFish = () => {
+        navigate(`/manage-fish`);
     };
 
     
@@ -144,7 +157,27 @@ const Chart = () => {
                     {suggestions.map((suggestion, index) => (
                         <li key={index}>
                             {suggestion}
-                            {suggestion.includes("Growth is slow") && (
+                            {suggestion.includes("Fish growth is slow") && (
+                                <div className="suggestion-buttons">
+                                    <button onClick={handleNavigateToFoodHistory} className="chart-back-button">
+                                        View Food History
+                                    </button>
+                                    <button onClick={handleNavigateToFoodCalculator} className="chart-back-button">
+                                        Food Calculator
+                                    </button>
+                                </div>
+                            )}
+                            {suggestion.includes("Fish growth is too fast") && (
+                                <div className="suggestion-buttons">
+                                    <button onClick={handleNavigateToFoodHistory} className="chart-back-button">
+                                        View Food History
+                                    </button>
+                                    <button onClick={handleNavigateToFoodCalculator} className="chart-back-button">
+                                        Food Calculator
+                                    </button>
+                                </div>
+                            )}
+                            {suggestion.includes("Fish growth is down") && (
                                 <div className="suggestion-buttons">
                                     <button onClick={handleNavigateToFoodHistory} className="chart-back-button">
                                         View Food History
@@ -152,25 +185,8 @@ const Chart = () => {
                                     <button onClick={handleNavigateToPond} className="chart-back-button">
                                         View Pond
                                     </button>
-                                </div>
-                            )}
-                            {suggestion.includes("Growth is too fast") && (
-                                <div className="suggestion-buttons">
-                                    <button onClick={handleNavigateToFoodHistory} className="chart-back-button">
-                                        View Food History
-                                    </button>
-                                    <button onClick={handleNavigateToFoodCalculator} className="chart-back-button">
-                                        Food Calculator
-                                    </button>
-                                </div>
-                            )}
-                            {suggestion.includes("Weight-to-size ratio is low") && (
-                                <div className="suggestion-buttons">
-                                    <button onClick={handleNavigateToFoodHistory} className="chart-back-button">
-                                        View Food History
-                                    </button>
-                                    <button onClick={handleNavigateToFoodCalculator} className="chart-back-button">
-                                        Food Calculator
+                                    <button onClick={handleNavigateToManageFish} className="chart-back-button">
+                                        Manage Fish
                                     </button>
                                 </div>
                             )}
