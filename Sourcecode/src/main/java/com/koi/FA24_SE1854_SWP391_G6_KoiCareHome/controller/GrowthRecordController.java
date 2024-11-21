@@ -21,6 +21,7 @@ import java.util.List;
 public class GrowthRecordController {
     private final GrowthRecordService growthRecordService;
 
+
     @PostMapping("/GrowthRecord")
     public GrowthRecord postGrowRecord(@RequestBody GrowthRecord growthRecord) {
         if (growthRecord.getFishID() == null) {
@@ -31,7 +32,7 @@ public class GrowthRecordController {
 
 
     @GetMapping("/GrowthRecord")
-    public List<GrowthRecord> getAllGrowthRecords(@RequestParam Integer fishID) {
+    public List<GrowthRecord> getAllGrowthRecords(@RequestParam(required = false) Integer fishID) {
         if (fishID != null) {
             return growthRecordService.getGrowthRecordsByFishId(fishID);
         }
@@ -60,7 +61,5 @@ public class GrowthRecordController {
         GrowthRecord updatedRecord = growthRecordService.updateGrowthRecord(RecordID, growthRecord);
         if (updatedRecord == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         return ResponseEntity.ok(updatedRecord);
-
 }
-
 }

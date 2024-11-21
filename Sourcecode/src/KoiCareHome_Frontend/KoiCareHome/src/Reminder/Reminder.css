@@ -3,7 +3,7 @@
 /* Tổng thể container */
 .reminder-container {
     padding: 20px;
-    max-width: 95%;
+    max-width: 85%;
     margin: auto;
     background-color: rgba(255, 165, 0, 0.1); /* Màu nền cam nhạt */
     color: #333; /* Màu chữ */
@@ -96,51 +96,11 @@
     background-color: #fff;
 }
 
-/* Bảng lịch sử thông báo */
-.notification-history-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.notification-history-table th,
-.notification-history-table td {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ddd;
-}
-
-.notification-history-table th {
-    background-color: #FF6600; /* Header bảng thông báo màu cam */
-    color: white;
-    font-weight: bold;
-}
-
-.notification-history-table td {
-    background-color: #fff;
-}
-
 /* Responsive cho màn hình nhỏ hơn */
 @media (max-width: 768px) {
     .three-column-layout {
         flex-direction: column;
     }
-}
-
-.clear-history-button {
-    border: 2px solid #FF6600; /* Viền màu cam */
-    background-color: white;    
-    color: #FF6600; /* Chữ màu cam */
-    padding: 10px 20px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Hiệu ứng khi hover */
-.clear-history-button:hover {
-    background-color: #FFF5E1; /* Nền không thay đổi khi hover */
-    color: #ff4800; /* Đổi màu chữ khi hover */
 }
 
 .switch {

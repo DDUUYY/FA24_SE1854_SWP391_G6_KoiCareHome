@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaBalanceScale, FaFish, FaWater } from 'react-icons/fa';
+import { FaBalanceScale, FaFish, FaWater} from 'react-icons/fa';
 import { FaCircleArrowLeft } from "react-icons/fa6";
 import './FoodCalculator.css';
 import readPonds from '../Fish/ViewAllPonds';
+
+const growthRates = [
+  { id: 'fast', label: 'Fast Growth', value: 1.5, description: 'Accelerated growth rate' },
+  { id: 'medium', label: 'Medium Growth', value: 1.0, description: 'Standard growth rate' },
+  { id: 'slow', label: 'Slow Growth', value: 0.5, description: 'Conservative growth rate' }
+];
 
 const PondCard = ({ pond, onSelect, isSelected }) => (
   <div
@@ -15,6 +21,27 @@ const PondCard = ({ pond, onSelect, isSelected }) => (
     </div>
     <div className="pond-info">
       <h3>{pond.pondID}</h3>
+    </div>
+  </div>
+);
+
+const GrowthRateSelector = ({ selectedRate, onSelect }) => (
+  <div className="growth-rate-section">
+    <h2>Select Growth Rate</h2>
+    <div className="growth-rate-options">
+      {growthRates.map(rate => (
+        <div
+          key={rate.id}
+          className={`growth-rate-card ${selectedRate === rate.id ? 'selected' : ''}`}
+          onClick={() => onSelect(rate.id)}
+        >
+          <div className="growth-rate-content">
+            <h3>{rate.label}</h3>
+            <p className="growth-rate-value">Rate: {rate.value}x</p>
+            <p className="growth-rate-description">{rate.description}</p>
+          </div>
+        </div>
+      ))}
     </div>
   </div>
 );
@@ -38,10 +65,11 @@ const FoodCalculation = ({ calculatedAmount }) => (
   </div>
 );
 
-const CalculateFood = () => {
+const FoodCalculator = () => {
   const [memberID, setMemberID] = useState(null);
   const [ponds, setPonds] = useState([]);
   const [selectedPondId, setSelectedPondId] = useState(null);
+  const [selectedGrowthRate, setSelectedGrowthRate] = useState('medium');
   const [calculatedAmount, setCalculatedAmount] = useState(null);
   const [error, setError] = useState(null);
   const [noFishMessage, setNoFishMessage] = useState(false);
@@ -63,6 +91,7 @@ const CalculateFood = () => {
         setPonds(data);
       } catch (error) {
         console.error('Error fetching ponds:', error);
+        setError('Failed to fetch ponds. Please try again later.');
       }
     };
 
@@ -73,25 +102,38 @@ const CalculateFood = () => {
 
   useEffect(() => {
     const calculateFood = async () => {
-      if (!selectedPondId) return;
+      if (!selectedPondId || !selectedGrowthRate) return;
 
       try {
         setCalculatedAmount(null);
-        const response = await fetch(`http://localhost:8080/api/calculate/food/${selectedPondId}`);
+        const growthRateValue = growthRates.find(rate => rate.id === selectedGrowthRate).value;
+        
+        const response = await fetch(`http://localhost:8080/api/calculate/food/${selectedPondId}?growthStage=${growthRateValue}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
         if (!response.ok) throw new Error('Failed to calculate food amount');
         const amount = await response.json();
         setCalculatedAmount(amount);
-        setNoFishMessage(amount === 0); // Assuming API returns 0 if there are no fish
+        setNoFishMessage(amount === 0);
       } catch (err) {
         setError('Failed to calculate food amount. Please try again later.');
       }
     };
 
     calculateFood();
-  }, [selectedPondId]);
+  }, [selectedPondId, selectedGrowthRate]);
 
   const handlePondSelect = (pondId) => {
     setSelectedPondId(pondId);
+    setError(null);
+  };
+
+  const handleGrowthRateSelect = (rateId) => {
+    setSelectedGrowthRate(rateId);
     setError(null);
   };
 
@@ -102,7 +144,7 @@ const CalculateFood = () => {
           <FaFish className="header-icon" />
           Calculate Food Amount
         </h1>
-        <p>Select a pond to calculate the recommended daily food amount for your koi</p>
+        <p>Select a pond and growth rate to calculate the recommended daily food amount</p>
       </header>
 
       {error && (
@@ -111,22 +153,29 @@ const CalculateFood = () => {
         </div>
       )}
 
+      <GrowthRateSelector
+        selectedRate={selectedGrowthRate}
+        onSelect={handleGrowthRateSelect}
+      />
+
       {ponds.length === 0 ? (
         <div className="no-ponds-message">
           <h3>No ponds available. Please add a pond.</h3>
         </div>
-
       ) : (
-        <div className="ponds-grid">
-          {ponds.map(pond => (
-            <PondCard
-              key={pond.pondID}
-              pond={pond}
-              onSelect={handlePondSelect}
-              isSelected={selectedPondId === pond.pondID}
-            />
-          ))}
-        </div>
+        <>
+          <h2>Select Pond</h2>
+          <div className="ponds-grid">
+            {ponds.map(pond => (
+              <PondCard
+                key={pond.pondID}
+                pond={pond}
+                onSelect={handlePondSelect}
+                isSelected={selectedPondId === pond.pondID}
+              />
+            ))}
+          </div>
+        </>
       )}
 
       {selectedPondId && calculatedAmount !== null && noFishMessage && (
@@ -137,10 +186,10 @@ const CalculateFood = () => {
 
       {selectedPondId && !noFishMessage && (
         <FoodCalculation
-          pondId={selectedPondId}
           calculatedAmount={calculatedAmount}
         />
       )}
+
       <div className="back-btn-icon">
         <FaCircleArrowLeft onClick={() => navigate('/home')} className="back-btn-plus" />
       </div>
@@ -148,4 +197,4 @@ const CalculateFood = () => {
   );
 };
 
-export default CalculateFood;
+export default FoodCalculator;

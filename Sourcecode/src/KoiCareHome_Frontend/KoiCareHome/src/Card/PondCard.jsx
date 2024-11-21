@@ -10,7 +10,7 @@ const PondCard = () => {
             <div className="card">
                 <img className="card-image" src={Pond} alt="Pond" />
                 <h2 className="card-title">Manage Pond</h2>
-                <p className="card-description">manage and monitor information about your koi ponds</p>
+                <p className="card-description">Users manage their Ponds</p>
             </div>
         </Link>
     );

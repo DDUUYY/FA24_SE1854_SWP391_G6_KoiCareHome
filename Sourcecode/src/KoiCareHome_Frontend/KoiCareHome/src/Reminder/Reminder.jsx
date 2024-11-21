@@ -152,8 +152,8 @@ const Reminder = () => {
                     className="home-icon"
                     onClick={() => navigate('/home')}
                 />
+                <span className="navbar-title">Reminders</span>
             </div>
-            <h2>Reminders</h2>
             <div className="three-column-layout">
                 {/* Add Reminder Column */}
                 <div className="column">

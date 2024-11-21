@@ -1,10 +1,11 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useRef, useEffect } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { Link, useNavigate } from 'react-router-dom';
 // import { FaRegUserCircle } from "react-icons/fa";
 // import './home.css';
 // import GrCard from '../src/Card/GrCard';
-import Koi_Img from './assets/Koi_Img.jpg';
+// import Koi_Img from './assets/Koi_Img.jpg';
 // import KoiGraphic from './assets/Welcome.jpg';
 // import LogoKoiFish from './assets/logokoifish.png';
 
@@ -14,18 +15,19 @@ import Order from "./Card/Order.jsx";
 
 
 // import {  useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { FaRegUserCircle } from "react-icons/fa";
 import './home.css';
 import GrCard from '../src/Card/GrCard';
 import KoiGraphic from './assets/Welcome.jpg';
 import LogoKoiFish from './assets/logokoifish.png';
 import ManageFishCard from './Card/ManageFishCard';
+import BreedCard from './Card/BreedCard';
 import FeedingHistoryCard from './Card/FeedingHistoryCard';
 import FoodCalculatorCard from './Card/FoodCalculatorCard';
 import ReminderCard from './Card/ReminderCard';
 import BlogCard from './Card/BlogCard';
 import AdminCard from './Card/AdminCard';
-import BreedCard from './Card/BreedCard';
 import PondCard from './Card/PondCard.jsx';
 
 const Home = () => {
@@ -38,13 +40,14 @@ const Home = () => {
         const role = localStorage.getItem('userRoleID'); // Dùng đúng key 'userRoleID'
         setUserRoleID(parseInt(role, 10)); // Chuyển sang số để dễ so sánh
     }, []);
+
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('userID'); 
-        localStorage.removeItem('userRoleID'); // Optionally clear user data
+        localStorage.removeItem('userID');  // Optionally clear user data
+        localStorage.removeItem('userRoleID'); // Clear role data
         navigate('/login', { replace: true });  // This replaces the current page in the history stack
     };
 
@@ -106,8 +109,8 @@ const Home = () => {
             <div ref={featureRef} className="card-container">
                 <div className='Feature-container'>
                     <h1>Our Feature</h1>
-                    <PondCard/>
                     <ManageFishCard />
+                    <PondCard/>
                     <FeedingHistoryCard />
                     <FoodCalculatorCard />
                     <GrCard />
@@ -115,8 +118,8 @@ const Home = () => {
                     <BlogCard />
                     <SaltCalculation />
                     <Order />
-                    {userRoleID === 2 && <AdminCard />}
                     {userRoleID === 2 && <BreedCard />}
+                    {userRoleID === 2 && <AdminCard />}
                 </div>
             </div>
         </div>

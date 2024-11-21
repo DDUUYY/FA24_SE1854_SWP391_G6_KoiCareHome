@@ -73,4 +73,11 @@ public interface GrowthStandardRepository extends JpaRepository<GrowthStandard, 
     @Query("SELECT g FROM GrowthStandard g WHERE g.breedID = :breedID AND g.isActive = true")
     List<GrowthStandard> findAllGrowthStandardsByBreedId(@Param("breedID") int breedID);
 
+    /**
+     * This method will return all requirements that still existed in database by breedID and a specific ageMonth
+     * @return list of requirements that have the same breedID
+     */
+    @Query("SELECT g FROM GrowthStandard g WHERE g.ageMonths = :ageMonth AND g.breedID = :breedID AND g.isActive = true")
+    List<GrowthStandard> findAllGrowthStandardsByBreedIdAndAgeMonth(@Param("breedID") int breedID, @Param("ageMonth") int ageMonth);
+
 }

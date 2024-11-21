@@ -10,7 +10,7 @@ import updateFish from './UpdateFish';
 import deleteFish from './DeleteFish';
 import fetchBreeds from '../Breed/ViewAllBreeds';
 
-const FishForm = ({ fish, onSubmit, onCancel, title, memberID, ponds, breeds }) => {
+const FishForm = ({ fish, onSubmit, onCancel, title, ponds, breeds }) => {
     const [formData, setFormData] = useState(fish);
     const [ageMonth, setAgeMonth] = useState(0);
 
@@ -158,6 +158,7 @@ const FishForm = ({ fish, onSubmit, onCancel, title, memberID, ponds, breeds }) 
                                 value={formData.birthday}
                                 onChange={handleChange}
                                 required
+                                max={new Date().toISOString().split("T")[0]}
                             />
                         </div>
 
@@ -186,7 +187,7 @@ const FishForm = ({ fish, onSubmit, onCancel, title, memberID, ponds, breeds }) 
     );
 };
 
-const FishCard = ({ fish, onEdit, onDelete }) => {
+const FishCard = ({ fish, breeds, onEdit, onDelete }) => {
     const handleDelete = () => {
         if (window.confirm("Are you sure you want to delete this fish?")) {
             onDelete(fish.fishID);
@@ -198,7 +199,7 @@ const FishCard = ({ fish, onEdit, onDelete }) => {
             <h3>{fish.name}</h3>
             <div className="fish-details">
                 <p>Pond: {fish.pondID}</p>
-                <p>Breed: {fish.breedID}</p>
+                <p>Breed: {breeds.find(b => b.breedID === fish.breedID)?.breedName}</p>
                 <p>Size: {fish.size} cm</p>
                 <p>Weight: {fish.weight} kg</p>
                 <p>Age: {fish.ageMonth} months</p>
@@ -236,6 +237,23 @@ const ManageFish = () => {
         weight: '',
     };
 
+    const extractErrorMessage = (error) => {
+        if (error.response) {
+            // Handle structured error response
+            if (error.response.data && error.response.data.message) {
+                return error.response.data.message;
+            }
+            // Handle plain text error response
+            if (typeof error.response.data === 'string') {
+                return error.response.data;
+            }
+            // Handle HTTP status text
+            return `Error: ${error.response.statusText}`;
+        }
+        // Handle network errors or other issues
+        return error.message || 'An unexpected error occurred';
+    };
+
     useEffect(() => {
         const id = localStorage.getItem('userID');
         if (id) {
@@ -260,7 +278,8 @@ const ManageFish = () => {
                 setPonds(pondData);
                 setBreeds(breedData);
             } catch (error) {
-                showNotification('Error loading data', 'error');
+                const errorMessage = extractErrorMessage(error);
+                showNotification(errorMessage, 'error');
             }
         };
 
@@ -274,11 +293,19 @@ const ManageFish = () => {
             setShowAddForm(false);
             showNotification('Fish added successfully!');
         } catch (error) {
-            showNotification('Error adding fish', 'error');
+            const errorMessage = extractErrorMessage(error);
+            showNotification(errorMessage, 'error');
         }
     };
 
     const handleUpdate = async (fishData) => {
+        // Kiểm tra xem tên cá đã tồn tại trong danh sách cá hay chưa
+        const isNameExists = fishes.some(fish => fish.name === fishData.name && fish.fishID !== fishData.fishID);
+        if (isNameExists) {
+            showNotification('Fish name has already existed in this pond!', 'error');
+            return; // Dừng lại nếu tên đã tồn tại
+        }
+
         try {
             const updatedFish = await updateFish({ ...fishData });
             setFishes(prev => prev.map(fishData =>
@@ -287,7 +314,8 @@ const ManageFish = () => {
             setSelectedFish(null);
             showNotification('Fish updated successfully!');
         } catch (error) {
-            showNotification('Error updating fish', 'error');
+            const errorMessage = extractErrorMessage(error);
+            showNotification(errorMessage, 'error');
         }
     };
 
@@ -297,7 +325,8 @@ const ManageFish = () => {
             setFishes(prev => prev.filter(fish => fish.fishID !== fishId));
             showNotification('Fish deleted successfully!');
         } catch (error) {
-            showNotification('Error deleting fish', 'error');
+            const errorMessage = extractErrorMessage(error);
+            showNotification(errorMessage, 'error');
         }
     };
 

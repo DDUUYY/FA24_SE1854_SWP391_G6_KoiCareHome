@@ -1,11 +1,8 @@
 package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.controller;
 
-import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.exception.AlreadyExistedException;
-import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.exception.NotFoundException;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model.FishType;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.service.FishTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,12 +31,8 @@ public class FishTypeController {
      */
     @PostMapping
     public ResponseEntity<FishType> saveFishType(@RequestBody FishType fishType) {
-        try{
-            FishType newFishType = fishTypeService.saveFishType(fishType);
-            return ResponseEntity.ok(newFishType);
-        } catch(AlreadyExistedException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
-        }
+        FishType newFishType = fishTypeService.saveFishType(fishType);
+        return ResponseEntity.ok(newFishType);
     }
 
     /**
@@ -61,12 +54,8 @@ public class FishTypeController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<FishType> getFishTypeById(@PathVariable int id) {
-        try{
-            FishType fishType = fishTypeService.getFishTypeByID(id);
-            return ResponseEntity.ok(fishType);
-        } catch(NotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+        Optional<FishType> fishType = fishTypeService.getFishTypeByID(id);
+        return fishType.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
@@ -78,12 +67,10 @@ public class FishTypeController {
      */
     @GetMapping("/name/{name}")
     public ResponseEntity<FishType> getFishTypeByName(@PathVariable String name) {
-        try{
-            FishType fishType = fishTypeService.getFishTypeByName(name);
-            return ResponseEntity.ok(fishType);
-        } catch(NotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+        if (name == null || name.trim().isEmpty())
+            return ResponseEntity.badRequest().build();
+        Optional<FishType> fishType = fishTypeService.getFishTypeByName(name);
+        return fishType.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
@@ -96,14 +83,8 @@ public class FishTypeController {
      */
     @PutMapping
     public ResponseEntity<FishType> updateFishType(@RequestParam(name = "fishTypeId") int id, @RequestBody FishType fishType) {
-        try{
-            FishType updatedFishType = fishTypeService.updateFishType(id, fishType);
-            return ResponseEntity.ok(updatedFishType);
-        } catch(AlreadyExistedException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
-        } catch(NotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+        FishType updatedFishType = fishTypeService.updateFishType(id, fishType);
+        return ResponseEntity.ok(updatedFishType);
     }
 
     /**
@@ -114,11 +95,7 @@ public class FishTypeController {
      */
     @DeleteMapping
     public ResponseEntity<String> deleteByID(@RequestParam(name = "fishTypeId") int id) {
-        try {
-            fishTypeService.deleteByID(id);
-            return ResponseEntity.ok("FishType deleted successfully");
-        } catch (NotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+        fishTypeService.deleteByID(id);
+        return ResponseEntity.ok("FishType deleted successfully");
     }
 }

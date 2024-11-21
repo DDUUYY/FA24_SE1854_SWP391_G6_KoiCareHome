@@ -2,6 +2,7 @@ package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.service;
 
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.model.Fish;
 import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.FishRepository;
+import com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.repository.PondRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -10,12 +11,13 @@ import java.util.List;
 @Service
 public class CalculateFoodService {
 
-    private BigDecimal percentage = new BigDecimal("0.02");
+    private final FishRepository fishRepository;
+    private final BigDecimal percent = BigDecimal.valueOf(1);
+    private double optimalTemperatureMin = 15.0;
+    private double optimalTemperatureMax = 24.0;
 
-    private final FishRepository fishrepository;
-
-    public CalculateFoodService(FishRepository fishrepository) {
-        this.fishrepository = fishrepository;
+    public CalculateFoodService(FishRepository fishRepository) {
+        this.fishRepository = fishRepository;
     }
 
     /**
@@ -23,12 +25,23 @@ public class CalculateFoodService {
      *
      * @return the calculated amount
      */
-    public BigDecimal calculateFoodBaseOnWeights(int pondId) {
-        List<Fish> fishes = fishrepository.findAllFishWithPondId(pondId);
-        BigDecimal baseOnWeights = BigDecimal.valueOf(0.00);
-        for (Fish fish : fishes) {
-            baseOnWeights = baseOnWeights.add(fish.getWeight());
+    public BigDecimal calculateKoiFoodBasedOnWeights(int pondId, float growthRate) {
+        List<Fish> koiFishes = fishRepository.findAllFishWithPondId(pondId);
+
+        BigDecimal totalWeight = BigDecimal.ZERO;
+        for (Fish fish : koiFishes) {
+            totalWeight = totalWeight.add(fish.getWeight());
         }
-        return baseOnWeights.multiply(percentage);
+
+        BigDecimal foodBaseOnWeight = totalWeight.multiply(percent);
+
+        // Adjust the food requirement based on the growth rate
+        BigDecimal growthRateFactor = BigDecimal.valueOf(1 + growthRate);
+
+        // Final calculation for food requirement
+        BigDecimal finalFoodRequirement = foodBaseOnWeight.multiply(growthRateFactor);
+
+        return finalFoodRequirement;
     }
+
 }

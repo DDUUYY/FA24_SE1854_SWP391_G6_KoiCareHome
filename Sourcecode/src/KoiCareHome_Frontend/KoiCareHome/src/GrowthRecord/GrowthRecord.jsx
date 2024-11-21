@@ -43,8 +43,7 @@ const GrowthRecord = () => {
             const response = await fetch(`http://localhost:8080/api/GrowthRecord?fishID=${fishID}`);
             if (response.ok) {
                 const data = await response.json();
-                const sortedData = data.sort((a, b) => new Date(a.measurementDate) - new Date(b.measurementDate));
-                setGrowthRecords(sortedData);
+                setGrowthRecords(data);
             } else {
                 console.error("Failed to fetch growth records");
             }
@@ -140,8 +139,8 @@ const GrowthRecord = () => {
                     <tr>
                         <th>No.</th>
                         <th>Measurement Date</th>
-                        <th>Size (cm)</th>
-                        <th>Weight (kg)</th>
+                        <th>Size</th>
+                        <th>Weight</th>
                         <th>Description</th>
                         <th colSpan="2">Actions</th>
                     </tr>

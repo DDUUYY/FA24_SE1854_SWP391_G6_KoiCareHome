@@ -8,10 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.temporal.ChronoUnit;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,7 +66,5 @@ throw new EntityNotFoundException("Record with the ID: " + RecordID + " not foun
     public List<GrowthRecord> getGrowthRecordsByFishId(Integer fishID) {
         return growthRecordRepository.findByFishIDAndIsActiveTrue(fishID);
     }
-
-
 }
 

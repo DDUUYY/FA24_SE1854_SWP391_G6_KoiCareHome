@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
+
 public class Fa24Se1854Swp391G6KoiCareHomeApplication {
 
 	public static void main(String[] args) {SpringApplication.run(Fa24Se1854Swp391G6KoiCareHomeApplication.class, args);}

@@ -6,6 +6,7 @@ import NotFound from './404';
 import MemberProfile from './Member/MemberProfile';
 import UpdateMember from './Member/UpdateMember';
 import ManageFish from './Fish/ManageFish';
+import Breed from './Breed/ManageBreed';
 import GrowthRecord from './GrowthRecord/GrowthRecord';
 import AddRecord from './GrowthRecord/AddRecord';
 
@@ -13,6 +14,8 @@ import Order from './Order/Order';
 import SaltCalculation from './SaltCalculation/SaltCalculation';
 import AddOrder from './Order/AddOrder';
 
+// import FoodCalculator from './Calculator/FoodCalculator';
+// import FoodHistory from './Fish/ConsumeFoodHistory';
 import FoodCalculator from './Calculator/FoodCalculator';
 import FoodHistory from './ConsumeFoodHistory/ConsumeFoodHistory';
 import Chart from './GrowthRecord/Chart';
@@ -22,8 +25,8 @@ import BlogCreator from './Blog/BlogCreator';
 import BlogEditor from './Blog/BlogEditor';
 import BlogDetail from './Blog/BlogDetail';
 import AdminPage from './Admin/AdminPage';
-import Breed from './Breed/ManageBreed';
 import Pond from './Pond/Pond';
+
 const App = () => {
   return (
     <Router>
@@ -34,6 +37,11 @@ const App = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/profile" element={<MemberProfile />} />
         <Route path='/UpdateMember/:id' element={<UpdateMember />} />
+        {/* <Route path="/manage-fish" element={<ManageFish />} /> */}
+        <Route path="/breed" element={<Breed />} />
+        {/* <Route path="/growthRecord" element={<GrowthRecord />} /> */}
+        {/* <Route path="/addRecord" element={<AddRecord />} /> */}
+
         <Route path="/order" element={<Order />} />
         <Route path="/salt-calculation" element={<SaltCalculation />} />
         <Route path="/add-order" element={<AddOrder />} />
@@ -50,7 +58,6 @@ const App = () => {
         <Route path="/edit-blog/:id" element={<BlogEditor />} />
         <Route path="/blogs/:id" element={<BlogDetail />} />
         <Route path="/admin" element={<AdminPage />} />
-        <Route path="/breed" element={<Breed />} />
         <Route path="/pond" element={<Pond />} />
       </Routes>
     </Router>

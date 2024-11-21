@@ -3,195 +3,257 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
-}
-
-/* Header */
-.page-header {
+    background-color: #f8fafc;
+    min-height: 100vh;
+    position: relative;
+  }
+  
+  /* Header */
+  .page-header {
     text-align: center;
     margin-bottom: 3rem;
-    color: orange;
-}
-
-.page-header h1 {
+  }
+  
+  .page-header h1 {
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-}
-
-.header-icon {
-    color: orange;
-}
-
-.page-header p {
-    color: orange;
+    color: #f97316;
+  }
+  
+  .header-icon {
+    color: #f97316;
+  }
+  
+  .page-header p {
+    color: #64748b;
     font-size: 1.1rem;
-}
-
-/* Pond Grid */
-.ponds-grid {
+  }
+  
+  /* Section Headers */
+  h2 {
+    color: #334155;
+    font-size: 1.8rem;
+    margin: 2rem 0 1rem;
+    text-align: center;
+  }
+  
+  /* Growth Rate Section */
+  .growth-rate-section {
+    margin-bottom: 3rem;
+  }
+  
+  .growth-rate-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+  
+  .growth-rate-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+  
+  .growth-rate-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .growth-rate-card.selected {
+    border-color: #f97316;
+    background-color: #fff7ed;
+  }
+  
+  .growth-rate-content h3 {
+    color: #334155;
+    font-size: 1.25rem;
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .growth-rate-value {
+    color: #f97316;
+    font-weight: 600;
+    margin: 0.5rem 0;
+  }
+  
+  .growth-rate-description {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  
+  /* Pond Grid */
+  .ponds-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
     margin-bottom: 2rem;
-}
-
-/* Pond Card */
-.pond-card {
+  }
+  
+  /* Pond Card */
+  .pond-card {
     background: white;
     border-radius: 1rem;
     padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     cursor: pointer;
     transition: all 0.3s ease;
     border: 2px solid transparent;
     display: flex;
     gap: 1rem;
-}
-
-.pond-card:hover {
+  }
+  
+  .pond-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.pond-card.selected {
-    border-color: orange;
-    background-color: #ebf8ff;
-}
-
-.pond-icon {
-    color: orange;
+  }
+  
+  .pond-card.selected {
+    border-color: #f97316;
+    background-color: #fff7ed;
+  }
+  
+  .pond-icon {
+    color: #f97316;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #ebf8ff;
+    background: #fff7ed;
     padding: 1rem;
     border-radius: 0.5rem;
-}
-
-.pond-info {
-    flex: 1;
-}
-
-.pond-info h3 {
+  }
+  
+  .pond-info h3 {
     margin: 0 0 0.5rem 0;
-    color: orange;
+    color: #334155;
     font-size: 1.25rem;
-}
-
-.pond-info p {
-    margin: 0.25rem 0;
-    color: orange;
-    font-size: 0.875rem;
-}
-
-/* Calculation Result */
-.calculation-result {
+  }
+  
+  /* Calculation Result */
+  .calculation-result {
     background: white;
     border-radius: 1rem;
     padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     margin: 2rem 0;
     text-align: center;
-}
-
-.result-header {
+  }
+  
+  .result-header {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     margin-bottom: 1rem;
-    color: orange;
-}
-
-.result-header h3 {
+    color: #f97316;
+  }
+  
+  .result-header h3 {
     margin: 0;
     font-size: 1.5rem;
-}
-
-.result-value {
+    color: #334155;
+  }
+  
+  .result-value {
     font-size: 3rem;
-    color: orange;
+    color: #f97316;
     font-weight: bold;
-}
-
-.result-value .unit {
+  }
+  
+  .result-value .unit {
     font-size: 1.5rem;
-    color: orange;
+    color: #64748b;
     margin-left: 0.5rem;
-}
-
-.loading {
+  }
+  
+  .loading {
     font-size: 1.5rem;
-    color: orange;
+    color: #64748b;
     animation: pulse 1.5s infinite;
-}
-
-/* Error Message */
-.error-message {
-    background-color: #fff5f5;
-    border: 1px solid #feb2b2;
-    color: #c53030;
+  }
+  
+  /* Messages */
+  .error-message,
+  .no-ponds-message,
+  .no-fish-message {
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
     padding: 1rem;
     border-radius: 0.5rem;
     margin-bottom: 1.5rem;
     text-align: center;
-}
-
-/* Back Button */
-.back-btn-icon {
+  }
+  
+  .no-ponds-message,
+  .no-fish-message {
+    background-color: #fff7ed;
+    border-color: #fed7aa;
+    color: #c2410c;
+  }
+  
+  /* Back Button */
+  .back-btn-icon {
     position: fixed;
-    top: 8%;
-    left: 3%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    top: 2rem;
+    left: 2rem;
     cursor: pointer;
-    margin-right: 40px;
-}
-
-.back-btn-plus {
-    font-size: 48px;
-    color: orange;
-    transition: color 0.3s;
-}
-
-.back-btn-plus:hover {
-    color: rgba(255, 166, 0, 0.404);
-}
-
-/* Animation */
-@keyframes pulse {
-    0% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0.5;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
+  }
+  
+  .back-btn-plus {
+    font-size: 2rem;
+    color: #f97316;
+    transition: color 0.3s ease;
+  }
+  
+  .back-btn-plus:hover {
+    color: #ea580c;
+  }
+  
+  /* Animation */
+  @keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
     .calculate-food-container {
-        padding: 1rem;
+      padding: 1rem;
     }
-
+  
     .page-header h1 {
-        font-size: 2rem;
+      font-size: 2rem;
     }
-
+  
+    h2 {
+      font-size: 1.5rem;
+    }
+  
+    .back-btn-icon {
+      top: 1rem;
+      left: 1rem;
+    }
+  
     .result-value {
-        font-size: 2.5rem;
+      font-size: 2.5rem;
     }
-
+  
     .result-value .unit {
-        font-size: 1.25rem;
+      font-size: 1.25rem;
     }
-}
+  
+    .growth-rate-options {
+      grid-template-columns: 1fr;
+    }
+  }

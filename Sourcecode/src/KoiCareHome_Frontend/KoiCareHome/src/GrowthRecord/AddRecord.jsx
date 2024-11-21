@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import updateFish from '../Fish/UpdateFish';
@@ -9,165 +10,250 @@ import "./AddRecord.css";
  */
 
 const AddRecord = () => {
-    const navigate = useNavigate();
-    const { fishID } = useParams();
-    const [growthRecord, setGrowthRecord] = useState({
-        measurementDate: "",
-        size: "",
-        weight: "",
-        description: "",
-        fishID: parseInt(fishID, 10),
-    });
-    const [previousRecords, setPreviousRecords] = useState([]);
-    const [error, setError] = useState("");
+	const navigate = useNavigate();
+	const { fishID } = useParams();
+	const [growthRecord, setGrowthRecord] = useState({
+		measurementDate: '',
+		size: '',
+		weight: '',
+		description: '',
+		fishID: parseInt(fishID, 10),
+	});
 
-    useEffect(() => {
-        const today = new Date().toISOString().split("T")[0];
-        setGrowthRecord((prev) => ({ ...prev, measurementDate: today }));
-    }, []);
+	const [error, setError] = useState("");
 
-    useEffect(() => {
-        const fetchPreviousRecords = async () => {
-            try {
-                const response = await fetch(`http://localhost:8080/api/GrowthRecord?fishID=${fishID}`);
-                if (response.ok) {
-                    const data = await response.json();
-                    setPreviousRecords(data);
-                }
-            } catch (err) {
-                console.error("Error fetching records:", err);
-            }
-        };
-        fetchPreviousRecords();
-    }, [fishID]);
 
-    const validateInputs = (records) => {
-        const { size, weight, measurementDate } = growthRecord;
-        const today = new Date().toISOString().split("T")[0];
+	useEffect(() => {
+		const today = new Date();
+		const formattedDate = today.toISOString().split("T")[0];
+		setGrowthRecord((prevData) => ({
+			...prevData,
+			measurementDate: formattedDate,
+		}));
+	}, []);
 
-        if (measurementDate > today) {
-            return "Measurement date cannot be in the future.";
-        }
 
-        if (records.some((record) => record.measurementDate === measurementDate)) {
-            return "A GrowthRecord for this fish on this date already exists.";
-        }
+	const handleInputChange = (event) => {
+		const { name, value } = event.target;
+		setGrowthRecord((prevData) => ({
+			...prevData,
+			[name]: value,
+		}));
+	};
 
-        if (size <= 0 || size > 125.92) {
-            return "Size must be between 1 cm and 125.92 cm.";
-        }
 
-        if (weight <= 0 || weight > 16) {
-            return "Weight must be between 1 kg and 16 kg.";
-        }
+	const handleSubmit = async (e) => {
+		e.preventDefault();
 
-        const sizeWeightRatio = weight / size;
-        if (sizeWeightRatio < 0.055 || sizeWeightRatio > 0.12) {
-            return "Weight-to-size ratio is unrealistic.";
-        }
+		const { size, weight } = growthRecord;
 
-        if (records.length > 0) {
-            const latestRecord = records[records.length - 1];
-            const daysBetween =
-                (new Date(measurementDate) - new Date(latestRecord.measurementDate)) / (1000 * 60 * 60 * 24);
+		// Validate size and weight
+		if (size <= 0 || size > 121.92) {
+			setError("Size must be more than 0 and less than or equal to 121.92 cm.");
+			return;
+		}
+		if (weight <= 0 || weight > 41) {
+			setError("Weight must be more than 0 and less than or equal to 41 kg.");
+			return;
+		}
 
-            if (daysBetween <= 0) {
-                return "Measurement date must be after the latest record date.";
-            }
+		if (!growthRecord.measurementDate || !growthRecord.size || !growthRecord.weight || !fishID) {
+			setError("Please fill in all required fields.");
+			return;
+		}
 
-            const sizeIncrease = size - latestRecord.size;
-            const weightIncrease = weight - latestRecord.weight;
-            const maxSizeIncrease = daysBetween * 1.0;
-            const maxWeightIncrease = latestRecord.weight * 0.05 * daysBetween;
+		try {
+			const response = await fetch("http://localhost:8080/api/GrowthRecord", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(growthRecord),
+			});
 
-            if (sizeIncrease > maxSizeIncrease) {
-                return `Size increase exceeds allowable growth of ${maxSizeIncrease.toFixed(2)} cm over ${daysBetween} days.`;
-            }
+			if (response.ok) {
+				await updateFish({
+					fishID: fishID,
+					size: growthRecord.size,
+					weight: growthRecord.weight,
+				});
 
-            if (weightIncrease > maxWeightIncrease) {
-                return `Weight increase exceeds allowable growth of ${maxWeightIncrease.toFixed(2)} kg over ${daysBetween} days.`;
-            }
-        }
+				navigate(`/GrowthRecord?fishID=${fishID}`);
+			} else {
+				setError("Error adding the growth record.");
+			}
+		} catch (error) {
+			setError("Error adding the growth record: " + error.message);
+		}
+	};
 
-        return null;
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const error = validateInputs(previousRecords);
-        if (error) {
-            setError(error);
-            return;
-        }
-
-        try {
-            const response = await fetch("http://localhost:8080/api/GrowthRecord", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(growthRecord),
-            });
-
-            if (response.ok) {
-                await updateFish({ fishID, size: growthRecord.size, weight: growthRecord.weight });
-                navigate(`/GrowthRecord?fishID=${fishID}`);
-            } else {
-                setError("Error adding the growth record.");
-            }
-        } catch (err) {
-            setError("Error adding the growth record: " + err.message);
-        }
-    };
-
-    return (
-        <div className="add-record-container">
-        <h1 className="add-record-title">Add New Growth Record</h1>
-        {error && <div className="add-record-error">{error}</div>}
-        <form onSubmit={handleSubmit} className="add-record-form">
-            <input
-                type="date"
-                name="measurementDate"
-                className="add-record-input"
-                value={growthRecord.measurementDate}
-                onChange={(e) => setGrowthRecord({ ...growthRecord, measurementDate: e.target.value })}
-                required
-            />
-            <input
-                type="number"
-                name="size"
-                className="add-record-input"
-                placeholder="Size (cm)"
-                value={growthRecord.size}
-                onChange={(e) => setGrowthRecord({ ...growthRecord, size: parseFloat(e.target.value) })}
-                required
-            />
-            <input
-                type="number"
-                name="weight"
-                className="add-record-input"
-                placeholder="Weight (kg)"
-                value={growthRecord.weight}
-                onChange={(e) => setGrowthRecord({ ...growthRecord, weight: parseFloat(e.target.value) })}
-                required
-            />
-            <input
-                type="text"
-                name="description"
-                className="add-record-input"
-                placeholder="Description"
-                value={growthRecord.description}
-                onChange={(e) => setGrowthRecord({ ...growthRecord, description: e.target.value })}
-            />
-            <button type="submit" className="add-record-submit-btn">Add Record</button>
-            <button
-                type="button"
-                className="profile-button back-button"
-                onClick={() => navigate(`/GrowthRecord?fishID=${fishID}`)}
-            >
-                Back
-            </button>
-        </form>
-    </div>
-    );
+	return (
+		<div className="add-record-container">
+			<h1 className="add-record-title">Add New Growth Record</h1>
+			{error && <p className="add-record-error">{error}</p>}
+			<form onSubmit={handleSubmit} className="add-record-form">
+				<input
+					type="date"
+					name="measurementDate"
+					value={growthRecord.measurementDate}
+					onChange={handleInputChange}
+					className="add-record-input"
+					required
+				/>
+				<input
+					type="number"
+					name="size"
+					placeholder="Size (in cm)"
+					value={growthRecord.size}
+					onChange={handleInputChange}
+					className="add-record-input"
+					required
+					min="0.01"
+					max="121.92"
+				/>
+				<input
+					type="number"
+					name="weight"
+					placeholder="Weight (in kilograms)"
+					value={growthRecord.weight}
+					onChange={handleInputChange}
+					className="add-record-input"
+					required
+					min="0.01"
+					max="41"
+				/>
+				<input
+					type="text"
+					name="description"
+					placeholder="Description"
+					value={growthRecord.description}
+					onChange={handleInputChange}
+					className="add-record-input"
+				/>
+				<button type="submit" className="add-record-submit-btn">
+					Add Record
+				</button>
+				<button
+					type="button"
+					className="profile-button back-button"
+					onClick={() => navigate(`/GrowthRecord?fishID=${fishID}`)}
+				>
+					Back
+				</button>
+			</form>
+		</div>
+	);
 };
 
 export default AddRecord;
+//         measurementDate: '',
+//         size: '',
+//         weight: '',
+//         description: '',
+//         fishID: parseInt(fishID, 10), 
+//     });
+	
+// 	const [error, setError] = useState("");
+  
+
+// 	useEffect(() => {
+// 	  const today = new Date();
+// 	  const formattedDate = today.toISOString().split("T")[0];
+// 	  setGrowthRecord((prevData) => ({
+// 		...prevData,
+// 		measurementDate: formattedDate, 
+// 	  }));
+// 	}, []);
+  
+	
+// 	const handleInputChange = (event) => {
+// 	  const { name, value } = event.target;
+// 	  setGrowthRecord((prevData) => ({
+// 		...prevData,
+// 		[name]: value,
+// 	  }));
+// 	};
+  
+	
+// 	const handleSubmit = async (e) => {
+// 	  e.preventDefault();
+	  
+// 	  if (!growthRecord.measurementDate || !growthRecord.size || !growthRecord.weight || !fishID) {
+// 		setError("Please fill in all required fields.");
+// 		return;
+// 	  }
+  
+// 	  try {
+// 		const response = await fetch("http://localhost:8080/api/GrowthRecord", {
+// 		  method: "POST",
+// 		  headers: {
+// 			"Content-Type": "application/json",
+// 		  },
+// 		  body: JSON.stringify(growthRecord), 
+// 		});
+  
+// 		if (response.ok) {
+// 		  navigate(`/GrowthRecord`);
+// 		} else {
+// 		  setError("Error adding the growth record.");
+// 		}
+// 	  } catch (error) {
+// 		setError("Error adding the growth record: " + error.message);
+// 	  }
+// 	};
+  
+// 	return (
+// 	  <div className="add-record-container">
+// 		<h1 className="add-record-title">Add New Growth Record</h1>
+// 		{error && <p className="add-record-error">{error}</p>}
+// 		<form onSubmit={handleSubmit} className="add-record-form">
+// 		  <input
+// 			type="date"
+// 			name="measurementDate" 
+// 			value={growthRecord.measurementDate}
+// 			onChange={handleInputChange}
+// 			className="add-record-input"
+// 			required
+// 		  />
+// 		  <input
+// 			type="number"
+// 			name="size"
+// 			placeholder="Size (in cm)"
+// 			value={growthRecord.size}
+// 			onChange={handleInputChange}
+// 			className="add-record-input"
+// 			required
+// 		  />
+// 		  <input
+// 			type="number"
+// 			name="weight"
+// 			placeholder="Weight (in kilograms)"
+// 			value={growthRecord.weight}
+// 			onChange={handleInputChange}
+// 			className="add-record-input"
+// 			required
+// 		  />
+// 		  <input
+// 			type="text"
+// 			name="description"
+// 			placeholder="Description"
+// 			value={growthRecord.description}
+// 			onChange={handleInputChange}
+// 			className="add-record-input"
+// 		  />
+// 		  <button type="submit" className="add-record-submit-btn">
+// 			Add Record
+// 		  </button>
+// 		  <button
+// 			type="button"
+// 			className="profile-button back-button"
+// 			onClick={() => navigate(`/growthRecord`)}
+// 		  >
+// 			Back
+// 		  </button>
+// 		</form>
+// 	  </div>
+// 	);
+//   };
+  
+//   export default AddRecord;
