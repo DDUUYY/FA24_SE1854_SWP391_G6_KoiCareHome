@@ -1,10 +1,9 @@
 package com.koi.FA24_SE1854_SWP391_G6_KoiCareHome.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
 @ComponentScan(basePackages = "com.koi.FA24_SE1854_SWP391_G6_KoiCareHome")
@@ -19,6 +18,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .allowCredentials(true);
     }
-
-
 }

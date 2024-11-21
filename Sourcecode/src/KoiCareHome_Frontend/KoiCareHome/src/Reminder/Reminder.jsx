@@ -9,9 +9,6 @@ import './Reminder.css';
 const Reminder = () => {
     const navigate = useNavigate();
     const [reminders, setReminders] = useState([]);
-    const [notificationHistory, setNotificationHistory] = useState(
-        JSON.parse(localStorage.getItem('notificationHistory')) || []
-    );
     const [newReminder, setNewReminder] = useState({
         title: '',
         dateTime: '',
@@ -87,19 +84,18 @@ const Reminder = () => {
             return;
         }
         console.log("Attempting to toggle status for reminder with ID:", id);
-    
+
         try {
             const reminder = reminders.find((rem) => rem.id === id);
             if (!reminder) {
                 console.error("Reminder not found for toggling status.");
                 return;
             }
-    
-            // Chuyển đổi `dateTime` sang đúng định dạng chuỗi trước khi gửi
+
             const updatedReminder = { 
                 ...reminder, 
                 isActive: !currentStatus,
-                dateTime: new Date(reminder.dateTime).toISOString().slice(0, 16) // Đảm bảo đúng định dạng
+                dateTime: new Date(reminder.dateTime).toISOString().slice(0, 16)
             };
             
             await axios.put(`/api/reminders/edit/${id}`, updatedReminder);
@@ -111,36 +107,6 @@ const Reminder = () => {
         } catch (error) {
             console.error('Error updating reminder status:', error);
         }
-    };
-
-    // Notification interval
-    useEffect(() => {
-        const interval = setInterval(() => {
-            const now = new Date();
-            reminders.forEach((reminder) => {
-                if (reminder.memberID === memberID) {
-                    const reminderTime = new Date(reminder.dateTime);
-                    if (reminderTime <= now && reminderTime > new Date(now.getTime() - 60000)) {
-                        showNotification(reminder.title, `It's time for your reminder: ${reminder.frequency}`);
-                        const newNotification = {
-                            title: reminder.title,
-                            dateTime: now.toLocaleString(),
-                            frequency: reminder.frequency
-                        };
-                        const updatedHistory = [...notificationHistory, newNotification];
-                        setNotificationHistory(updatedHistory);
-                        localStorage.setItem('notificationHistory', JSON.stringify(updatedHistory));
-                    }
-                }
-            });
-        }, 60000);
-        return () => clearInterval(interval);
-    }, [reminders, notificationHistory, memberID]);
-
-    // Clear notification history
-    const clearNotificationHistory = () => {
-        setNotificationHistory([]);
-        localStorage.setItem('notificationHistory', JSON.stringify([]));
     };
 
     return (

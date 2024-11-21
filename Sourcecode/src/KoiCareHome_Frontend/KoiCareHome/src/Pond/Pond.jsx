@@ -1,9 +1,25 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Select from 'react-select';
 import axios from 'axios';
 import './Pond.css';
 import HomeIcon from '../assets/HomeButton.png';
+
+const equipmentOptions = [
+    { value: 'Bộ lọc cơ học', label: 'Bộ lọc cơ học' },
+    { value: 'Bộ lọc sinh học', label: 'Bộ lọc sinh học' },
+    { value: 'Lọc hóa học', label: 'Lọc hóa học' },
+    { value: 'Máy bơm nước', label: 'Máy bơm nước' },
+    { value: 'Máy sục khí (máy oxy)', label: 'Máy sục khí (máy oxy)' },
+    { value: 'Đèn UV', label: 'Đèn UV' },
+    { value: 'Hệ thống cấp và thoát nước', label: 'Hệ thống cấp và thoát nước' },
+    { value: 'Máy sưởi (nếu cần)', label: 'Máy sưởi (nếu cần)' },
+    { value: 'Thiết bị đo nước', label: 'Thiết bị đo nước' },
+    { value: 'Máy cho ăn tự động (tùy chọn)', label: 'Máy cho ăn tự động (tùy chọn)' },
+    { value: 'Hệ thống che chắn', label: 'Hệ thống che chắn' },
+    { value: 'Đá, cây thủy sinh, hoặc trang trí', label: 'Đá, cây thủy sinh, hoặc trang trí' },
+];
 
 const Pond = () => {
     const [ponds, setPonds] = useState([]);
@@ -17,7 +33,7 @@ const Pond = () => {
         volume: '',
         drainageCount: '',
         pumpCapacity: '',
-        equipment: '',
+        equipment: [],
         quantity: '',
     });
     const [formErrors, setFormErrors] = useState({});
@@ -61,6 +77,13 @@ const Pond = () => {
         setFormState({ ...formState, [name]: value });
     };
 
+    const handleEquipmentChange = (selectedOptions) => {
+        setFormState({
+            ...formState,
+            equipment: selectedOptions ? selectedOptions.map(option => option.value) : [],
+        });
+    };
+
     const validatePond = (pond) => {
         const errors = {};
         if (!pond.size || pond.size <= 0) errors.size = 'Size must be greater than 0';
@@ -87,7 +110,10 @@ const Pond = () => {
 
         try {
             if (selectedPond) {
-                const response = await axios.put(`/api/pond/${selectedPond.pondID}`, formState);
+                const response = await axios.put(`/api/pond/${selectedPond.pondID}`, {
+                    ...formState,
+                    equipment: formState.equipment.join(', '), // Convert mảng thành chuỗi
+                });
                 setPonds((prevPonds) =>
                     prevPonds.map((pond) =>
                         pond.pondID === selectedPond.pondID ? response.data : pond
@@ -98,6 +124,7 @@ const Pond = () => {
             } else {
                 const response = await axios.post('/api/pond', {
                     ...formState,
+                    equipment: formState.equipment.join(', '), // Convert mảng thành chuỗi
                     memberID: localStorage.getItem('userID'),
                     isActive: true,
                 });
@@ -138,7 +165,7 @@ const Pond = () => {
             volume: '',
             drainageCount: '',
             pumpCapacity: '',
-            equipment: '',
+            equipment: [],
             quantity: '',
         });
         setFormErrors({});
@@ -282,12 +309,14 @@ const Pond = () => {
                             )}
 
                             <label htmlFor="equipment">Equipment</label>
-                            <input
+                            <Select
                                 id="equipment"
-                                name="equipment"
-                                type="text"
-                                value={formState.equipment || ''}
-                                onChange={handleInputChange}
+                                isMulti
+                                options={equipmentOptions}
+                                onChange={handleEquipmentChange}
+                                value={equipmentOptions.filter(option =>
+                                    formState.equipment.includes(option.value)
+                                )}
                             />
                             {formErrors.equipment && (
                                 <span className="error">{formErrors.equipment}</span>
