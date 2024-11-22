@@ -120,7 +120,7 @@ const Chart = () => {
             }
         }
     
-        if (latestGrowth.sizeGrowthPerDay < 0.3 || latestGrowth.weightGrowthPerDay < 0.2) {
+        if (latestGrowth.sizeGrowthPerDay < 0.2 || latestGrowth.weightGrowthPerDay < 0.09) {
             suggestions.push("Fish growth is slow. Consider adjusting feeding habits or water parameters.");
         }
     

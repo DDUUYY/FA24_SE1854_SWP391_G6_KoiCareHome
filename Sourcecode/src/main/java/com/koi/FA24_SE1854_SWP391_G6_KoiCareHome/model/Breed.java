@@ -61,16 +61,16 @@ public class Breed {
     @Column(name = "MinTankVolume", precision = 38, scale = 2)
     private BigDecimal minTankVolume;
 
-    @Column(name = "MinSize", precision = 38, scale = 2)
+    @Column(name = "MinSize", precision = 1, scale = 0)
     private BigDecimal minSize;
 
-    @Column(name = "MaxSize", precision = 38, scale = 2)
+    @Column(name = "MaxSize", precision = 38, scale = 2)  // Adjusted precision to 38
     private BigDecimal maxSize;
 
-    @Column(name = "MinWeight", precision = 38, scale = 2)
+    @Column(name = "MinWeight", precision = 1, scale = 0)
     private BigDecimal minWeight;
 
-    @Column(name = "MaxWeight", precision = 38, scale = 2)
+    @Column(name = "MaxWeight", precision = 38, scale = 2)  // Adjusted precision to 38
     private BigDecimal maxWeight;
 
     @Column(name = "MaxAgeMonth")

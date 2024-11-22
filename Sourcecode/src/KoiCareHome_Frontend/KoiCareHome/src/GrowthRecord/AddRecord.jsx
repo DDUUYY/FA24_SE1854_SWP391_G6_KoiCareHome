@@ -53,12 +53,12 @@ const AddRecord = () => {
             return "A GrowthRecord for this fish on this date already exists.";
         }
 
-        if (size <= 0 || size > 125.92) {
-            return "Size must be between 1 cm and 125.92 cm.";
+        if (size <= 1 || size > 126) {
+            return "Size must be between 1 cm and 126 cm.";
         }
 
-        if (weight <= 0 || weight > 16) {
-            return "Weight must be between 1 kg and 16 kg.";
+        if (weight <= 1 || weight > 38) {
+            return "Weight must be between 1 kg and 38 kg.";
         }
 
         const sizeWeightRatio = weight / size;

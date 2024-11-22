@@ -1,14 +1,29 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Select from 'react-select';
 import axios from 'axios';
 import './Pond.css';
 import HomeIcon from '../assets/HomeButton.png';
 
+const equipmentOptions = [
+    { value: 'Bộ lọc cơ học', label: 'Bộ lọc cơ học' },
+    { value: 'Bộ lọc sinh học', label: 'Bộ lọc sinh học' },
+    { value: 'Lọc hóa học', label: 'Lọc hóa học' },
+    { value: 'Máy bơm nước', label: 'Máy bơm nước' },
+    { value: 'Máy sục khí (máy oxy)', label: 'Máy sục khí (máy oxy)' },
+    { value: 'Đèn UV', label: 'Đèn UV' },
+    { value: 'Hệ thống cấp và thoát nước', label: 'Hệ thống cấp và thoát nước' },
+    { value: 'Máy sưởi (nếu cần)', label: 'Máy sưởi (nếu cần)' },
+    { value: 'Thiết bị đo nước', label: 'Thiết bị đo nước' },
+    { value: 'Máy cho ăn tự động (tùy chọn)', label: 'Máy cho ăn tự động (tùy chọn)' },
+    { value: 'Hệ thống che chắn', label: 'Hệ thống che chắn' },
+    { value: 'Đá, cây thủy sinh, hoặc trang trí', label: 'Đá, cây thủy sinh, hoặc trang trí' },
+];
+
 const Pond = () => {
     const [ponds, setPonds] = useState([]);
     const [fishCounts, setFishCounts] = useState({});
-    const navigate = useNavigate();
     const [selectedPond, setSelectedPond] = useState(null);
     const [showForm, setShowForm] = useState(false);
     const [formState, setFormState] = useState({
@@ -18,46 +33,42 @@ const Pond = () => {
         volume: '',
         drainageCount: '',
         pumpCapacity: '',
-        equipment: '',
+        equipment: [],
         quantity: '',
     });
-
+    const [formErrors, setFormErrors] = useState({});
+    const navigate = useNavigate();
     const memberID = parseInt(localStorage.getItem('userID'), 10);
 
     useEffect(() => {
         const fetchPonds = async () => {
             try {
-                // Gọi API để lấy danh sách hồ cá
                 const response = await axios.get(`/api/pond/member?memberId=${memberID}`);
                 const pondsData = response.data;
-    
-                // Gọi API để lấy số lượng cá trong từng hồ
+
                 const fishCountPromises = pondsData.map(async (pond) => {
                     try {
                         const fishResponse = await axios.get(`/api/fish/pond/${pond.pondID}/count`);
-                        return { pondID: pond.pondID, count: fishResponse.data }; // Trả về số lượng cá
+                        return { pondID: pond.pondID, count: fishResponse.data };
                     } catch (error) {
                         console.error(`Error fetching fish count for pond ${pond.pondID}:`, error);
-                        return { pondID: pond.pondID, count: 0 }; // Nếu lỗi, trả về 0
+                        return { pondID: pond.pondID, count: 0 };
                     }
                 });
-    
-                // Chờ tất cả các promise hoàn thành
+
                 const fishCountsArray = await Promise.all(fishCountPromises);
-    
-                // Tạo object để lưu số lượng cá theo pondID
                 const counts = fishCountsArray.reduce((acc, { pondID, count }) => {
                     acc[pondID] = count;
                     return acc;
                 }, {});
-    
-                // Cập nhật state
-                setPonds(pondsData); // Cập nhật danh sách hồ
-                setFishCounts(counts); // Cập nhật số lượng cá cho từng hồ
+
+                setPonds(pondsData);
+                setFishCounts(counts);
             } catch (error) {
-                console.error('Error fetching ponds or fish counts:', error);
+                console.error('Error fetching ponds:', error);
             }
         };
+
         fetchPonds();
     }, [memberID]);
 
@@ -66,30 +77,59 @@ const Pond = () => {
         setFormState({ ...formState, [name]: value });
     };
 
+    const handleEquipmentChange = (selectedOptions) => {
+        setFormState({
+            ...formState,
+            equipment: selectedOptions ? selectedOptions.map(option => option.value) : [],
+        });
+    };
+
+    const validatePond = (pond) => {
+        const errors = {};
+        if (!pond.size || pond.size <= 0) errors.size = 'Size must be greater than 0';
+        if (!pond.depth || pond.depth <= 0) errors.depth = 'Depth must be greater than 0';
+        if (!pond.volume || pond.volume <= 0) errors.volume = 'Volume must be greater than 0';
+        if (pond.drainageCount !== undefined && pond.drainageCount < 0)
+            errors.drainageCount = 'Drainage Count must be 0 or greater';
+        if (pond.pumpCapacity !== undefined && pond.pumpCapacity <= 0)
+            errors.pumpCapacity = 'Pump Capacity must be greater than 0';
+        if (pond.equipment && pond.equipment.length > 255)
+            errors.equipment = 'Equipment must be at most 255 characters';
+        if (pond.quantity !== undefined && pond.quantity < 0)
+            errors.quantity = 'Quantity must be 0 or greater';
+
+        return errors;
+    };
+
     const savePond = async () => {
-        if (!formState.size || !formState.depth || !formState.volume) {
-            alert("Please fill in all required fields: size, depth, and volume.");
+        const errors = validatePond(formState);
+        if (Object.keys(errors).length > 0) {
+            setFormErrors(errors);
             return;
         }
 
         try {
             if (selectedPond) {
-                const response = await axios.put(`/api/pond/${selectedPond.pondID}`, formState);
+                const response = await axios.put(`/api/pond/${selectedPond.pondID}`, {
+                    ...formState,
+                    equipment: formState.equipment.join(', '), // Convert mảng thành chuỗi
+                });
                 setPonds((prevPonds) =>
                     prevPonds.map((pond) =>
                         pond.pondID === selectedPond.pondID ? response.data : pond
                     )
                 );
                 setSelectedPond(response.data);
-                alert("Pond updated successfully!");
+                alert('Pond updated successfully!');
             } else {
                 const response = await axios.post('/api/pond', {
                     ...formState,
+                    equipment: formState.equipment.join(', '), // Convert mảng thành chuỗi
                     memberID: localStorage.getItem('userID'),
                     isActive: true,
                 });
                 setPonds([...ponds, response.data]);
-                alert("Pond added successfully!");
+                alert('Pond added successfully!');
             }
             resetForm();
             setShowForm(false);
@@ -125,20 +165,21 @@ const Pond = () => {
             volume: '',
             drainageCount: '',
             pumpCapacity: '',
-            equipment: '',
+            equipment: [],
             quantity: '',
         });
+        setFormErrors({});
         setShowForm(false);
     };
 
     return (
         <div className="pond-container">
             <nav className="navbar">
-                <img 
-                src={HomeIcon} 
-                alt="Back to Home" 
-                className="home-icon" 
-                onClick={() => navigate('/home')} 
+                <img
+                    src={HomeIcon}
+                    alt="Back to Home"
+                    className="home-icon"
+                    onClick={() => navigate('/home')}
                 />
                 <span className="navbar-title">Pond Management</span>
             </nav>
@@ -160,7 +201,9 @@ const Pond = () => {
                     {ponds.map((pond) => (
                         <div
                             key={pond.pondID}
-                            className={`pond-card ${selectedPond?.pondID === pond.pondID ? 'selected' : ''}`}
+                            className={`pond-card ${
+                                selectedPond?.pondID === pond.pondID ? 'selected' : ''
+                            }`}
                             onClick={() => setSelectedPond(pond)}
                         >
                             <h4>Pond {pond.pondID}</h4>
@@ -205,7 +248,12 @@ const Pond = () => {
                 <div className="pond-form-modal">
                     <div className="pond-form">
                         <h3>{formState.pondID ? 'Update Pond' : 'Add New Pond'}</h3>
-                        <form onSubmit={savePond}>
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                savePond();
+                            }}
+                        >
                             <label htmlFor="size">Size (m²)</label>
                             <input
                                 id="size"
@@ -213,8 +261,9 @@ const Pond = () => {
                                 type="number"
                                 value={formState.size}
                                 onChange={handleInputChange}
-                                required
                             />
+                            {formErrors.size && <span className="error">{formErrors.size}</span>}
+
                             <label htmlFor="depth">Depth (m)</label>
                             <input
                                 id="depth"
@@ -222,8 +271,9 @@ const Pond = () => {
                                 type="number"
                                 value={formState.depth}
                                 onChange={handleInputChange}
-                                required
                             />
+                            {formErrors.depth && <span className="error">{formErrors.depth}</span>}
+
                             <label htmlFor="volume">Volume (m³)</label>
                             <input
                                 id="volume"
@@ -231,8 +281,9 @@ const Pond = () => {
                                 type="number"
                                 value={formState.volume}
                                 onChange={handleInputChange}
-                                required
                             />
+                            {formErrors.volume && <span className="error">{formErrors.volume}</span>}
+
                             <label htmlFor="drainageCount">Drainage Count</label>
                             <input
                                 id="drainageCount"
@@ -241,6 +292,10 @@ const Pond = () => {
                                 value={formState.drainageCount || ''}
                                 onChange={handleInputChange}
                             />
+                            {formErrors.drainageCount && (
+                                <span className="error">{formErrors.drainageCount}</span>
+                            )}
+
                             <label htmlFor="pumpCapacity">Pump Capacity (m³/h)</label>
                             <input
                                 id="pumpCapacity"
@@ -249,14 +304,24 @@ const Pond = () => {
                                 value={formState.pumpCapacity || ''}
                                 onChange={handleInputChange}
                             />
+                            {formErrors.pumpCapacity && (
+                                <span className="error">{formErrors.pumpCapacity}</span>
+                            )}
+
                             <label htmlFor="equipment">Equipment</label>
-                            <input
+                            <Select
                                 id="equipment"
-                                name="equipment"
-                                type="text"
-                                value={formState.equipment || ''}
-                                onChange={handleInputChange}
+                                isMulti
+                                options={equipmentOptions}
+                                onChange={handleEquipmentChange}
+                                value={equipmentOptions.filter(option =>
+                                    formState.equipment.includes(option.value)
+                                )}
                             />
+                            {formErrors.equipment && (
+                                <span className="error">{formErrors.equipment}</span>
+                            )}
+
                             <label htmlFor="quantity">Quantity</label>
                             <input
                                 id="quantity"
@@ -265,6 +330,10 @@ const Pond = () => {
                                 value={formState.quantity || ''}
                                 onChange={handleInputChange}
                             />
+                            {formErrors.quantity && (
+                                <span className="error">{formErrors.quantity}</span>
+                            )}
+
                             <div className="form-actions">
                                 <button type="submit" className="submit-button">
                                     {formState.pondID ? 'Update Pond' : 'Add Pond'}

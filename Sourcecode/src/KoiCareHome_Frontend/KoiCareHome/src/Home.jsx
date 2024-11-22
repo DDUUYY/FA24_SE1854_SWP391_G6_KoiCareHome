@@ -108,7 +108,6 @@ const Home = () => {
                     <h1>Our Feature</h1>
                     <PondCard/>
                     <ManageFishCard />
-                    <FeedingHistoryCard />
                     <FoodCalculatorCard />
                     <GrCard />
                     <ReminderCard />

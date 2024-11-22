@@ -18,5 +18,5 @@ import java.util.List;
 public interface GrowthRecordRepository extends JpaRepository<GrowthRecord, Integer> {
     List<GrowthRecord> findByFishIDAndIsActiveTrue(Integer fishID);
 
-    boolean existsByFishIDAndMeasurementDate(Integer fishID, LocalDate measurementDate);
+//    boolean existsByFishIDAndMeasurementDate(Integer fishID, LocalDate measurementDate);
 }
